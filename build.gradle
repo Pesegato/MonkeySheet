@@ -1,0 +1,43 @@
+plugins {
+  id "java"
+  id "application"
+//  id "eclipse"
+//  id "idea"
+}
+
+//name = the directory name
+version = "0.1.0"
+group = "com.pesegato.MonkeySheet"
+applicationDefaultJvmArgs = []
+
+mainClassName = System.properties.get('mainClassName', 'samples.Main')
+
+if (!hasProperty('mainClass')) {
+	ext.mainClass = ''
+}
+
+repositories {
+  mavenLocal()
+  jcenter()
+  // maven { url "http://updates.jmonkeyengine.org/maven/"} // jme3 SNAPSHOT
+}
+
+
+def jme3 = ["v" : '[3.1,)', "g": "org.jmonkeyengine"]
+
+dependencies {
+  // jme
+  compile "${jme3.g}:jme3-core:${jme3.v}"
+  runtime "${jme3.g}:jme3-desktop:${jme3.v}"
+  runtime "${jme3.g}:jme3-lwjgl:${jme3.v}"
+
+  //utils
+
+  //assets
+
+  //test
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
