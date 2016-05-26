@@ -14,14 +14,14 @@ MaterialDef Anim {
     }
 
     Technique {
-        VertexShader GLSL100:   com/pesegato/MonkeySheet/shaders/Anim.vert
-        FragmentShader GLSL100: com/pesegato/MonkeySheet/shaders/Anim_1.frag
+        VertexShader GLSL100:   MonkeySheet/MatDefs/Anim.vert
+        FragmentShader GLSL100: MonkeySheet/MatDefs/Anim_1.frag
 
         WorldParameters {
-            WorldViewProjectionMatrix        
+            WorldViewProjectionMatrix
         }
 
-        Defines {          
+        Defines {
             HAS_GLOWCOLOR : GlowColor
         }
     }

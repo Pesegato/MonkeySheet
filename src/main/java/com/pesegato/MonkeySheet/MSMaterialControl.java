@@ -26,14 +26,14 @@ public class MSMaterialControl extends AbstractControl {
     public String animation;
     public int position;
     MSControl msc;
-    
+
     private float alphaValue=1;
     private boolean flipped=false;
     private ColorRGBA fogColor=ColorRGBA.Pink;
     private float fogIntensity=0;
-    
+
     public MSMaterialControl(AssetManager assetManager, Geometry geo, MSContainer msCont, MSControl msc){
-        material = new Material(assetManager, "com/pesegato/MonkeySheet/shaders/Anim.j3md");
+        material = new Material(assetManager, "MonkeySheet/MatDefs/Anim.j3md");
         Texture[] sheetsX=new Texture[msCont.sheets.length];
         for (int i = 0; i < msCont.sheets.length; i++) {
             sheetsX[i]=assetManager.loadTexture(msCont.sheets[i]);
@@ -55,7 +55,7 @@ public class MSMaterialControl extends AbstractControl {
             material.setColor("FogColor", fogColor);
             material.setFloat("FogIntensity", 0.0f);
     }
-    
+
     @Override
     protected void controlUpdate(float tpf) {
         if (MonkeySheetAppState.tTPF == 0) {
@@ -64,22 +64,22 @@ public class MSMaterialControl extends AbstractControl {
         }
 
     }
-    
+
     public void setFlipped(boolean flipped){
         this.flipped=flipped;
         material.setFloat("FlipHorizontal", flipped?1.0f:0.0f);
     }
-    
+
     public void setAlpha(float alphaValue){
         this.alphaValue=alphaValue;
         material.setFloat("AlphaValue", alphaValue);
     }
-    
+
     public void setFogColor(ColorRGBA fogColor){
         this.fogColor=fogColor;
         material.setColor("FogColor", fogColor);
     }
-    
+
     public void setFogIntensity(float fogIntensity){
         this.fogIntensity=fogIntensity;
         material.setFloat("FogIntensity", fogIntensity);

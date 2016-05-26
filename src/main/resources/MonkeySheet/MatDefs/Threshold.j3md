@@ -14,14 +14,14 @@ MaterialDef Anim {
     }
 
     Technique {
-        VertexShader GLSL100:   com/pesegato/MonkeySheet/shaders/Threshold.vert
-        FragmentShader GLSL100: com/pesegato/MonkeySheet/shaders/Threshold.frag
+        VertexShader GLSL100:   MonkeySheet/MatDefs/Threshold.vert
+        FragmentShader GLSL100: MonkeySheet/MatDefs/Threshold.frag
 
         WorldParameters {
-            WorldViewProjectionMatrix        
+            WorldViewProjectionMatrix
         }
 
-        Defines {          
+        Defines {
             HAS_GLOWCOLOR : GlowColor
         }
     }
