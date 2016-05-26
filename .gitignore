@@ -16,6 +16,8 @@ build
 
 # eclipse
 bin/
+classes/
+.idea/
 .classpath
 .project
 .settings
@@ -24,3 +26,5 @@ bin/
 
 # crash
 hs_err_pid*.log
+gradle/wrapper/gradle-wrapper.properties
+*.jar
