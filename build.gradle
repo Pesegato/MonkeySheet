@@ -1,6 +1,5 @@
 plugins {
   id "java"
-  id "application"
 //  id "eclipse"
 //  id "idea"
 }
@@ -8,13 +7,6 @@ plugins {
 //name = the directory name
 version = "0.1.0"
 group = "com.pesegato.MonkeySheet"
-applicationDefaultJvmArgs = []
-
-mainClassName = System.properties.get('mainClassName', 'samples.Main')
-
-if (!hasProperty('mainClass')) {
-	ext.mainClass = ''
-}
 
 repositories {
   mavenLocal()
@@ -28,7 +20,10 @@ def jme3 = ["v" : '[3.1,)', "g": "org.jmonkeyengine"]
 dependencies {
   // jme
   compile "${jme3.g}:jme3-core:${jme3.v}"
-  runtime "${jme3.g}:jme3-desktop:${jme3.v}"
+	compile 'org.slf4j:slf4j-api:1.7.13'
+	compile 'com.google.guava:guava:19.0'
+	runtime 'ch.qos.logback:logback-classic:1.1.2'
+	runtime "${jme3.g}:jme3-desktop:${jme3.v}"
   runtime "${jme3.g}:jme3-lwjgl:${jme3.v}"
 
   //utils
