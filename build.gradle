@@ -1,17 +1,17 @@
 plugins {
   id "java"
+	id "maven"
 //  id "eclipse"
 //  id "idea"
 }
 
 //name = the directory name
 version = "0.1.0"
-group = "com.pesegato.MonkeySheet"
+group = "com.pesegato"
 
 repositories {
   mavenLocal()
   jcenter()
-  // maven { url "http://updates.jmonkeyengine.org/maven/"} // jme3 SNAPSHOT
 }
 
 
