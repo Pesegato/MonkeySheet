@@ -29,7 +29,7 @@ MaterialDef Point Sprite {
         }
 
         RenderState {
-            Blend AlphaAdditive
+            Blend Alpha
             DepthWrite Off
             PointSprite On
         }
@@ -59,7 +59,7 @@ MaterialDef Point Sprite {
         }
 
         RenderState {
-            Blend AlphaAdditive
+            Blend Alpha
             DepthWrite Off
             PointSprite On
         }

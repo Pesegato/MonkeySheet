@@ -21,7 +21,8 @@ void main(){
         #else
             vec2 uv = texCoord.xy;
         #endif
-        gl_FragColor = texture2D(m_Texture, uv) * color;
+        gl_FragColor = texture2D(m_Texture, uv);
+        gl_FragColor.a = gl_FragColor.a * color.a;
     #else
         gl_FragColor = color;
     #endif
