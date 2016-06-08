@@ -7,6 +7,9 @@ package com.pesegato.MonkeySheet;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.pesegato.goldmonkey.AnimationBuilder;
+import model.builders.definitions.BuilderManager;
+
 import java.util.HashMap;
 
 /**
@@ -28,20 +31,23 @@ public class MonkeySheetAppState extends BaseAppState {
     public static MTween getAnim(String name){
         return anis.get(name);
     }
-    
+
     public void addAnim(MSContainer msCont, String name, int ani[], int hitbox[]) {
         anis.put(name,new MTween(msCont, name, ani, hitbox, msCont.numTiles));
     }
-    
+
+    public void loadAnim(MSContainer container, String anim){
+        addAnim(container,anim, ( BuilderManager.getBuilder("com.pesegato.goldmonkey.AnimationBuilder", anim, AnimationBuilder.class)).buildAnimation(), null);
+    }
 
     @Override
     public void update(float tpf){
         tTPF += tpf;
         if (tTPF > tickDuration) {
             tTPF = 0;
-        }    
+        }
     }
-    
+
     public static void setTickDuration(float tickDuration){
         MonkeySheetAppState.tickDuration=tickDuration;
     }

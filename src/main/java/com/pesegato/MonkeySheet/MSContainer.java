@@ -5,17 +5,21 @@
  */
 package com.pesegato.MonkeySheet;
 
+import com.pesegato.goldmonkey.GM;
+
 /**
  *
  * @author Pesegato
  */
 public class MSContainer {
 
+    boolean USE_COMPRESSION=false;
+
     public int numTiles;
     String[] sheets;
 
-    public MSContainer(int numTiles, String... sheets){
-        this.numTiles=numTiles;
-        this.sheets=sheets;
+    public MSContainer(String name){
+        this.numTiles= GM.getInt(name);
+        this.sheets=new String[]{"Textures/"+GM.getString(name)+(USE_COMPRESSION?".dds":".png")};
     }
 }
