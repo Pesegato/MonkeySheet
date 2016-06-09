@@ -19,11 +19,15 @@ import org.slf4j.LoggerFactory;
 public abstract class MSActionMachine extends AbstractControl {
 
      static Logger log = LoggerFactory.getLogger(MSActionMachine.class);
- 
+
     MSAction[] actions;
     MSAction currentAction;
 
     public MSActionMachine(MSAction... actions) {
+        initActions(actions);
+    }
+
+    public void initActions(MSAction... actions){
         this.actions = actions;
     }
 
@@ -51,11 +55,11 @@ public abstract class MSActionMachine extends AbstractControl {
         }
         return null;
     }
-    
+
     private void nextAction() {
         startAction(actions[getNextAction()]);
     }
-    
+
     private void startAction(MSAction action){
         log.trace("start action {}",action);
         if (currentAction==action)
