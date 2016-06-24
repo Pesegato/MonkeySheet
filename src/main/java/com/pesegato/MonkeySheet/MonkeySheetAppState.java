@@ -5,11 +5,15 @@
  */
 package com.pesegato.MonkeySheet;
 
+import com.google.gson.Gson;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.pesegato.goldmonkey.AnimationBuilder;
-import model.builders.definitions.BuilderManager;
+import com.pesegato.goldmonkey.Animation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
 
 /**
@@ -17,6 +21,8 @@ import java.util.HashMap;
  * @author Pesegato
  */
 public class MonkeySheetAppState extends BaseAppState {
+
+    static Logger log = LoggerFactory.getLogger( MonkeySheetAppState.class );
 
     private static float tickDuration=0.025f;
     public static float tTPF = 0;
@@ -36,8 +42,21 @@ public class MonkeySheetAppState extends BaseAppState {
         anis.put(name,new MTween(msCont, name, ani, hitbox, msCont.numTiles));
     }
 
+    static HashMap<String, Animation> animations;
+
     public void loadAnim(MSContainer container, String anim){
-        addAnim(container,anim, ( BuilderManager.getBuilder("com.pesegato.goldmonkey.AnimationBuilder", anim, AnimationBuilder.class)).buildAnimation(), null);
+        if (animations == null) {
+            try {
+                animations = new HashMap<>();
+                Animation[] data = new Gson().fromJson(new FileReader("assets/GoldMonkey/Animations.json"), Animation[].class);
+                for (Animation obj : data) {
+                    animations.put(obj.id, obj);
+                }
+            } catch (FileNotFoundException ex) {
+                log.error(null, ex);
+            }
+        }
+        addAnim(container,anim,animations.get(anim).frames,null);
     }
 
     @Override
