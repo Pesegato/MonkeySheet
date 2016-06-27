@@ -26,5 +26,3 @@ classes/
 
 # crash
 hs_err_pid*.log
-gradle/wrapper/gradle-wrapper.properties
-*.jar
