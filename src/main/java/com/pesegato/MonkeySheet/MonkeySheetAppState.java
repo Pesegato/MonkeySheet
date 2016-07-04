@@ -9,11 +9,11 @@ import com.google.gson.Gson;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.pesegato.goldmonkey.Animation;
+import com.pesegato.goldmonkey.GM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.HashMap;
 
 /**
@@ -48,7 +48,7 @@ public class MonkeySheetAppState extends BaseAppState {
         if (animations == null) {
             try {
                 animations = new HashMap<>();
-                Animation[] data = new Gson().fromJson(new FileReader("assets/GoldMonkey/Animations.json"), Animation[].class);
+                Animation[] data = new Gson().fromJson(GM.getJSON("Animations"), Animation[].class);
                 for (Animation obj : data) {
                     animations.put(obj.id, obj);
                 }
