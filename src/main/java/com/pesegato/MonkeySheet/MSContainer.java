@@ -19,7 +19,7 @@ public class MSContainer {
     String[] sheets;
 
     public MSContainer(String name){
-        this.numTiles= GM.getInt(name);
+        this.numTiles= GM.getIntXML(name);
         this.sheets=new String[]{"Textures/"+GM.getString(name)+(USE_COMPRESSION?".dds":".png")};
     }
 }
