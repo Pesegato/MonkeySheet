@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.pesegato.goldmonkey.Animation;
+import com.pesegato.goldmonkey.Container;
 import com.pesegato.goldmonkey.GM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,13 +43,29 @@ public class MonkeySheetAppState extends BaseAppState {
         anis.put(name,new MTween(msCont, name, ani, hitbox, msCont.numTiles));
     }
 
+    static HashMap<String, Container> containers;
+
+    static Container getContainer(String id){
+        if (containers == null) {
+            try {
+                containers = new HashMap<>();
+                Container[] data = new Gson().fromJson(GM.getJSON("MonkeySheet/Containers"), Container[].class);
+                for (Container obj : data) {
+                    containers.put(obj.id, obj);
+                }
+            } catch (FileNotFoundException ex) {
+                log.error(null, ex);
+            }
+        }
+        return containers.get(id);
+    }
     static HashMap<String, Animation> animations;
 
     public void loadAnim(MSContainer container, String anim){
         if (animations == null) {
             try {
                 animations = new HashMap<>();
-                Animation[] data = new Gson().fromJson(GM.getJSON("Animations"), Animation[].class);
+                Animation[] data = new Gson().fromJson(GM.getJSON("MonkeySheet/Animations"), Animation[].class);
                 for (Animation obj : data) {
                     animations.put(obj.id, obj);
                 }
