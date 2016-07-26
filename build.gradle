@@ -37,3 +37,9 @@ dependencies {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+compileJava.doLast {
+	def buildDate = new Date().format('yyyy-MM-dd HHmm')
+	println "Writing monkeysheet.build.date: " + buildDate
+	new File(destinationDir, 'monkeysheet.build.date').text = buildDate
+}

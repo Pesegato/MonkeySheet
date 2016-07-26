@@ -5,6 +5,8 @@
  */
 package com.pesegato.MonkeySheet;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -31,6 +33,7 @@ public class MonkeySheetAppState extends BaseAppState {
     @Override
     protected void initialize(Application app) {
         getStateManager().attach(new MSTimerAppState());
+        logBuildInfo();
     }
 
     static HashMap<String, MTween> anis = new HashMap<>();
@@ -100,4 +103,13 @@ public class MonkeySheetAppState extends BaseAppState {
     protected void onDisable() {
     }
 
+    protected void logBuildInfo() {
+        try {
+            java.net.URL u = Resources.getResource("monkeysheet.build.date");
+            String build = Resources.toString(u, Charsets.UTF_8);
+            log.info("MonkeySheet build date: " + build);
+        } catch( java.io.IOException e ) {
+            log.error( "Error reading build info", e );
+        }
+    }
 }
