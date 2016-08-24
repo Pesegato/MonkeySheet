@@ -12,6 +12,7 @@ group = "com.pesegato"
 repositories {
   mavenLocal()
   jcenter()
+  maven { url "https://jitpack.io" }
 }
 
 
@@ -22,7 +23,7 @@ dependencies {
   compile "${jme3.g}:jme3-core:${jme3.v}"
 	compile 'org.slf4j:slf4j-api:1.7.13'
 	compile 'com.google.guava:guava:19.0'
-	compile "com.pesegato:GoldMonkey:[0.1,)"
+	compile 'com.github.Pesegato:GoldMonkey:-SNAPSHOT'
 	runtime 'ch.qos.logback:logback-classic:1.1.2'
 	runtime "${jme3.g}:jme3-desktop:${jme3.v}"
   runtime "${jme3.g}:jme3-lwjgl:${jme3.v}"
