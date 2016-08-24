@@ -42,8 +42,16 @@ public class MonkeySheetAppState extends BaseAppState {
         return anis.get(name);
     }
 
-    public void addAnim(MSContainer msCont, String name, int ani[], int hitbox[]) {
-        anis.put(name,new MTween(msCont, name, ani, hitbox, msCont.numTiles));
+    public static int getCenterX(String name){
+        return anis.get(name).centerX;
+    }
+
+    public static int getCenterY(String name){
+        return anis.get(name).centerY;
+    }
+
+    public void addAnim(MSContainer msCont, String name, int ani[], int hitbox[], int centerX, int centerY) {
+        anis.put(name,new MTween(msCont, name, ani, hitbox, msCont.numTiles, centerX, centerY));
     }
 
     static HashMap<String, Container> containers;
@@ -76,7 +84,7 @@ public class MonkeySheetAppState extends BaseAppState {
                 log.error(null, ex);
             }
         }
-        addAnim(container,anim,animations.get(anim).frames,null);
+        addAnim(container,anim,animations.get(anim).frames,null,animations.get(anim).centerX,animations.get(anim).centerY);
     }
 
     @Override

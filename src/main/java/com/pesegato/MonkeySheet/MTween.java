@@ -16,7 +16,8 @@ public class MTween {
     MSFrame[] anim;
     MSContainer msCont;
     int[] hitbox;
-    public MTween(MSContainer msCont, String name, int[] pos, int[] hitbox, int size){
+    int centerX, centerY;
+    public MTween(MSContainer msCont, String name, int[] pos, int[] hitbox, int size, int centerX, int centerY){
         this.msCont=msCont;
         anim=new MSFrame[pos.length];
         int lastPos=0;
@@ -25,6 +26,8 @@ public class MTween {
             anim[i]=new MSFrame(lastPos%(size*size), lastPos/(size*size));
         }
         this.hitbox=hitbox;
+        this.centerX=centerX;
+        this.centerY=centerY;
     }
     public void setTextures(Texture[] sheetsX){
         for (MSFrame frame : anim) {
