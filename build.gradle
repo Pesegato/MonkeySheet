@@ -1,8 +1,18 @@
-
-apply plugin: "java"
-apply plugin: "maven"
+plugins {
+	id "java"
+	id "maven"
 //  id "eclipse"
 //  id "idea"
+	id 'pl.allegro.tech.build.axion-release' version '1.4.0'
+}
+
+scmVersion {
+	tag {
+		prefix = 'MonkeySheet'
+	}
+}
+
+project.version = scmVersion.version
 
 ext {
 	jvm = org.gradle.internal.jvm.Jvm.current()
@@ -11,7 +21,6 @@ ext {
 }
 
 //name = the directory name
-version = "0.1.0"
 group = "com.pesegato"
 
 repositories {
