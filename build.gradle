@@ -1,9 +1,9 @@
-plugins {
-  id "java"
-	id "maven"
+def DEV_MODE=false
+
+apply plugin: "java"
+apply plugin: "maven"
 //  id "eclipse"
 //  id "idea"
-}
 
 //name = the directory name
 version = "0.1.0"
@@ -17,13 +17,17 @@ repositories {
 
 
 def jme3 = ["v" : '[3.1,)', "g": "org.jmonkeyengine"]
+def pesegatoloader="com.github.Pesegato"
+if (DEV_MODE){
+	pesegatoloader="com.pesegato"
+}
 
 dependencies {
   // jme
   compile "${jme3.g}:jme3-core:${jme3.v}"
 	compile 'org.slf4j:slf4j-api:1.7.13'
 	compile 'com.google.guava:guava:19.0'
-	compile 'com.github.Pesegato:GoldMonkey:-SNAPSHOT'
+	compile "${pesegatoloader}:GoldMonkey:latest.integration"
 	runtime 'ch.qos.logback:logback-classic:1.1.2'
 	runtime "${jme3.g}:jme3-desktop:${jme3.v}"
   runtime "${jme3.g}:jme3-lwjgl:${jme3.v}"
