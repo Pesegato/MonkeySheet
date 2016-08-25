@@ -1,9 +1,14 @@
-def DEV_MODE=false
 
 apply plugin: "java"
 apply plugin: "maven"
 //  id "eclipse"
 //  id "idea"
+
+ext {
+	jvm = org.gradle.internal.jvm.Jvm.current()
+	javaVersion = JavaVersion.current()
+	isCiServer = System.getenv("TRAVIS")
+}
 
 //name = the directory name
 version = "0.1.0"
@@ -17,11 +22,11 @@ repositories {
 
 
 def jme3 = ["v" : '[3.1,)', "g": "org.jmonkeyengine"]
-def pesegatoloader="com.github.Pesegato"
-def pesegatoversion="-SNAPSHOT"
-if (DEV_MODE){
-	pesegatoloader="com.pesegato"
-	pesegatoversion="latest.integration"
+def pesegatoloader="com.pesegato"
+def pesegatoversion="latest.integration"
+if (isCiServer){
+	pesegatoloader="com.github.Pesegato"
+	pesegatoversion="-SNAPSHOT"
 }
 
 dependencies {
