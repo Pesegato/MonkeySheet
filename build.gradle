@@ -13,11 +13,14 @@ scmVersion {
 }
 
 project.version = scmVersion.version
+def fullversion = "git describe --always --dirty".execute().text.trim()
+println("version : '${project.version}/${fullversion}'")
 
 ext {
 	jvm = org.gradle.internal.jvm.Jvm.current()
 	javaVersion = JavaVersion.current()
 	isCiServer = System.getenv("TRAVIS")
+	isWindows = org.gradle.internal.os.OperatingSystem.current().windows
 }
 
 //name = the directory name
@@ -61,6 +64,23 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 compileJava.doLast {
 	def buildDate = new Date().format('yyyy-MM-dd HHmm')
-	println "Writing monkeysheet.build.date: " + buildDate
-	new File(destinationDir, 'monkeysheet.build.date').text = buildDate
+	println "Writing ${scmVersion.tag.prefix}.build.date: " + buildDate
+	new File(destinationDir, "${scmVersion.tag.prefix}.build.date").text = buildDate
+	new File(destinationDir, "${scmVersion.tag.prefix}.build.version").text = "${fullversion}"
+}
+
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+artifacts {
+	archives sourcesJar
+	archives javadocJar
 }
