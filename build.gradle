@@ -19,7 +19,7 @@ println("version : '${project.version}/${fullversion}'")
 ext {
 	jvm = org.gradle.internal.jvm.Jvm.current()
 	javaVersion = JavaVersion.current()
-	isCiServer = System.getenv("TRAVIS")
+	isCiServer = System.getenv("TRAVIS") || System.getenv().containsKey("TEAMCITY_VERSION")
 	isWindows = org.gradle.internal.os.OperatingSystem.current().windows
 }
 
