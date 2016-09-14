@@ -34,11 +34,10 @@ repositories {
 
 
 def jme3 = ["v" : '[3.1,)', "g": "org.jmonkeyengine"]
-def pesegatoloader="com.pesegato"
-def pesegatoversion="latest.integration"
+def pesegato = ["g" :"com.pesegato" ,"v":"latest.integration"]
 if (isCiServer){
-	pesegatoloader="com.github.Pesegato"
-	pesegatoversion="-SNAPSHOT"
+	pesegato.g="com.github.Pesegato"
+	pesegato.v="-SNAPSHOT"
 }
 
 dependencies {
@@ -46,7 +45,7 @@ dependencies {
   compile "${jme3.g}:jme3-core:${jme3.v}"
 	compile 'org.slf4j:slf4j-api:1.7.13'
 	compile 'com.google.guava:guava:19.0'
-	compile "${pesegatoloader}:GoldMonkey:${pesegatoversion}"
+	compile "${pesegato.g}:GoldMonkey:${pesegato.v}"
 	runtime 'ch.qos.logback:logback-classic:1.1.2'
 	runtime "${jme3.g}:jme3-desktop:${jme3.v}"
   runtime "${jme3.g}:jme3-lwjgl:${jme3.v}"
