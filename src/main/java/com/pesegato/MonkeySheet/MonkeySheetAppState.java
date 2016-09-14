@@ -111,11 +111,14 @@ public class MonkeySheetAppState extends BaseAppState {
     protected void onDisable() {
     }
 
+    private static final String LIBNAME="MonkeySheet";
+
     protected void logBuildInfo() {
         try {
-            java.net.URL u = Resources.getResource("monkeysheet.build.date");
+            java.net.URL u = Resources.getResource(LIBNAME+".build.date");
             String build = Resources.toString(u, Charsets.UTF_8);
             log.info("MonkeySheet build date: " + build);
+            log.info("MonkeySheet build version: " + Resources.toString(Resources.getResource(LIBNAME+".build.version"), Charsets.UTF_8));
         } catch( java.io.IOException e ) {
             log.error( "Error reading build info", e );
         }
