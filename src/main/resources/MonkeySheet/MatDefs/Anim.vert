@@ -12,11 +12,11 @@ varying float vertSheetPos;
 
 void main(){
 
-    #ifdef HAS_VERTEXSHEETPOS
-        m_Position = vertSheetPos;
-    #endif
     float t = m_Position;
-    float tPointerY = 1.0 - ((floor(m_Position / m_SizeX)) / m_SizeY) - 1.0 / m_SizeY;
+    #ifdef HAS_VERTEXSHEETPOS
+        t = vertSheetPos;
+    #endif
+    float tPointerY = 1.0 - ((floor(t / m_SizeX)) / m_SizeY) - 1.0 / m_SizeY;
     float tPointerYOffset = (floor(t / m_SizeX)) / m_SizeY;
     float tPointerX = (t - (tPointerYOffset * m_SizeX * m_SizeY)) / m_SizeX;
     if (m_FlipHorizontal == 1.0 ) {

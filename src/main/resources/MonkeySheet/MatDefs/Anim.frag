@@ -8,7 +8,7 @@ uniform float m_FogIntensity;
 vec4 color;
 varying vec2 texCoord;
 
-void main(){  
+void main(){
 
 color = texture2D(m_ColorMap, texCoord);
 /*    color.a = color.r * 0.7f;
