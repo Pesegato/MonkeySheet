@@ -48,7 +48,7 @@ public class SpriteQuad {
         */
     }
     private void updateBuffer(){
-        vertexBuffer.position(bufPosition * 4);
+        vertexBuffer.position(bufPosition * 12);
         vertices[0]=x * 4;
         vertices[1]=y * 4;
         vertices[2]=0;
