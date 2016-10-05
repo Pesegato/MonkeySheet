@@ -8,9 +8,13 @@ attribute vec3 inPosition;
 attribute vec2 inTexCoord;
 
 varying vec2 texCoord;
+varying float vertSheetPos;
 
 void main(){
 
+    #ifdef HAS_VERTEXSHEETPOS
+        m_Position = vertSheetPos;
+    #endif
     float t = m_Position;
     float tPointerY = 1.0 - ((floor(m_Position / m_SizeX)) / m_SizeY) - 1.0 / m_SizeY;
     float tPointerYOffset = (floor(t / m_SizeX)) / m_SizeY;

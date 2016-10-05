@@ -11,6 +11,7 @@ MaterialDef Anim {
         Float AlphaValue
         Color FogColor
         Float FogIntensity
+        Boolean VertexSheetPos (UseVertexSheetPos)
     }
 
     Technique {
@@ -23,6 +24,7 @@ MaterialDef Anim {
 
         Defines {
             HAS_GLOWCOLOR : GlowColor
+            HAS_VERTEXSHEETPOS : VertexSheetPos
         }
     }
     Technique Glow {
