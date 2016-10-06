@@ -22,6 +22,10 @@ public class SpriteQuad {
         this.vertexBuffer=vertexBuffer;
         this.vertices=new float[12];
         this.texCoord=texCoord;
+        texCoord[0 + bufPosition * 4] = new Vector2f(0, 0);
+        texCoord[1 + bufPosition * 4] = new Vector2f(1 + x * 4, 0);
+        texCoord[2 + bufPosition * 4] = new Vector2f(0, 1 + x * 4);
+        texCoord[3 + bufPosition * 4] = new Vector2f(1 + x * 4, 1 + y * 4);
         indexes[6 * bufPosition] = 2 + 4 * bufPosition;
         indexes[1 + 6 * bufPosition] = 0 + 4 * bufPosition;
         indexes[2 + 6 * bufPosition] = 1 + 4 * bufPosition;
