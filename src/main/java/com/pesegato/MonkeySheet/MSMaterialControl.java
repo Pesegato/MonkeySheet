@@ -56,6 +56,10 @@ public class MSMaterialControl extends AbstractControl {
             material.setFloat("FogIntensity", 0.0f);
     }
 
+    public void setVertexSheetPos(boolean b){
+        material.setBoolean("VertexSheetPos", b);
+    }
+
     @Override
     protected void controlUpdate(float tpf) {
         if (MonkeySheetAppState.tTPF == 0) {
