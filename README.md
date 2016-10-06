@@ -2,3 +2,4 @@
 Spritesheet library for jMonkeyEngine
 
 How to use: https://www.gitbook.com/book/pesegato/monkeysheet-workflow/details
+Example: https://github.com/Pesegato/MonkeySheetSampleApp
