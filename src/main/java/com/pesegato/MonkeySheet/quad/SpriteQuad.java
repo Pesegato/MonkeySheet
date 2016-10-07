@@ -35,7 +35,7 @@ public class SpriteQuad {
     }
 
     public void setSFrame(int newPos) {
-        msPosBuffer.position(bufPosition);
+        msPosBuffer.position(bufPosition * 4);
         msPos[0] = newPos;
         msPos[1] = newPos;
         msPos[2] = newPos;
