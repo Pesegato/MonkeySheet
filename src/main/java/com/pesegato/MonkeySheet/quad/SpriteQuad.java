@@ -12,15 +12,17 @@ public class SpriteQuad {
     int bufPosition;
     float x,y;
 
-    FloatBuffer vertexBuffer;
-    float[] vertices;
+    FloatBuffer vertexBuffer, msPosBuffer;
+    float[] vertices,msPos;
     Vector2f[] texCoord;
     int[] indexes;
 
-    public SpriteQuad(int bufPosition, FloatBuffer vertexBuffer, Vector3f[] vertices, Vector2f[] texCoord, int[] indexes){
+    public SpriteQuad(int bufPosition, FloatBuffer vertexBuffer, Vector2f[] texCoord, int[] indexes, FloatBuffer msPosBuffer, float[] msPos){
         this.bufPosition=bufPosition;
         this.vertexBuffer=vertexBuffer;
+        this.msPosBuffer=msPosBuffer;
         this.vertices=new float[12];
+        //this.msPos=msPos;
         this.texCoord=texCoord;
         texCoord[0 + bufPosition * 4] = new Vector2f(0, 0);
         texCoord[1 + bufPosition * 4] = new Vector2f(1 + x * 4, 0);
@@ -32,6 +34,11 @@ public class SpriteQuad {
         indexes[3 + 6 * bufPosition] = 1 + 4 * bufPosition;
         indexes[4 + 6 * bufPosition] = 3 + 4 * bufPosition;
         indexes[5 + 6 * bufPosition] = 2 + 4 * bufPosition;
+    }
+
+    public void updateAnim(int newPos){
+        msPosBuffer.position(bufPosition);
+        msPosBuffer.put(newPos);
     }
 
     public void move(float x, float y){

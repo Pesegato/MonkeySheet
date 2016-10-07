@@ -23,6 +23,7 @@ MaterialDef Anim {
         }
 
         Defines {
+            NEED_TEXCOORD2
             HAS_GLOWCOLOR : GlowColor
             HAS_VERTEXSHEETPOS : VertexSheetPos
         }
