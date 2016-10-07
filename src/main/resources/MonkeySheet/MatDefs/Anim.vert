@@ -6,15 +6,15 @@ uniform float m_FlipHorizontal;
 
 attribute vec3 inPosition;
 attribute vec2 inTexCoord;
+attribute float inTexCoord2;
 
 varying vec2 texCoord;
-varying float texCoord2;
 
 void main(){
 
     float t = m_Position;
     #ifdef HAS_VERTEXSHEETPOS
-        t = texCoord2;
+        t = inTexCoord2;
     #endif
     float tPointerY = 1.0 - ((floor(t / m_SizeX)) / m_SizeY) - 1.0 / m_SizeY;
     float tPointerYOffset = (floor(t / m_SizeX)) / m_SizeY;
