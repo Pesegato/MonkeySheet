@@ -1,4 +1,4 @@
-package com.pesegato.MonkeySheet.quad;
+package com.pesegato.MonkeySheet.batch;
 
 import com.jme3.math.Vector2f;
 
