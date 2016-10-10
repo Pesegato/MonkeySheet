@@ -6,7 +6,7 @@ import java.nio.FloatBuffer;
 
 public class SpriteQuad {
 
-    public static final int QUAD_SIZE = 3;
+    public static final int QUAD_SIZE = 4;
 
     int bufPosition;
     float x, y;
