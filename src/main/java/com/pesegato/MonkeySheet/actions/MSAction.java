@@ -5,6 +5,8 @@
  */
 package com.pesegato.MonkeySheet.actions;
 
+import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
@@ -20,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public abstract class MSAction {
 
      static Logger log = LoggerFactory.getLogger(MSAction.class);
- 
+
     protected float msTimer;
     protected MSControl msc;
     protected Spatial spatial;
@@ -30,11 +32,33 @@ public abstract class MSAction {
         return new Geometry(name, new Quad(SPRITE_SIZE * scaleX, SPRITE_SIZE * scaleY));
     }
 
+
+
+    /**
+     * This method moves the spatial by x * SPRITE_SIZE and y * SPRITE_SIZE
+     *
+     * @param x movement on the X
+     * @param y movement on the Y
+     */
+
     protected void move(float x, float y) {
         spatial.move(SPRITE_SIZE * x, SPRITE_SIZE * y, 0);
     }
-    
-    protected void moveFix(float x, float y, float finalX, float finalY){
+
+    /**
+     * This method moves the spatial toward absolute target position finalX, finalY
+     * with speed factors x,y.
+     * For each axis, if speed is positive but target is behind then no movement is performed
+     * For each axis, if speed is negative but target is in front then no movement is performed
+     *
+     * @param x speed on the X
+     * @param y speed on the Y
+     * @param finalX target x coordinate
+     * @param finalY target y coordinate
+     * @return true if arrived at target position
+     */
+
+    protected boolean moveFix(float x, float y, float finalX, float finalY){
         finalX=finalX*SPRITE_SIZE;
         finalY=finalY*SPRITE_SIZE;
         float currentX=spatial.getLocalTranslation().x;
@@ -54,16 +78,32 @@ public abstract class MSAction {
             nextY=Math.max(nextY, finalY);
         }
         spatial.setLocalTranslation(nextX,nextY,0);
+        return (nextX==finalX)&&(nextY==finalY);
     }
+
+    /**
+     * This method tests if the spatial has reached the finalX position
+     * @param finalX x coordinate
+     * @return true if current position matches finalX
+     */
 
     protected boolean hasMovedFixX(float finalX){
         return (spatial.getLocalTranslation().x==finalX*SPRITE_SIZE);
     }
-    
+
+    /**
+     * This method tests if the spatial has reached the finalY position
+     * @param finalY x coordinate
+     * @return true if current position matches finalY
+     */
     protected boolean hasMovedFixY(float finalY){
         return (spatial.getLocalTranslation().y==finalY*SPRITE_SIZE);
     }
-    
+
+    protected Vector2f getUVector(Vector3f v, float x2, float y2){
+        return new Vector2f((x2 * SPRITE_SIZE)-v.x, (y2 * SPRITE_SIZE)-v.y).normalizeLocal();
+    }
+
     protected void init(Spatial spatial) {
         msTimer = 0;
         hasEnded = false;
@@ -93,7 +133,7 @@ public abstract class MSAction {
         hasEnded = true;
         maybeEnd();
     }
-    
+
     final public boolean maybeEnd() {
         boolean ended=hasEnded();
         log.trace("{} maybe end {} {}",msc, this, ended);
@@ -105,7 +145,7 @@ public abstract class MSAction {
 
     public void init() {
     }
-    
+
     public void finish() {
     }
 
