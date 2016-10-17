@@ -82,6 +82,58 @@ public abstract class MSAction {
     }
 
     /**
+     * This method moves the spatial toward absolute target position finalX
+     * with speed factors x.
+     * If speed is positive but target is behind then no movement is performed
+     * If speed is negative but target is in front then no movement is performed
+     *
+     * @param x speed on the X
+     * @param finalX target x coordinate
+     * @return true if arrived at target position
+     */
+
+    protected boolean moveFixX(float x, float finalX){
+        finalX=finalX*SPRITE_SIZE;
+        float currentX=spatial.getLocalTranslation().x;
+        float currentY=spatial.getLocalTranslation().y;
+        float nextX=SPRITE_SIZE * x + currentX;
+        if (x>0){
+            nextX=Math.min(nextX, finalX);
+        }
+        else {
+            nextX=Math.max(nextX, finalX);
+        }
+        spatial.setLocalTranslation(nextX,currentY,0);
+        return nextX==finalX;
+    }
+
+    /**
+     * This method moves the spatial toward absolute target position finalY
+     * with speed factors y.
+     * If speed is positive but target is behind then no movement is performed
+     * If speed is negative but target is in front then no movement is performed
+     *
+     * @param y speed on the Y
+     * @param finalY target y coordinate
+     * @return true if arrived at target position
+     */
+
+    protected boolean moveFixY(float y, float finalY){
+        finalY=finalY*SPRITE_SIZE;
+        float currentX=spatial.getLocalTranslation().x;
+        float currentY=spatial.getLocalTranslation().y;
+        float nextY=SPRITE_SIZE * y + currentY;
+        if (y>0){
+            nextY=Math.min(nextY, finalY);
+        }
+        else {
+            nextY=Math.max(nextY, finalY);
+        }
+        spatial.setLocalTranslation(currentX,nextY,0);
+        return nextY==finalY;
+    }
+
+    /**
      * This method tests if the spatial has reached the finalX position
      * @param finalX x coordinate
      * @return true if current position matches finalX
