@@ -19,7 +19,7 @@ println("version : '${project.version}/${fullversion}'")
 ext {
 	jvm = org.gradle.internal.jvm.Jvm.current()
 	javaVersion = JavaVersion.current()
-	isCiServer = System.getenv("TRAVIS") || System.getenv().containsKey("TEAMCITY_VERSION") || hasProperty('CI') || System.getenv("JITPACK") 
+	isCiServer = System.getenv("TRAVIS") || System.getenv().containsKey("TEAMCITY_VERSION") || hasProperty('CI') || System.getenv("JITPACK")
 	isWindows = org.gradle.internal.os.OperatingSystem.current().windows
 }
 
@@ -43,6 +43,7 @@ if (isCiServer){
 dependencies {
   // jme
   compile "${jme3.g}:jme3-core:${jme3.v}"
+	compile 'org.dyn4j:dyn4j:[3.2,)'
 	compile 'org.slf4j:slf4j-api:1.7.13'
 	compile 'com.google.guava:guava:19.0'
 	compile "${pesegato.g}:GoldMonkey:${pesegato.v}"
