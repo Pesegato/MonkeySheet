@@ -34,6 +34,7 @@ public class MSGlobals {
 
     public static int MS_WIDTH;
     public static int MS_HEIGHT;
+    public static boolean SHOW_HITBOX=true;
 
     public static void setResolution(String res) {
         switch (res) {
