@@ -1,0 +1,53 @@
+package com.pesegato.collision;
+
+import com.jme3.app.Application;
+import com.jme3.app.state.BaseAppState;
+import org.dyn4j.dynamics.Body;
+
+import java.util.HashMap;
+
+public class Dyn4jMEAppState extends BaseAppState {
+
+    D4JSpace spaces[];
+    public static HashMap<Body, Long> map=new HashMap<>();
+
+    public D4JSpace getPhysicsSpace(int index) {
+        return spaces[index];
+    }
+
+    @Override
+    protected void initialize(Application app) {
+        spaces = new D4JSpace[]{new D4JSpace(), new D4JSpace()};
+    }
+
+    @Override
+    public void update(float tpf) {
+        updatePhysics(tpf);
+        updateDraw(tpf);
+    }
+
+    public void updateDraw(float tpf) {
+        for (D4JSpace space : spaces)
+            space.updateDraw(tpf);
+    }
+
+    public void updatePhysics(float tpf) {
+        for (D4JSpace space : spaces)
+            space.updatePhysics(tpf);
+    }
+
+    @Override
+    protected void cleanup(Application app) {
+
+    }
+
+    @Override
+    protected void onEnable() {
+
+    }
+
+    @Override
+    protected void onDisable() {
+
+    }
+}
