@@ -6,17 +6,14 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.pesegato.collision.hitbox.HBRect;
+import org.dyn4j.collision.broadphase.BroadphaseDetector;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.dynamics.World;
-import org.dyn4j.dynamics.contact.ContactPoint;
 import org.dyn4j.geometry.Convex;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Transform;
 import org.dyn4j.geometry.Vector2;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Dyn4JShapeControl extends IDyn4JControl {
@@ -36,7 +33,7 @@ public class Dyn4JShapeControl extends IDyn4JControl {
         body.addFixture(fixture);
         body.setMass(massType);
         body.setAutoSleepingEnabled(true);
-        Dyn4jMEAppState.map.put(body,hbRect.id);
+        fixture.setUserData(hbRect.id);
     }
 
     Dyn4JShapeControl(Convex shape,
@@ -93,21 +90,6 @@ public class Dyn4JShapeControl extends IDyn4JControl {
     @Override
     protected void controlUpdate(float tpf) {
         //Dyn4JAppState handles everything
-        List<Body> contacts = body.getInContactBodies(false);
-        for (Body b : contacts) {
-            long key=Dyn4jMEAppState.map.get(b);
-            if (key>hbRect.id) { //I want to evaluate the collision only once
-                for (CollisionListener c : listeners) {
-                    c.listen(hbRect.id, key);
-                }
-            }
-        }
-    }
-
-    ArrayList<CollisionListener> listeners=new ArrayList<>();
-
-    public void addListener(CollisionListener cl){
-        listeners.add(cl);
     }
 
     @Override
@@ -124,7 +106,9 @@ public class Dyn4JShapeControl extends IDyn4JControl {
     private Transform lastTransform = new Transform();
 
     private final static Float negligibleAngleRotation = 0.001f;
-    void updatePhysics(float tpf){}
+    void updatePhysics(BroadphaseDetector bp, float tpf){
+        bp.update(body);
+    }
     void updateDraw(float tpf) {
         Vector2 vector2 = body.getTransform().getTranslation();
         this.spatial.setLocalTranslation(

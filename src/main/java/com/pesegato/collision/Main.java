@@ -50,8 +50,7 @@ public class Main extends SimpleApplication {
             boxRed.addControl(physics2);
             das.getPhysicsSpace(0).add(boxRed);
 
-            physics.addListener(new MyCollisionListener());
-            physics2.addListener(new MyCollisionListener());
+            das.getPhysicsSpace(0).addListener(new MyCollisionListener());
         }
 
         @Override
