@@ -71,6 +71,8 @@ public class Dyn4JShapeControl extends IDyn4JControl {
 
     @Override
     public void removeFromWorld() {
+        if (world==null)
+            return;
         this.world.removeBody(body);
         this.world=null;
     }

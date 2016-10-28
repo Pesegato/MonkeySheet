@@ -50,7 +50,7 @@ public class Main extends SimpleApplication {
             boxRed.addControl(physics2);
             das.getPhysicsSpace(0).add(boxRed);
 
-            das.getPhysicsSpace(0).addListener(new MyCollisionListener());
+            das.getPhysicsSpace(0).addListener(new MyCollisionListener(physics));
         }
 
         @Override
@@ -71,9 +71,14 @@ public class Main extends SimpleApplication {
 
     class MyCollisionListener implements CollisionListener{
 
+        Dyn4JShapeControl phy;
+        MyCollisionListener(Dyn4JShapeControl phy){
+            this.phy=phy;
+        }
         @Override
         public void listen(long collider, long collided) {
             System.out.println(collider+" collided with "+collided);
+            phy.removeFromWorld();
         }
     }
 
