@@ -36,6 +36,17 @@ public class Dyn4JShapeControl extends IDyn4JControl {
         fixture.setUserData(hbRect.id);
     }
 
+    public Dyn4JShapeControl(Body body,
+                             MassType massType,
+                             long id
+    ) {
+        this.body = body;
+        for (BodyFixture bf:body.getFixtures())
+            bf.setUserData(id);
+        body.setMass(massType);
+        body.setAutoSleepingEnabled(true);
+    }
+
     Dyn4JShapeControl(Convex shape,
                            MassType massType,
                            Double weight, //in kg/m
@@ -59,7 +70,7 @@ public class Dyn4JShapeControl extends IDyn4JControl {
     }
 
     @Override
-    void removeFromWorld(World world) {
+    public void removeFromWorld() {
         this.world.removeBody(body);
         this.world=null;
     }

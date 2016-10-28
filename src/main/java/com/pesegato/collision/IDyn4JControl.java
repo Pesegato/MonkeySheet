@@ -8,5 +8,5 @@ public abstract class IDyn4JControl extends AbstractControl{
     void updatePhysics(BroadphaseDetector bp, float tpf){}
     void updateDraw(float tpf){}
     void addToWorld(World world){}
-    void removeFromWorld(World world){}
+    void removeFromWorld(){}
 }

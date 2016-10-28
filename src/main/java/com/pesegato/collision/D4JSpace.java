@@ -58,7 +58,7 @@ public class D4JSpace {
         if (spatial == null || spatial.getControl(IDyn4JControl.class) == null) return;
         spatials.remove(spatials);
         IDyn4JControl ctl = spatial.getControl(IDyn4JControl.class);
-        ctl.removeFromWorld(world);
+        ctl.removeFromWorld();
     }
     public void updateDraw(float tpf) {
         synchronized(spatials) {
