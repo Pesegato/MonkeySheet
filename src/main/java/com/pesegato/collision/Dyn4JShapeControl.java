@@ -73,7 +73,19 @@ public class Dyn4JShapeControl extends IDyn4JControl {
     public void removeFromWorld() {
         if (world==null)
             return;
-        this.world.removeBody(body);
+        boolean removed=this.world.removeBody(body);
+        System.out.println("removed "+removed);
+
+        BroadphaseDetector bp = world.getBroadphaseDetector();
+        boolean stillThere = bp.contains(body);
+        for (BodyFixture fixture : body.getFixtures()) {
+            stillThere |= bp.contains(body, fixture);
+        }
+        if (stillThere) {
+            // I would need to see more code around the way the body is being removed
+            System.out.println("still there");
+        }
+
         this.world=null;
     }
 
