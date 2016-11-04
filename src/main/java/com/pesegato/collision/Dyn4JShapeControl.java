@@ -20,7 +20,8 @@ public class Dyn4JShapeControl extends IDyn4JControl {
     private Spatial spatial;
     protected Body body;
     BodyFixture fixture;
-    private World world;
+    //private World world;
+    BroadphaseDetector broadphase;
     HBRect hbRect;
 
     public Dyn4JShapeControl(Convex shape,
@@ -62,7 +63,23 @@ public class Dyn4JShapeControl extends IDyn4JControl {
         body.setMass(massType);
         body.setAutoSleepingEnabled(true);
     }
+    public void addToWorld(BroadphaseDetector broadphase) {
+        this.broadphase = broadphase;
+        broadphase.add(body);
+    }
 
+    public void removeFromWorld() {
+        this.broadphase.remove(body);
+        boolean stillThere = broadphase.contains(body);
+        for (BodyFixture fixture : body.getFixtures()) {
+            stillThere |= broadphase.contains(body, fixture);
+        }
+        if (stillThere) {
+            // I would need to see more code around the way the body is being removed
+            System.out.println("still there");
+        }
+    }
+    /*
     @Override
     void addToWorld(World world) {
         this.world = world;
@@ -88,7 +105,7 @@ public class Dyn4JShapeControl extends IDyn4JControl {
 
         this.world=null;
     }
-
+*/
     // more = more bouncy
     void setRestitution(Double restitution) {
         fixture.setRestitution(restitution);

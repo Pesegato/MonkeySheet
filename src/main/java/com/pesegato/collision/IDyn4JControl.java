@@ -7,6 +7,7 @@ import org.dyn4j.dynamics.World;
 public abstract class IDyn4JControl extends AbstractControl{
     void updatePhysics(BroadphaseDetector bp, float tpf){}
     void updateDraw(float tpf){}
-    void addToWorld(World world){}
+    //void addToWorld(World world){}
     void removeFromWorld(){}
+    void addToWorld(BroadphaseDetector broadphase){}
 }

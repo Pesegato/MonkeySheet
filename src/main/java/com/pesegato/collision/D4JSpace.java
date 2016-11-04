@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 public class D4JSpace {
-    private World world;
+    //private World world;
     private Set<Spatial> spatials = new HashSet<Spatial>();
 
     BroadphaseDetector<Body, BodyFixture> bp;
@@ -33,7 +33,7 @@ public class D4JSpace {
     }
 
     public D4JSpace(){
-        world=new World();
+     //   world=new World();
 
 // collision detection process:
 // Broadphase -> Narrowphase -> Manifold generation
@@ -50,7 +50,7 @@ public class D4JSpace {
         synchronized(spatials) {
             spatials.add(spatial);
             IDyn4JControl ctl = spatial.getControl(IDyn4JControl.class);
-            ctl.addToWorld(world);
+            ctl.addToWorld(bp);
         }
     }
 
@@ -80,7 +80,7 @@ public class D4JSpace {
                 ctl.updatePhysics(bp, tpf);
             }
         }
-        world.update(tpf, Integer.MAX_VALUE);
+        //world.update(tpf, Integer.MAX_VALUE);
         tTPF+=tpf;
         if (tTPF>1/60f) {
             tTPF=0;
