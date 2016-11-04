@@ -33,7 +33,7 @@ public class Dyn4JShapeControl extends IDyn4JControl {
         fixture = new BodyFixture(shape);
         body.addFixture(fixture);
         body.setMass(massType);
-        body.setAutoSleepingEnabled(true);
+        body.setAutoSleepingEnabled(false);
         fixture.setUserData(hbRect.id);
     }
 
@@ -149,7 +149,8 @@ public class Dyn4JShapeControl extends IDyn4JControl {
 
     private final static Float negligibleAngleRotation = 0.001f;
     void updatePhysics(BroadphaseDetector bp, float tpf){
-        bp.update(body);
+        if (bp.contains(body))
+            bp.update(body);
     }
     void updateDraw(float tpf) {
         Vector2 vector2 = body.getTransform().getTranslation();
