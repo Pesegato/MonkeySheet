@@ -113,6 +113,14 @@ public class D4JSpace {
             }
         }
     }
+
+    public boolean checkCollision(Body a, Body b){
+        return  bp.detect(a,b);
+        //if (bp.detect(a,b)){
+        //    return np.detect(body)
+        //}
+    }
+
     ArrayList<CollisionListener> listeners=new ArrayList<>();
 
     public void addListener(CollisionListener cl){
