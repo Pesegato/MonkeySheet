@@ -46,4 +46,24 @@ abstract public class MSBodyAction extends MSAction{
         return (nextX==finalX)&&(nextY==finalY);
     }
 
+    protected boolean moveFixY(float y, float finalY){
+        finalY=finalY*SPRITE_SIZE;
+        Transform t=body.getTransform();
+        float currentY= (float) t.getTranslationY();
+        float nextY=SPRITE_SIZE * y + currentY;
+        if (y>0){
+            nextY=Math.min(nextY, finalY);
+        }
+        else {
+            nextY=Math.max(nextY, finalY);
+        }
+        t.setTranslationY(nextY);
+        body.setTransform(t);
+        return nextY==finalY;
+    }
+
+    protected boolean hasMovedFixX(float finalX){
+        return (body.getTransform().getTranslationX()==finalX*SPRITE_SIZE);
+    }
+
 }
