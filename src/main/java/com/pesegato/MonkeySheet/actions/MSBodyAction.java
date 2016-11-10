@@ -11,6 +11,13 @@ abstract public class MSBodyAction extends MSAction{
         this.body=body;
     }
 
+    /**
+     * This method moves the body by x * SPRITE_SIZE and y * SPRITE_SIZE
+     *
+     * @param x movement on the X
+     * @param y movement on the Y
+     */
+
     @Override
     protected void move(float x, float y) {
         Transform t=body.getTransform();
@@ -18,6 +25,19 @@ abstract public class MSBodyAction extends MSAction{
         t.setTranslationY(t.getTranslationY()+(y * SPRITE_SIZE));
         body.setTransform(t);
     }
+
+    /**
+     * This method moves the body toward absolute target position finalX, finalY
+     * with speed factors x,y.
+     * For each axis, if speed is positive but target is behind then no movement is performed
+     * For each axis, if speed is negative but target is in front then no movement is performed
+     *
+     * @param x speed on the X
+     * @param y speed on the Y
+     * @param finalX target x coordinate
+     * @param finalY target y coordinate
+     * @return true if arrived at target position
+     */
 
     @Override
     protected boolean moveFix(float x, float y, float finalX, float finalY){
@@ -46,6 +66,43 @@ abstract public class MSBodyAction extends MSAction{
         return (nextX==finalX)&&(nextY==finalY);
     }
 
+    /**
+     * This method moves the body toward absolute target position finalX
+     * with speed factors x.
+     * If speed is positive but target is behind then no movement is performed
+     * If speed is negative but target is in front then no movement is performed
+     *
+     * @param x speed on the X
+     * @param finalX target x coordinate
+     * @return true if arrived at target position
+     */
+
+    protected boolean moveFixX(float x, float finalX){
+        finalX=finalX*SPRITE_SIZE;
+        Transform t=body.getTransform();
+        float currentX=spatial.getLocalTranslation().x;
+        float nextX=SPRITE_SIZE * x + currentX;
+        if (x>0){
+            nextX=Math.min(nextX, finalX);
+        }
+        else {
+            nextX=Math.max(nextX, finalX);
+        }
+        t.setTranslationX(nextX);
+        return nextX==finalX;
+    }
+
+    /**
+     * This method moves the body toward absolute target position finalY
+     * with speed factors y.
+     * If speed is positive but target is behind then no movement is performed
+     * If speed is negative but target is in front then no movement is performed
+     *
+     * @param y speed on the Y
+     * @param finalY target y coordinate
+     * @return true if arrived at target position
+     */
+
     protected boolean moveFixY(float y, float finalY){
         finalY=finalY*SPRITE_SIZE;
         Transform t=body.getTransform();
@@ -62,8 +119,24 @@ abstract public class MSBodyAction extends MSAction{
         return nextY==finalY;
     }
 
+    /**
+     * This method tests if the body has reached the finalX position
+     * @param finalX x coordinate
+     * @return true if current position matches finalX
+     */
+
     protected boolean hasMovedFixX(float finalX){
         return (body.getTransform().getTranslationX()==finalX*SPRITE_SIZE);
+    }
+
+    /**
+     * This method tests if the body has reached the finalY position
+     * @param finalY x coordinate
+     * @return true if current position matches finalY
+     */
+
+    protected boolean hasMovedFixY(float finalY){
+        return (body.getTransform().getTranslationY()==finalY*SPRITE_SIZE);
     }
 
 }
