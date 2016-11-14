@@ -5,13 +5,17 @@ import org.dyn4j.collision.broadphase.BroadphaseDetector;
 import org.dyn4j.collision.broadphase.BroadphasePair;
 import org.dyn4j.collision.broadphase.DynamicAABBTree;
 import org.dyn4j.collision.manifold.ClippingManifoldSolver;
+import org.dyn4j.collision.manifold.Manifold;
 import org.dyn4j.collision.manifold.ManifoldSolver;
 import org.dyn4j.collision.narrowphase.Gjk;
 import org.dyn4j.collision.narrowphase.NarrowphaseDetector;
+import org.dyn4j.collision.narrowphase.Penetration;
 import org.dyn4j.collision.narrowphase.Sat;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.dynamics.World;
+import org.dyn4j.geometry.Convex;
+import org.dyn4j.geometry.Transform;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -88,37 +92,67 @@ public class D4JSpace {
             // when ready to detect
             List<BroadphasePair<Body, BodyFixture>> pairs = bp.detect();
             for (BroadphasePair<Body, BodyFixture> pair : pairs) {
-                //Body body1 = pair.getCollidable1();
-                //Body body2 = pair.getCollidable2();
+                Body body1 = pair.getCollidable1();
+                Body body2 = pair.getCollidable2();
                 BodyFixture fixture1 = pair.getFixture1();
                 BodyFixture fixture2 = pair.getFixture2();
-                //Transform transform1 = body1.getTransform();
-                //Transform transform2 = body2.getTransform();
-                //Convex convex2 = fixture2.getShape();
-                //Convex convex1 = fixture1.getShape();
-                //System.out.println("Collision " + fixture1.getUserData() + " " + fixture2.getUserData());
-                for (CollisionListener listener:listeners){
-                    listener.listen((Long)fixture1.getUserData(), (Long)fixture2.getUserData());
-                }
-            /*
+                Transform transform1 = body1.getTransform();
+                Transform transform2 = body2.getTransform();
+                Convex convex2 = fixture2.getShape();
+                Convex convex1 = fixture1.getShape();
             Penetration p = new Penetration();
             if (np.detect(convex1, transform1, convex2, transform2, p)) {
-                npp.process(convex1, transform1, convex2, transform2, p);
-                Manifold m= new Manifold();
-                if (ms.getManifold(p, convex1, transform1, convex2, transform2, m)) {
-                    // you have a collision and a manifold to work with
+                    System.out.println("Collision " + fixture1.getUserData() + " " + fixture2.getUserData());
+                    for (CollisionListener listener:listeners){
+                        listener.listen((Long)fixture1.getUserData(), (Long)fixture2.getUserData());
+                    }
                 }
-            }
-            */
             }
         }
     }
 
-    public boolean checkCollision(Body a, Body b){
-        return  bp.detect(a,b);
-        //if (bp.detect(a,b)){
-        //    return np.detect(body)
-        //}
+    public boolean checkCollisionNP(Body a, Body b) {
+        for (BodyFixture bf1 : a.getFixtures()) {
+            for (BodyFixture bf2 : b.getFixtures()) {
+                if (np.detect(bf1.getShape(), a.getTransform(), bf2.getShape(), b.getTransform())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+        /*
+
+        Alternative solution, but this require the use of World class
+
+    public boolean checkCollisionAll(Body a, Body b){
+        return a.isInContact(b);
+        }
+        */
+
+        /*
+
+        Another alternative
+*/
+    public boolean checkCollisionAll(Body a, Body b){
+        for (BroadphasePair<Body, BodyFixture> pair : bp.detect()) {
+            if ((pair.getCollidable1()==a)&&(pair.getCollidable2()==b)||
+                    (pair.getCollidable1()==b)&&(pair.getCollidable2()==a)) {
+                Body body1 = pair.getCollidable1();
+                Body body2 = pair.getCollidable2();
+                BodyFixture fixture1 = pair.getFixture1();
+                BodyFixture fixture2 = pair.getFixture2();
+                Transform transform1 = body1.getTransform();
+                Transform transform2 = body2.getTransform();
+                Convex convex2 = fixture2.getShape();
+                Convex convex1 = fixture1.getShape();
+                Penetration p = new Penetration();
+                if (np.detect(convex1, transform1, convex2, transform2, p)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     ArrayList<CollisionListener> listeners=new ArrayList<>();
