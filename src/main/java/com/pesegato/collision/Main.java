@@ -79,6 +79,7 @@ public class Main extends SimpleApplication {
         public void listen(long collider, long collided) {
             System.out.println(collider+" collided with "+collided);
             D4JSpace space=das.getPhysicsSpace(0);
+            //phy.getSpatial().removeFromParent();
             phy.removeFromWorld();
         }
     }

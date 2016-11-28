@@ -102,7 +102,7 @@ public class D4JSpace {
                 Convex convex1 = fixture1.getShape();
             Penetration p = new Penetration();
             if (np.detect(convex1, transform1, convex2, transform2, p)) {
-                    System.out.println("Collision " + fixture1.getUserData() + " " + fixture2.getUserData());
+                    //System.out.println("Collision " + fixture1.getUserData() + " " + fixture2.getUserData());
                     for (CollisionListener listener:listeners){
                         listener.listen((Long)fixture1.getUserData(), (Long)fixture2.getUserData());
                     }
