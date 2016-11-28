@@ -17,7 +17,6 @@ import org.dyn4j.geometry.Vector2;
 
 
 public class Dyn4JShapeControl extends IDyn4JControl {
-    private Spatial spatial;
     protected Body body;
     BodyFixture fixture;
     //private World world;
