@@ -4,7 +4,7 @@ import com.jme3.math.Vector2f;
 
 import java.nio.FloatBuffer;
 
-public class SpriteQuad {
+public class BGeometry {
 
     public static final int QUAD_SIZE = 4;
 
@@ -15,7 +15,7 @@ public class SpriteQuad {
     float[] vertices, msPos;
     Vector2f[] texCoord;
 
-    public SpriteQuad(int bufPosition, FloatBuffer vertexBuffer, Vector2f[] texCoord, int[] indexes, FloatBuffer msPosBuffer) {
+    public BGeometry(int bufPosition, FloatBuffer vertexBuffer, Vector2f[] texCoord, int[] indexes, FloatBuffer msPosBuffer) {
         this.bufPosition = bufPosition;
         this.vertexBuffer = vertexBuffer;
         this.msPosBuffer = msPosBuffer;

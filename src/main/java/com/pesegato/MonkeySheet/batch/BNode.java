@@ -11,17 +11,21 @@ import java.nio.FloatBuffer;
 
 import static com.jme3.scene.VertexBuffer.Type.*;
 
-public class MSBatcher {
+public class BNode {
 
     Mesh mesh;
     FloatBuffer posBuffer, msPosBuffer;
     Vector2f[] texCoord;
-    SpriteQuad[] quads;
+    BGeometry[] quads;
     int[] indexes;
 
-    public MSBatcher(int size){
+    int slotFreeIdx=0;
+    boolean slotBusy[];
+
+    public BNode(int size){
         mesh = new Mesh();
-        quads = new SpriteQuad[size];
+        quads = new BGeometry[size];
+        slotBusy = new boolean[size];
         texCoord = new Vector2f[4 * size];
         indexes = new int[6 * size];
 
@@ -31,8 +35,20 @@ public class MSBatcher {
         msPosBuffer = (FloatBuffer) mesh.getBuffer(TexCoord2).getData();
     }
 
+    public int addQuad(float x, float y){
+        if (slotBusy.length<=slotFreeIdx){
+            System.err.println("No more free slot available for BGeometries on "+this+"!");
+            System.exit(-1);
+        }
+        slotBusy[slotFreeIdx]=true;
+        quads[slotFreeIdx] = new BGeometry(slotFreeIdx, posBuffer, texCoord, indexes, msPosBuffer);
+        quads[slotFreeIdx].setPosition(x, y);
+        slotFreeIdx++;
+        return slotFreeIdx-1;
+    }
+
     public void addQuad(int i, int x, int y){
-        quads[i] = new SpriteQuad(i, posBuffer, texCoord, indexes, msPosBuffer);
+        quads[i] = new BGeometry(i, posBuffer, texCoord, indexes, msPosBuffer);
         quads[i].setPosition(x, y);
     }
 
@@ -43,7 +59,7 @@ public class MSBatcher {
         return new Geometry("batchedSpatial", mesh);
     }
 
-    public SpriteQuad[] getQuads(){
+    public BGeometry[] getQuads(){
         return quads;
     }
 
