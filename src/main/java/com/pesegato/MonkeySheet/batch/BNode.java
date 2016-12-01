@@ -5,17 +5,20 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import static com.jme3.scene.VertexBuffer.Type.*;
 
 public class BNode {
 
     Mesh mesh;
-    FloatBuffer posBuffer, msPosBuffer;
-    Vector2f[] texCoord;
+    FloatBuffer posData, texData, msPosData;
+    VertexBuffer posBuffer, texBuffer, msPosBuffer, idxBuffer;
+    IntBuffer idxData;
     BGeometry[] quads;
     int[] indexes;
 
@@ -26,13 +29,20 @@ public class BNode {
         mesh = new Mesh();
         quads = new BGeometry[size];
         slotBusy = new boolean[size];
-        texCoord = new Vector2f[4 * size];
         indexes = new int[6 * size];
 
-        mesh.setBuffer(Position, 3, BufferUtils.createFloatBuffer(new Vector3f[4 * size]));
-        mesh.setBuffer(TexCoord2, 1, BufferUtils.createFloatBuffer(new float[4 * size]));
-        posBuffer = (FloatBuffer) mesh.getBuffer(Position).getData();
-        msPosBuffer = (FloatBuffer) mesh.getBuffer(TexCoord2).getData();
+        posData = BufferUtils.createFloatBuffer(new Vector3f[4 * size]);
+        msPosData = BufferUtils.createFloatBuffer(new float[4 * size]);
+        texData = BufferUtils.createFloatBuffer(new Vector2f[4 * size]);
+        idxData = BufferUtils.createIntBuffer(indexes);
+        mesh.setBuffer(Position, 3, posData);
+        mesh.setBuffer(TexCoord, 2, texData);
+        mesh.setBuffer(TexCoord2, 1, msPosData);
+        mesh.setBuffer(Index, 3, idxData);
+        posBuffer=mesh.getBuffer(Position);
+        texBuffer=mesh.getBuffer(TexCoord);
+        msPosBuffer=mesh.getBuffer(TexCoord2);
+        idxBuffer=mesh.getBuffer(Index);
     }
 
     public int addQuad(float x, float y){
@@ -41,20 +51,26 @@ public class BNode {
             System.exit(-1);
         }
         slotBusy[slotFreeIdx]=true;
-        quads[slotFreeIdx] = new BGeometry(slotFreeIdx, posBuffer, texCoord, indexes, msPosBuffer);
+        quads[slotFreeIdx] = new BGeometry(slotFreeIdx, posData, texData, idxData, msPosData);
         quads[slotFreeIdx].setPosition(x, y);
+        texBuffer.updateData(texData);
+        posBuffer.updateData(posData);
+        posBuffer.updateData(posData);
+        idxBuffer.updateData(idxData);
         slotFreeIdx++;
         return slotFreeIdx-1;
     }
 
     public void addQuad(int i, int x, int y){
-        quads[i] = new BGeometry(i, posBuffer, texCoord, indexes, msPosBuffer);
+        quads[i] = new BGeometry(i, posData, texData, idxData, msPosData);
         quads[i].setPosition(x, y);
+        texBuffer.updateData(texData);
+        posBuffer.updateData(posData);
+        idxBuffer.updateData(idxData);
     }
 
     public Geometry makeGeo(){
-        mesh.setBuffer(TexCoord, 2, BufferUtils.createFloatBuffer(texCoord));
-        mesh.setBuffer(Index, 3, BufferUtils.createIntBuffer(indexes));
+        idxBuffer.updateData(idxData);
         mesh.updateBound();
         return new Geometry("batchedSpatial", mesh);
     }
@@ -64,6 +80,6 @@ public class BNode {
     }
 
     public void updateAnim(){
-        mesh.setBuffer(TexCoord2, 1, msPosBuffer);
+        mesh.setBuffer(TexCoord2, 1, msPosData);
     }
 }
