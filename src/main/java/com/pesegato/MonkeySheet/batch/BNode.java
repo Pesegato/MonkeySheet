@@ -69,6 +69,14 @@ public class BNode {
         idxBuffer.updateData(idxData);
     }
 
+    public void updateData(){
+        texBuffer.updateData(texData);
+        posBuffer.updateData(posData);
+        posBuffer.updateData(posData);
+        idxBuffer.updateData(idxData);
+        msPosBuffer.updateData(msPosData);
+    }
+
     public Geometry makeGeo(){
         idxBuffer.updateData(idxData);
         mesh.updateBound();
@@ -79,7 +87,4 @@ public class BNode {
         return quads;
     }
 
-    public void updateAnim(){
-        mesh.setBuffer(TexCoord2, 1, msPosData);
-    }
 }
