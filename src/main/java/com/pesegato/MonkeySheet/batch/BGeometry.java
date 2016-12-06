@@ -5,7 +5,7 @@ import java.nio.IntBuffer;
 
 public class BGeometry {
 
-    public int QUAD_SIZE = 4;
+    public float QUAD_SIZE = 4;
 
     int bufPosition;
     float x, y;
@@ -49,7 +49,7 @@ public class BGeometry {
         msPosData.put(msPos, 0, 4);
     }
 
-    public void setQuadSize(int size){
+    public void setQuadSize(float size){
         QUAD_SIZE=size;
     }
 
