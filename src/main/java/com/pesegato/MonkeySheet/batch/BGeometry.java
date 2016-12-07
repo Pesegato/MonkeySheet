@@ -5,7 +5,7 @@ import java.nio.IntBuffer;
 
 public class BGeometry {
 
-    public float QUAD_SIZE = 4;
+    public float QUAD_SIZE = 1;
 
     int bufPosition;
     float x, y;
@@ -67,17 +67,17 @@ public class BGeometry {
 
     private void updateBuffer() {
         vertexData.position(bufPosition * 12);
-        vertices[0] = x * 4;
-        vertices[1] = y * 4;
+        vertices[0] = -QUAD_SIZE / 2 + x;
+        vertices[1] = -QUAD_SIZE / 2 + y;
         vertices[2] = 0;
-        vertices[3] = QUAD_SIZE + x * 4;
-        vertices[4] = y * 4;
+        vertices[3] = QUAD_SIZE / 2 + x;
+        vertices[4] = -QUAD_SIZE / 2 + y;
         vertices[5] = 0;
-        vertices[6] = x * 4;
-        vertices[7] = QUAD_SIZE + y * 4;
+        vertices[6] = -QUAD_SIZE / 2 + x;
+        vertices[7] = QUAD_SIZE / 2 + y;
         vertices[8] = 0;
-        vertices[9] = QUAD_SIZE + x * 4;
-        vertices[10] = QUAD_SIZE + y * 4;
+        vertices[9] = QUAD_SIZE / 2 + x;
+        vertices[10] = QUAD_SIZE / 2 + y;
         vertices[11] = 0;
         vertexData.put(vertices, 0, 12);
     }
