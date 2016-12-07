@@ -45,6 +45,15 @@ public class BNode {
         idxBuffer=mesh.getBuffer(Index);
     }
 
+    public void removeAll(){
+        posData.position(0);
+        for (int i=0;i<quads.length*6;i++){
+            idxData.put(0);
+        }
+        slotFreeIdx=0;
+        updateData();
+    }
+
     public int addQuad(float x, float y){
         if (slotBusy.length<=slotFreeIdx){
             System.err.println("No more free slot available for BGeometries on "+this+"!");
@@ -54,7 +63,6 @@ public class BNode {
         quads[slotFreeIdx] = new BGeometry(slotFreeIdx, posData, texData, idxData, msPosData);
         quads[slotFreeIdx].setPosition(x, y);
         texBuffer.updateData(texData);
-        posBuffer.updateData(posData);
         posBuffer.updateData(posData);
         idxBuffer.updateData(idxData);
         slotFreeIdx++;
@@ -71,7 +79,6 @@ public class BNode {
 
     public void updateData(){
         texBuffer.updateData(texData);
-        posBuffer.updateData(posData);
         posBuffer.updateData(posData);
         idxBuffer.updateData(idxData);
         msPosBuffer.updateData(msPosData);
