@@ -45,8 +45,18 @@ public class BNode {
         idxBuffer=mesh.getBuffer(Index);
     }
 
+    public void remove(int idx){
+        idxData.position(idx*6);
+        idxData.put(0);
+        idxData.put(0);
+        idxData.put(0);
+        idxData.put(0);
+        idxData.put(0);
+        idxData.put(0);
+    }
+
     public void removeAll(){
-        posData.position(0);
+        idxData.position(0);
         for (int i=0;i<quads.length*6;i++){
             idxData.put(0);
         }
