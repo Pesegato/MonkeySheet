@@ -7,8 +7,9 @@ uniform vec4 m_FogColor;
 uniform float m_FogIntensity;
 vec4 color;
 varying vec2 texCoord;
+varying float vAlpha;
 
-void main(){  
+void main(){
 
 color = texture2D(m_ColorMap, texCoord);
 /*    color.a = color.r * 0.7f;
@@ -25,5 +26,9 @@ color = texture2D(m_ColorMap, texCoord);
 //gl_FragColor.g = m_Pulse;
 //gl_FragColor.g = m_Pulse;
 //gl_FragColor =  m_GlowColor;
-gl_FragColor.a = color.a*m_AlphaValue;
+float t = m_AlphaValue;
+    #ifdef HAS_VERTEXSHEETPOS
+        t = vAlpha;
+    #endif
+gl_FragColor.a = color.a*t;
 }

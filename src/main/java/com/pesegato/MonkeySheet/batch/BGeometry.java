@@ -10,15 +10,17 @@ public class BGeometry {
     int bufPosition;
     float x, y;
 
-    FloatBuffer vertexData, msPosData;
-    float[] vertices, msPos;
+    FloatBuffer vertexData, msPosData, alphaData;
+    float[] vertices, msPos, alpha;
 
-    public BGeometry(int bufPosition, FloatBuffer vertexData, FloatBuffer texData, IntBuffer idxData, FloatBuffer msPosData) {
+    public BGeometry(int bufPosition, FloatBuffer vertexData, FloatBuffer texData, IntBuffer idxData, FloatBuffer msPosData, FloatBuffer alphaData) {
         this.bufPosition = bufPosition;
         this.vertexData = vertexData;
         this.msPosData = msPosData;
+        this.alphaData = alphaData;
         vertices = new float[12];
         msPos = new float[4];
+        alpha = new float[4];
         texData.position(bufPosition * 8);
         texData.put(0);
         texData.put(0);
@@ -29,7 +31,7 @@ public class BGeometry {
         texData.put(1);
         texData.put(1);
         idxData.position(6 * bufPosition);
-        int indexes[]=new int[6];
+        int indexes[] = new int[6];
         indexes[0] = 2 + 4 * bufPosition;
         indexes[1] = 0 + 4 * bufPosition;
         indexes[2] = 1 + 4 * bufPosition;
@@ -37,6 +39,11 @@ public class BGeometry {
         indexes[4] = 3 + 4 * bufPosition;
         indexes[5] = 2 + 4 * bufPosition;
         idxData.put(indexes, 0, 6);
+        alphaData.position(bufPosition * 4);
+        alphaData.put(1);
+        alphaData.put(1);
+        alphaData.put(1);
+        alphaData.put(1);
 
     }
 
@@ -49,8 +56,16 @@ public class BGeometry {
         msPosData.put(msPos, 0, 4);
     }
 
-    public void setQuadSize(float size){
-        QUAD_SIZE=size;
+    public void setAlpha(float a) {
+        alphaData.position(bufPosition * 4);
+        alphaData.put(a);
+        alphaData.put(a);
+        alphaData.put(a);
+        alphaData.put(a);
+    }
+
+    public void setQuadSize(float size) {
+        QUAD_SIZE = size;
     }
 
     public void move(float x, float y) {

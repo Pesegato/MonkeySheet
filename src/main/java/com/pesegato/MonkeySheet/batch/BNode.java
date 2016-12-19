@@ -16,8 +16,8 @@ import static com.jme3.scene.VertexBuffer.Type.*;
 public class BNode {
 
     Mesh mesh;
-    FloatBuffer posData, texData, msPosData;
-    VertexBuffer posBuffer, texBuffer, msPosBuffer, idxBuffer;
+    FloatBuffer posData, texData, msPosData, alphaData;
+    VertexBuffer posBuffer, texBuffer, msPosBuffer, alphaBuffer, idxBuffer;
     IntBuffer idxData;
     BGeometry[] quads;
     int[] indexes;
@@ -33,15 +33,18 @@ public class BNode {
 
         posData = BufferUtils.createFloatBuffer(new Vector3f[4 * size]);
         msPosData = BufferUtils.createFloatBuffer(new float[4 * size]);
+        alphaData = BufferUtils.createFloatBuffer(new float[4 * size]);
         texData = BufferUtils.createFloatBuffer(new Vector2f[4 * size]);
         idxData = BufferUtils.createIntBuffer(indexes);
         mesh.setBuffer(Position, 3, posData);
         mesh.setBuffer(TexCoord, 2, texData);
         mesh.setBuffer(TexCoord2, 1, msPosData);
+        mesh.setBuffer(TexCoord3, 1, alphaData);
         mesh.setBuffer(Index, 3, idxData);
         posBuffer=mesh.getBuffer(Position);
         texBuffer=mesh.getBuffer(TexCoord);
         msPosBuffer=mesh.getBuffer(TexCoord2);
+        alphaBuffer=mesh.getBuffer(TexCoord3);
         idxBuffer=mesh.getBuffer(Index);
     }
 
@@ -70,26 +73,29 @@ public class BNode {
             System.exit(-1);
         }
         slotBusy[slotFreeIdx]=true;
-        quads[slotFreeIdx] = new BGeometry(slotFreeIdx, posData, texData, idxData, msPosData);
+        quads[slotFreeIdx] = new BGeometry(slotFreeIdx, posData, texData, idxData, msPosData, alphaData);
         quads[slotFreeIdx].setPosition(x, y);
         texBuffer.updateData(texData);
         posBuffer.updateData(posData);
+        alphaBuffer.updateData(alphaData);
         idxBuffer.updateData(idxData);
         slotFreeIdx++;
         return slotFreeIdx-1;
     }
 
     public void addQuad(int i, int x, int y){
-        quads[i] = new BGeometry(i, posData, texData, idxData, msPosData);
+        quads[i] = new BGeometry(i, posData, texData, idxData, msPosData, alphaData);
         quads[i].setPosition(x, y);
         texBuffer.updateData(texData);
         posBuffer.updateData(posData);
+        alphaBuffer.updateData(alphaData);
         idxBuffer.updateData(idxData);
     }
 
     public void updateData(){
         texBuffer.updateData(texData);
         posBuffer.updateData(posData);
+        alphaBuffer.updateData(alphaData);
         idxBuffer.updateData(idxData);
         msPosBuffer.updateData(msPosData);
     }
