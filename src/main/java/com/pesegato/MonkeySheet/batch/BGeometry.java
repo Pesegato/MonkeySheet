@@ -6,15 +6,19 @@ import java.nio.IntBuffer;
 public class BGeometry {
 
     public float QUAD_SIZE = 1;
+    float scale = 1;
+    float actualSize;
 
     int bufPosition;
     float x, y;
 
     FloatBuffer vertexData, msPosData, alphaData;
+    IntBuffer idxData;
     float[] vertices, msPos, alpha;
 
     public BGeometry(int bufPosition, FloatBuffer vertexData, FloatBuffer texData, IntBuffer idxData, FloatBuffer msPosData, FloatBuffer alphaData) {
         this.bufPosition = bufPosition;
+        this.idxData = idxData;
         this.vertexData = vertexData;
         this.msPosData = msPosData;
         this.alphaData = alphaData;
@@ -66,6 +70,23 @@ public class BGeometry {
 
     public void setQuadSize(float size) {
         QUAD_SIZE = size;
+        actualSize=QUAD_SIZE*scale;
+    }
+
+    public void setLocalScale(float scale){
+        this.scale=scale;
+        actualSize=QUAD_SIZE*scale;
+        updateBuffer();
+    }
+
+    public void removeFromParent(){
+        idxData.position(bufPosition * 6);
+        idxData.put(0);
+        idxData.put(0);
+        idxData.put(0);
+        idxData.put(0);
+        idxData.put(0);
+        idxData.put(0);
     }
 
     public void move(float x, float y) {
@@ -82,17 +103,17 @@ public class BGeometry {
 
     private void updateBuffer() {
         vertexData.position(bufPosition * 12);
-        vertices[0] = -QUAD_SIZE / 2 + x;
-        vertices[1] = -QUAD_SIZE / 2 + y;
+        vertices[0] = -actualSize / 2 + x;
+        vertices[1] = -actualSize / 2 + y;
         vertices[2] = 0;
-        vertices[3] = QUAD_SIZE / 2 + x;
-        vertices[4] = -QUAD_SIZE / 2 + y;
+        vertices[3] = actualSize / 2 + x;
+        vertices[4] = -actualSize / 2 + y;
         vertices[5] = 0;
-        vertices[6] = -QUAD_SIZE / 2 + x;
-        vertices[7] = QUAD_SIZE / 2 + y;
+        vertices[6] = -actualSize / 2 + x;
+        vertices[7] = actualSize / 2 + y;
         vertices[8] = 0;
-        vertices[9] = QUAD_SIZE / 2 + x;
-        vertices[10] = QUAD_SIZE / 2 + y;
+        vertices[9] = actualSize / 2 + x;
+        vertices[10] = actualSize / 2 + y;
         vertices[11] = 0;
         vertexData.put(vertices, 0, 12);
     }
