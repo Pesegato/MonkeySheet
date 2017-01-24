@@ -6,6 +6,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.pesegato.collision.hitbox.HBRect;
+import org.dyn4j.collision.CategoryFilter;
 import org.dyn4j.collision.broadphase.BroadphaseDetector;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
@@ -34,6 +35,10 @@ public class Dyn4JShapeControl extends IDyn4JControl {
         body.setMass(massType);
         body.setAutoSleepingEnabled(false);
         fixture.setUserData(hbRect.id);
+    }
+
+    public void setFilter(CategoryFilter cf){
+        fixture.setFilter(cf);
     }
 
     public Dyn4JShapeControl(Body body,
@@ -69,14 +74,6 @@ public class Dyn4JShapeControl extends IDyn4JControl {
 
     public void removeFromWorld() {
         this.broadphase.remove(body);
-        boolean stillThere = broadphase.contains(body);
-        for (BodyFixture fixture : body.getFixtures()) {
-            stillThere |= broadphase.contains(body, fixture);
-        }
-        if (stillThere) {
-            // I would need to see more code around the way the body is being removed
-            System.out.println("still there");
-        }
     }
     /*
     @Override
