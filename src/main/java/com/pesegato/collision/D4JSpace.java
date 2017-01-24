@@ -58,9 +58,11 @@ public class D4JSpace {
         }
     }
 
-    void remove(Spatial spatial) {
+    public void remove(Spatial spatial) {
         if (spatial == null || spatial.getControl(IDyn4JControl.class) == null) return;
-        spatials.remove(spatials);
+        synchronized (spatials) {
+            spatials.remove(spatial);
+        }
         IDyn4JControl ctl = spatial.getControl(IDyn4JControl.class);
         ctl.removeFromWorld();
     }
@@ -77,16 +79,17 @@ public class D4JSpace {
     float tTPF=0;
 
     public void updatePhysics(float tpf) {
-        synchronized(spatials) {
-            for (Spatial spatial: spatials){
-                IDyn4JControl ctl = spatial.getControl(IDyn4JControl.class);
-                if (ctl == null) { spatials.remove(spatial); return; } //evict nodes which have their Dyn4JShapeControl removed
-                ctl.updatePhysics(bp, tpf);
-            }
-        }
         //world.update(tpf, Integer.MAX_VALUE);
         tTPF+=tpf;
         if (tTPF>1/60f) {
+            synchronized(spatials) {
+                //System.out.println("*** numero di oggetti nel D4JSpace "+spatials.size());
+                for (Spatial spatial: spatials){
+                    IDyn4JControl ctl = spatial.getControl(IDyn4JControl.class);
+                    if (ctl == null) { spatials.remove(spatial); return; } //evict nodes which have their Dyn4JShapeControl removed
+                    ctl.updatePhysics(bp, tpf);
+                }
+            }
             tTPF=0;
             //System.out.println("Collisions for "+name);
             // when ready to detect
