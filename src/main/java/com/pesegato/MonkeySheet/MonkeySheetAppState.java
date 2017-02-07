@@ -13,6 +13,8 @@ import com.jme3.app.state.BaseAppState;
 import com.pesegato.goldmonkey.Animation;
 import com.pesegato.goldmonkey.Container;
 import com.pesegato.goldmonkey.GM;
+import com.pesegato.timing.SimpleTimeable;
+import com.pesegato.timing.Timeable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +31,7 @@ public class MonkeySheetAppState extends BaseAppState {
 
     private static float tickDuration=0.025f;
     public static float tTPF = 0;
+    public static Timeable timeable=new SimpleTimeable();
 
     @Override
     protected void initialize(Application app) {
@@ -89,7 +92,7 @@ public class MonkeySheetAppState extends BaseAppState {
 
     @Override
     public void update(float tpf){
-        tTPF += tpf;
+        tTPF += tpf*timeable.getClockspeed();
         if (tTPF > tickDuration) {
             tTPF = 0;
         }
