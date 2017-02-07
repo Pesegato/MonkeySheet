@@ -51,11 +51,17 @@ abstract public class MSBodyAction extends MSAction{
         if (x>0){
             nextX=Math.min(nextX, finalX);
         }
+        else if (x==0){
+            nextX=currentX;
+        }
         else {
             nextX=Math.max(nextX, finalX);
         }
         if (y>0){
             nextY=Math.min(nextY, finalY);
+        }
+        else if (y==0){
+            nextY=currentY;
         }
         else {
             nextY=Math.max(nextY, finalY);
@@ -85,6 +91,9 @@ abstract public class MSBodyAction extends MSAction{
         if (x>0){
             nextX=Math.min(nextX, finalX);
         }
+        else if (x==0){
+            nextX=currentX;
+        }
         else {
             nextX=Math.max(nextX, finalX);
         }
@@ -110,6 +119,9 @@ abstract public class MSBodyAction extends MSAction{
         float nextY=SPRITE_SIZE * y + currentY;
         if (y>0){
             nextY=Math.min(nextY, finalY);
+        }
+        else if (y==0){
+            nextY=currentY;
         }
         else {
             nextY=Math.max(nextY, finalY);
