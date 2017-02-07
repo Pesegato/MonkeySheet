@@ -42,6 +42,7 @@ public abstract class MSActionMachine extends AbstractControl {
                 nextAction();
             }
         }
+        tpf *= MonkeySheetAppState.timeable.getClockspeed();
         msUpdate(tpf);
         currentAction.controlUpdate(tpf);
     }
