@@ -13,7 +13,7 @@ import com.pesegato.MonkeySheet.MSMaterialControl;
 /**
  *
  * An example effect for having a sprite 'pulsate' with a color.
- * 
+ *
  * @author Pesegato
  */
 public class PulseControl extends AbstractControl{
@@ -22,7 +22,7 @@ public class PulseControl extends AbstractControl{
     float pulseValue;
     final float speed=4;
     final float threshold=.5f;
-    
+
     public PulseControl(MSMaterialControl ms){
         this.ms=ms;
     }
@@ -39,11 +39,11 @@ public class PulseControl extends AbstractControl{
             if (pulseValue<0)
                 increasing=true;
         }
-        ms.setFogIntensity(tpf);
+        ms.setFogIntensity(pulseValue);
     }
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
     }
-    
+
 }
