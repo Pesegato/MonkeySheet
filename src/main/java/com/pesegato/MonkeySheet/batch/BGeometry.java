@@ -1,5 +1,6 @@
 package com.pesegato.MonkeySheet.batch;
 
+import com.jme3.math.Vector2f;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -93,6 +94,10 @@ public class BGeometry {
         this.x += x;
         this.y += y;
         updateBuffer();
+    }
+
+    public Vector2f getLocalTranslation(){
+        return new Vector2f(x,y);
     }
 
     public void setPosition(float x, float y) {
