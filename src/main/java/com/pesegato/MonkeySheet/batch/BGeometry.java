@@ -1,6 +1,8 @@
 package com.pesegato.MonkeySheet.batch;
 
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
+
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -80,6 +82,11 @@ public class BGeometry {
         updateBuffer();
     }
 
+    float angle=0;
+    public void setLocalRotation(float angle){
+        this.angle=angle;
+    }
+
     public void removeFromParent(){
         idxData.position(bufPosition * 6);
         idxData.put(0);
@@ -108,6 +115,37 @@ public class BGeometry {
 
     private void updateBuffer() {
         vertexData.position(bufPosition * 12);
+
+        float x1=(-actualSize / 2 + x);
+        float y1=(-actualSize / 2 + y);
+
+        float x2=(actualSize / 2 + x);
+        float y2=(-actualSize / 2 + y);
+
+        float x3=(-actualSize / 2 + x);
+        float y3=(actualSize / 2 + y);
+
+        float x4=(actualSize / 2 + x);
+        float y4=(actualSize / 2 + y);
+
+        float cos=FastMath.cos(angle);
+        float sin=FastMath.sin(angle);
+
+        vertices[0] = x1*cos-y1*sin;
+        vertices[1] = x1*sin+y1*cos;
+        vertices[2] = 0;
+        vertices[3] = x2*cos-y2*sin;
+        vertices[4] = x2*sin+y2*cos;
+        vertices[5] = 0;
+        vertices[6] = x3*cos-y3*sin;
+        vertices[7] = x3*sin+y3*cos;
+        vertices[8] = 0;
+        vertices[9] = x4*cos-y4*sin;
+        vertices[10] = x4*sin+y4*cos;
+        vertices[11] = 0;
+        vertexData.put(vertices, 0, 12);
+
+/*
         vertices[0] = -actualSize / 2 + x;
         vertices[1] = -actualSize / 2 + y;
         vertices[2] = 0;
@@ -121,5 +159,6 @@ public class BGeometry {
         vertices[10] = actualSize / 2 + y;
         vertices[11] = 0;
         vertexData.put(vertices, 0, 12);
+        */
     }
 }
