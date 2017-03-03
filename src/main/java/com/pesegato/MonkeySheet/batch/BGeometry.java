@@ -13,7 +13,11 @@ public class BGeometry {
     float actualSize;
 
     int bufPosition;
-    float x, y;
+    Vector2f center=new Vector2f();
+    Vector2f ll=new Vector2f();
+    Vector2f lr=new Vector2f();
+    Vector2f ur=new Vector2f();
+    Vector2f ul=new Vector2f();
 
     FloatBuffer vertexData, msPosData, alphaData;
     IntBuffer idxData;
@@ -98,50 +102,50 @@ public class BGeometry {
     }
 
     public void move(float x, float y) {
-        this.x += x;
-        this.y += y;
+        center.x += x;
+        center.y += y;
         updateBuffer();
     }
 
     public Vector2f getLocalTranslation(){
-        return new Vector2f(x,y);
+        return center;
     }
 
     public void setPosition(float x, float y) {
-        this.x = x;
-        this.y = y;
+        center.x = x;
+        center.y = y;
         updateBuffer();
     }
 
     private void updateBuffer() {
         vertexData.position(bufPosition * 12);
 
-        float x1=(-actualSize / 2 + x);
-        float y1=(-actualSize / 2 + y);
+        ll.x=(-actualSize / 2 + center.x);
+        ll.y=(-actualSize / 2 + center.y);
 
-        float x2=(actualSize / 2 + x);
-        float y2=(-actualSize / 2 + y);
+        lr.x=(actualSize / 2 + center.x);
+        lr.y=(-actualSize / 2 + center.y);
 
-        float x3=(-actualSize / 2 + x);
-        float y3=(actualSize / 2 + y);
+        ul.x=(-actualSize / 2 + center.x);
+        ul.y=(actualSize / 2 + center.y);
 
-        float x4=(actualSize / 2 + x);
-        float y4=(actualSize / 2 + y);
+        ur.x=(actualSize / 2 + center.x);
+        ur.y=(actualSize / 2 + center.y);
 
         float cos=FastMath.cos(angle);
         float sin=FastMath.sin(angle);
 
-        vertices[0] = x1*cos-y1*sin;
-        vertices[1] = x1*sin+y1*cos;
+        vertices[0] = ll.x*cos-ll.y*sin;
+        vertices[1] = ll.x*sin+ll.y*cos;
         vertices[2] = 0;
-        vertices[3] = x2*cos-y2*sin;
-        vertices[4] = x2*sin+y2*cos;
+        vertices[3] = lr.x*cos-lr.y*sin;
+        vertices[4] = lr.x*sin+lr.y*cos;
         vertices[5] = 0;
-        vertices[6] = x3*cos-y3*sin;
-        vertices[7] = x3*sin+y3*cos;
+        vertices[6] = ul.x*cos-ul.y*sin;
+        vertices[7] = ul.x*sin+ul.y*cos;
         vertices[8] = 0;
-        vertices[9] = x4*cos-y4*sin;
-        vertices[10] = x4*sin+y4*cos;
+        vertices[9] = ur.x*cos-ur.y*sin;
+        vertices[10] = ur.x*sin+ur.y*cos;
         vertices[11] = 0;
         vertexData.put(vertices, 0, 12);
 
