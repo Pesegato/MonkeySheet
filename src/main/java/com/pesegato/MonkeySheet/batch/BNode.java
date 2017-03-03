@@ -74,7 +74,8 @@ public class BNode {
         }
         slotBusy[slotFreeIdx]=true;
         quads[slotFreeIdx] = new BGeometry(slotFreeIdx, posData, texData, idxData, msPosData, alphaData);
-        quads[slotFreeIdx].setPosition(x, y);
+        quads[slotFreeIdx].getTransform().setPosition(x, y);
+        quads[slotFreeIdx].applyTransform();
         texBuffer.updateData(texData);
         posBuffer.updateData(posData);
         alphaBuffer.updateData(alphaData);
@@ -85,7 +86,8 @@ public class BNode {
 
     public void addQuad(int i, int x, int y){
         quads[i] = new BGeometry(i, posData, texData, idxData, msPosData, alphaData);
-        quads[i].setPosition(x, y);
+        quads[i].getTransform().setPosition(x, y);
+        quads[i].applyTransform();
         texBuffer.updateData(texData);
         posBuffer.updateData(posData);
         alphaBuffer.updateData(alphaData);
