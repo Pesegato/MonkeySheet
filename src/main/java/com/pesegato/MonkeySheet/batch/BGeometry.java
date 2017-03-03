@@ -11,7 +11,7 @@ public class BGeometry {
     float actualSize;
 
     int bufPosition;
-    float x, y;
+    Vector2f center=new Vector2f();
 
     FloatBuffer vertexData, msPosData, alphaData;
     IntBuffer idxData;
@@ -91,34 +91,34 @@ public class BGeometry {
     }
 
     public void move(float x, float y) {
-        this.x += x;
-        this.y += y;
+        center.x += x;
+        center.y += y;
         updateBuffer();
     }
 
     public Vector2f getLocalTranslation(){
-        return new Vector2f(x,y);
+        return center;
     }
 
     public void setPosition(float x, float y) {
-        this.x = x;
-        this.y = y;
+        center.x = x;
+        center.y = y;
         updateBuffer();
     }
 
     private void updateBuffer() {
         vertexData.position(bufPosition * 12);
-        vertices[0] = -actualSize / 2 + x;
-        vertices[1] = -actualSize / 2 + y;
+        vertices[0] = -actualSize / 2 + center.x;
+        vertices[1] = -actualSize / 2 + center.y;
         vertices[2] = 0;
-        vertices[3] = actualSize / 2 + x;
-        vertices[4] = -actualSize / 2 + y;
+        vertices[3] = actualSize / 2 + center.x;
+        vertices[4] = -actualSize / 2 + center.y;
         vertices[5] = 0;
-        vertices[6] = -actualSize / 2 + x;
-        vertices[7] = actualSize / 2 + y;
+        vertices[6] = -actualSize / 2 + center.x;
+        vertices[7] = actualSize / 2 + center.y;
         vertices[8] = 0;
-        vertices[9] = actualSize / 2 + x;
-        vertices[10] = actualSize / 2 + y;
+        vertices[9] = actualSize / 2 + center.x;
+        vertices[10] = actualSize / 2 + center.y;
         vertices[11] = 0;
         vertexData.put(vertices, 0, 12);
     }
