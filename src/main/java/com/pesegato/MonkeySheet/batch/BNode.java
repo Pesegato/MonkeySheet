@@ -22,10 +22,10 @@ public class BNode {
     BGeometry[] quads;
     int[] indexes;
 
-    int slotFreeIdx=0;
+    int slotFreeIdx = 0;
     boolean slotBusy[];
 
-    public BNode(int size){
+    public BNode(int size) {
         mesh = new Mesh();
         quads = new BGeometry[size];
         slotBusy = new boolean[size];
@@ -41,15 +41,15 @@ public class BNode {
         mesh.setBuffer(TexCoord2, 1, msPosData);
         mesh.setBuffer(TexCoord3, 1, alphaData);
         mesh.setBuffer(Index, 3, idxData);
-        posBuffer=mesh.getBuffer(Position);
-        texBuffer=mesh.getBuffer(TexCoord);
-        msPosBuffer=mesh.getBuffer(TexCoord2);
-        alphaBuffer=mesh.getBuffer(TexCoord3);
-        idxBuffer=mesh.getBuffer(Index);
+        posBuffer = mesh.getBuffer(Position);
+        texBuffer = mesh.getBuffer(TexCoord);
+        msPosBuffer = mesh.getBuffer(TexCoord2);
+        alphaBuffer = mesh.getBuffer(TexCoord3);
+        idxBuffer = mesh.getBuffer(Index);
     }
 
-    public void remove(int idx){
-        idxData.position(idx*6);
+    public void remove(int idx) {
+        idxData.position(idx * 6);
         idxData.put(0);
         idxData.put(0);
         idxData.put(0);
@@ -58,21 +58,31 @@ public class BNode {
         idxData.put(0);
     }
 
-    public void removeAll(){
+    public void removeAll() {
         idxData.position(0);
-        for (int i=0;i<quads.length*6;i++){
+        for (int i = 0; i < quads.length * 6; i++) {
             idxData.put(0);
         }
-        slotFreeIdx=0;
+        slotFreeIdx = 0;
         updateData();
     }
 
-    public int addQuad(float x, float y){
-        if (slotBusy.length<=slotFreeIdx){
-            System.err.println("No more free slot available for BGeometries on "+this+"!");
+    public int addQuad(float x, float y) {
+        if (slotBusy.length <= slotFreeIdx) {
+            System.err.println("No more free slot available for BGeometries on " + this + "!");
             System.exit(-1);
         }
-        slotBusy[slotFreeIdx]=true;
+        return addReusableQuad(x, y);
+    }
+
+    /*
+    Allocates the next quad in the queue. Does NOT check the availability!
+     */
+
+    public int addReusableQuad(float x, float y) {
+        if (slotFreeIdx>=quads.length)
+            slotFreeIdx=0;
+        slotBusy[slotFreeIdx] = true;
         quads[slotFreeIdx] = new BGeometry(slotFreeIdx, posData, texData, idxData, msPosData, alphaData);
         quads[slotFreeIdx].getTransform().setPosition(x, y);
         quads[slotFreeIdx].applyTransform();
@@ -81,10 +91,10 @@ public class BNode {
         alphaBuffer.updateData(alphaData);
         idxBuffer.updateData(idxData);
         slotFreeIdx++;
-        return slotFreeIdx-1;
+        return slotFreeIdx - 1;
     }
 
-    public void addQuad(int i, int x, int y){
+    public void addQuad(int i, int x, int y) {
         quads[i] = new BGeometry(i, posData, texData, idxData, msPosData, alphaData);
         quads[i].getTransform().setPosition(x, y);
         quads[i].applyTransform();
@@ -94,7 +104,7 @@ public class BNode {
         idxBuffer.updateData(idxData);
     }
 
-    public void updateData(){
+    public void updateData() {
         texBuffer.updateData(texData);
         posBuffer.updateData(posData);
         alphaBuffer.updateData(alphaData);
@@ -102,13 +112,13 @@ public class BNode {
         msPosBuffer.updateData(msPosData);
     }
 
-    public Geometry makeGeo(){
+    public Geometry makeGeo() {
         idxBuffer.updateData(idxData);
         mesh.updateBound();
         return new Geometry("batchedSpatial", mesh);
     }
 
-    public BGeometry[] getQuads(){
+    public BGeometry[] getQuads() {
         return quads;
     }
 
