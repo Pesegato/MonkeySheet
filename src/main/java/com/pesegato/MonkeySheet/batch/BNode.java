@@ -80,8 +80,8 @@ public class BNode {
      */
 
     public int addReusableQuad(float x, float y) {
-        if (slotFreeIdx>=quads.length)
-            slotFreeIdx=0;
+        if (slotFreeIdx >= quads.length)
+            slotFreeIdx = 0;
         slotBusy[slotFreeIdx] = true;
         quads[slotFreeIdx] = new BGeometry(slotFreeIdx, posData, texData, idxData, msPosData, alphaData);
         quads[slotFreeIdx].getTransform().setPosition(x, y);
