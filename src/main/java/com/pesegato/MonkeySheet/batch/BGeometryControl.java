@@ -8,16 +8,23 @@ public abstract class BGeometryControl extends AbstractControl {
 
     protected BGeometry bgeo;
     float duration;
+    boolean mustInit = true;
 
     protected BGeometryControl(BGeometry bgeo, float duration) {
         this.bgeo = bgeo;
         this.duration = duration;
     }
 
+    abstract protected void binit();
+
     abstract protected void bupdate(float tpf);
 
     @Override
     protected void controlUpdate(float tpf) {
+        if (mustInit) {
+            binit();
+            mustInit = false;
+        }
         bupdate(tpf);
         bgeo.applyTransform();
         duration -= tpf;
