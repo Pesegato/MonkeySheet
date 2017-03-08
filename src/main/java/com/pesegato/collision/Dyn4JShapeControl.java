@@ -25,7 +25,7 @@ public class Dyn4JShapeControl extends IDyn4JControl {
     HBRect hbRect;
 
     public Dyn4JShapeControl(Convex shape,
-                      MassType massType,
+                             MassType massType,
                              HBRect hbRect
     ) {
         this.hbRect=hbRect;

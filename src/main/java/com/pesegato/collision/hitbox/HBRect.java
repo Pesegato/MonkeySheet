@@ -17,28 +17,28 @@ import static com.pesegato.MonkeySheet.MSGlobals.SHOW_HITBOX;
 import static com.pesegato.MonkeySheet.MSGlobals.SPRITE_SIZE;
 
 public class HBRect {
-    String name="";
-    float w,h;
+    String name = "";
+    float w, h;
     public long id;
 
-    public HBRect(long id, float w, float h){
-        this.id=id;
-        this.w=w * SPRITE_SIZE;
-        this.h=h * SPRITE_SIZE;
+    public HBRect(long id, float w, float h) {
+        this.id = id;
+        this.w = w * SPRITE_SIZE;
+        this.h = h * SPRITE_SIZE;
     }
 
-    public HBRect(String name, long id, float w, float h){
-        this.name=name;
-        this.id=id;
-        this.w=w * SPRITE_SIZE;
-        this.h=h * SPRITE_SIZE;
+    public HBRect(String name, long id, float w, float h) {
+        this.name = name;
+        this.id = id;
+        this.w = w * SPRITE_SIZE;
+        this.h = h * SPRITE_SIZE;
     }
 
-    public Node getNode(AssetManager assetM, ColorRGBA color){
-        Node n=new Node();
+    public Node getNode(AssetManager assetM, ColorRGBA color) {
+        Node n = new Node();
         if (SHOW_HITBOX) {
             //geo.setCullHint(Spatial.CullHint.Always);
-        //}else {
+            //}else {
             Material mat = new Material(assetM, "Common/MatDefs/Misc/Unshaded.j3md");
             ColorRGBA col = color.clone();
             col.a = .5f;
@@ -56,7 +56,7 @@ public class HBRect {
         return new Rectangle(new Float(w), new Float(h));
     }
 
-    public Dyn4JShapeControl getControl(){
+    public Dyn4JShapeControl getControl() {
         return new Dyn4JShapeControl(getConvex(), MassType.INFINITE, this);
     }
 }
