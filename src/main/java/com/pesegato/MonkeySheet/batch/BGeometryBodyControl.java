@@ -5,6 +5,9 @@ import org.dyn4j.dynamics.Body;
 
 public abstract class BGeometryBodyControl extends BGeometryControl {
 
+    public float offsetX;
+    public float offsetY;
+    public float offsetAngle;
     protected Body body;
 
     protected BGeometryBodyControl(Body body, BGeometry bgeo, float duration) {
@@ -20,18 +23,22 @@ public abstract class BGeometryBodyControl extends BGeometryControl {
         }
         bupdate(tpf);
         bgeo.getTransform().setPosition(
-                (float) body.getTransform().getTranslationX(),
-                (float) body.getTransform().getTranslationY());
-        bgeo.getTransform().setLocalRotation((float) body.getTransform().getRotation());
+                (float) body.getTransform().getTranslationX() + offsetX,
+                (float) body.getTransform().getTranslationY() + offsetY);
+        bgeo.getTransform().setLocalRotation((float) body.getTransform().getRotation() + offsetAngle);
         bgeo.applyTransform();
         duration -= tpf;
         if (duration < 0) {
-            vanish();
+            setEnabled(false);
         }
     }
 
-    public void vanish() {
-        bgeo.removeFromParent();
-        spatial.removeControl(this);
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        if (!enabled) {
+            bgeo.removeFromParent();
+            spatial.removeControl(this);
+        }
     }
 }
