@@ -1,6 +1,7 @@
 package com.pesegato.collision;
 
 import com.jme3.scene.Spatial;
+import com.pesegato.MonkeySheet.batch.BGeometryBodyControl;
 import org.dyn4j.collision.broadphase.BroadphaseDetector;
 import org.dyn4j.collision.broadphase.BroadphasePair;
 import org.dyn4j.collision.broadphase.DynamicAABBTree;
@@ -65,6 +66,9 @@ public class D4JSpace {
         }
         IDyn4JControl ctl = spatial.getControl(IDyn4JControl.class);
         ctl.removeFromWorld();
+        BGeometryBodyControl batched = spatial.getControl(BGeometryBodyControl.class);
+        if (batched != null)
+            batched.vanish();
     }
     public void updateDraw(float tpf) {
         synchronized(spatials) {
