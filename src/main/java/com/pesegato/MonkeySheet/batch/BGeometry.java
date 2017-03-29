@@ -153,5 +153,6 @@ public class BGeometry {
         vx.rotateAroundOrigin(transform.angle, false);
         vx.addLocal(transform.offset);
         vx.addLocal(transform.center);
+        vx.addLocal(transform.trueOffset);
     }
 }

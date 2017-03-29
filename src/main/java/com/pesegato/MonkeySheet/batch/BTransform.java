@@ -8,6 +8,7 @@ public class BTransform {
     float scale = 1;
     Vector2f center = new Vector2f();
     Vector2f offset = new Vector2f();
+    Vector2f trueOffset = new Vector2f();
 
     public void setLocalRotation(float angle) {
         this.angle = angle;
@@ -19,6 +20,11 @@ public class BTransform {
 
     public void setOffset(Vector2f offset) {
         this.offset = offset;
+    }
+
+    public void setTrueOffset(float x, float y) {
+        trueOffset.x = x;
+        trueOffset.y = y;
     }
 
     public Vector2f getLocalTranslation() {
