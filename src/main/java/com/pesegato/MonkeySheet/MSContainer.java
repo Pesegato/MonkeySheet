@@ -22,7 +22,7 @@ public class MSContainer {
         Container c = MonkeySheetAppState.getContainer(name);
         this.numTiles = c.size;
         this.name = name;
-        this.sheets = new String[]{"Textures/" + name + (USE_COMPRESSION ? ".dds" : ".png")};
+        this.sheets = new String[]{"Textures/MonkeySheet/" + name + (USE_COMPRESSION ? ".dds" : ".png")};
     }
 
     public void setPath(String path) {
