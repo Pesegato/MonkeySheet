@@ -7,18 +7,22 @@ package com.pesegato.MonkeySheet;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import com.jme3.asset.AssetManager;
+import com.jme3.material.Material;
+import com.jme3.material.RenderState;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Quad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author Pesegato
  */
 public class MSGlobals {
 
-     static Logger log = LoggerFactory.getLogger(MSGlobals.class);
+    static Logger log = LoggerFactory.getLogger(MSGlobals.class);
 
-    public static final int SPRITE_SIZE=256;
+    public static final int SPRITE_SIZE = 256;
 
     public static final int MS_WIDTH_480P = 720;
     public static final int MS_HEIGHT_480P = 480;
@@ -34,7 +38,7 @@ public class MSGlobals {
 
     public static int MS_WIDTH;
     public static int MS_HEIGHT;
-    public static boolean SHOW_HITBOX=true;
+    public static boolean SHOW_HITBOX = true;
 
     public static void setResolution(String res) {
         switch (res) {
@@ -58,20 +62,45 @@ public class MSGlobals {
                 log.error("Resolution unsupported: {}", res);
                 System.exit(1);
         }
-        log.info("Resolution set to: {}",res);
+        log.info("Resolution set to: {}", res);
     }
 
-    /*
-    per quando ci sarà gradle...
-    */
+    public static Geometry makeDefaultQuad(int sizeX, int sizeY) {
+        return new Geometry("MSQuad", new Quad(sizeX, sizeY));
+    }
+
+    public static Material createDefaultMaterialWithAlpha(AssetManager assetManager, Geometry geo, String texture) {
+        Material material = createDefaultMaterialWithAlpha(assetManager, geo);
+        material.setTexture("ColorMap", assetManager.loadTexture(texture));
+        return material;
+    }
+
+    public static Material createDefaultMaterialWithAlpha(AssetManager assetManager, Geometry geo) {
+        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        geo.setMaterial(material);
+        return material;
+    }
+
+    public static Material createDefaultMaterialNoAlpha(AssetManager assetManager, Geometry geo, String texture) {
+        Material material = createDefaultMaterialNoAlpha(assetManager, geo);
+        material.setTexture("ColorMap", assetManager.loadTexture(texture));
+        return material;
+    }
+
+    public static Material createDefaultMaterialNoAlpha(AssetManager assetManager, Geometry geo) {
+        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        geo.setMaterial(material);
+        return material;
+    }
 
     protected void logBuildInfo() {
         try {
             java.net.URL u = Resources.getResource("monkeysheet.build.date");
             String build = Resources.toString(u, Charsets.UTF_8);
             log.info("MonkeySheett build date:" + build);
-        } catch( java.io.IOException e ) {
-            log.error( "Error reading build info", e );
+        } catch (java.io.IOException e) {
+            log.error("Error reading build info", e);
         }
     }
 }
