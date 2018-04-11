@@ -8,15 +8,14 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
-import com.pesegato.MonkeySheet.MSGlobals;
 import com.pesegato.collision.hitbox.HBRect;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.Vector2;
 
-public class Main extends SimpleApplication {
+public class SampleD4J extends SimpleApplication {
 
     public static void main(String[] args){
-        Main app = new Main();
+        SampleD4J app = new SampleD4J();
         //app.setShowSettings(false);
         app.start(); // start the game
     }
