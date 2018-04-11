@@ -7,5 +7,11 @@ import com.jme3.scene.Node;
 import org.dyn4j.dynamics.Body;
 
 public abstract class DebuggableBody extends Body {
+    ColorRGBA color;
+
+    public void setColor(ColorRGBA color) {
+        this.color = color;
+    }
+
     public abstract Geometry makeHitboxMarker(AssetManager assetManager, Node n, ColorRGBA colH);
 }
