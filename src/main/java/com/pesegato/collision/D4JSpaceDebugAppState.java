@@ -16,7 +16,7 @@ public class D4JSpaceDebugAppState extends BaseAppState {
     protected ViewPort viewPort;
     protected RenderManager rm;
     Node stateGuiNode = new Node("D4J Debug Node");
-    protected HashMap<DebuggableBody, Geometry> labels = new HashMap<>();
+    protected HashMap<DebuggableBody, Node> labels = new HashMap<>();
     ArrayList<DebuggableBody> bodies;
 
     @Override
@@ -38,7 +38,7 @@ public class D4JSpaceDebugAppState extends BaseAppState {
     }
 
     private void updateItems() {
-        HashMap<DebuggableBody, Geometry> oldObjects = labels;
+        HashMap<DebuggableBody, Node> oldObjects = labels;
         labels = new HashMap<>();
         Collection<DebuggableBody> current = bodies;
         //create new map
@@ -46,7 +46,7 @@ public class D4JSpaceDebugAppState extends BaseAppState {
             DebuggableBody physicsObject = it.next();
             //copy existing spatials
             if (oldObjects.containsKey(physicsObject)) {
-                Geometry spat = oldObjects.get(physicsObject);
+                Node spat = oldObjects.get(physicsObject);
                 spat.setLocalTranslation((float) physicsObject.getTransform().getTranslation().x, (float) physicsObject.getTransform().getTranslation().y, 0);
                 labels.put(physicsObject, spat);
                 oldObjects.remove(physicsObject);
@@ -55,23 +55,25 @@ public class D4JSpaceDebugAppState extends BaseAppState {
                 {
                     //logger.log(Level.FINE, "Create new debug RigidBody");
                     //create new spatial
-                    Geometry hudText = physicsObject.makeHitboxMarker(getApplication().getAssetManager(), stateGuiNode, ColorRGBA.Cyan);
+                    Geometry hudText = physicsObject.makeHitboxMarker(getApplication().getAssetManager(), stateGuiNode, physicsObject.color);
+                    Node n = new Node();
                     //BitmapText hudText = new BitmapText(font, false);
                     //hudText.scale(0.01f);
 //hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
 //hudText.setColor(ColorRGBA.Blue);                             // font color
                     //hudText.setText(physicsObject.toString());             // the text
-                    hudText.setLocalTranslation((float) physicsObject.getTransform().getTranslation().x, (float) physicsObject.getTransform().getTranslation().y, 0); // position
+                    n.attachChild(hudText);
+                    n.setLocalTranslation((float) physicsObject.getTransform().getTranslation().x, (float) physicsObject.getTransform().getTranslation().y, 0); // position
                     //hudText.addControl(new BillboardControl());
-                    labels.put(physicsObject, hudText);
-                    stateGuiNode.attachChild(hudText);
+                    labels.put(physicsObject, n);
+                    stateGuiNode.attachChild(n);
                 }
             }
         }
         //remove leftover spatials
-        for (Map.Entry<DebuggableBody, Geometry> entry : oldObjects.entrySet()) {
+        for (Map.Entry<DebuggableBody, Node> entry : oldObjects.entrySet()) {
             DebuggableBody object = entry.getKey();
-            Geometry spatial = entry.getValue();
+            Node spatial = entry.getValue();
             spatial.removeFromParent();
         }
     }

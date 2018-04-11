@@ -66,16 +66,16 @@ public class D4JSpace2 extends BaseAppState {
 
     }
 
-    public void add(Body body, MassType massType, long id) {
+    public void add(DebuggableBody body, MassType massType, long id) {
         for (BodyFixture bf : body.getFixtures())
             bf.setUserData(id);
         body.setMass(massType);
-        body.setAutoSleepingEnabled(true);
+        body.setAutoSleepingEnabled(false);
         bp.add(body);
-        bodies.add((DebuggableBody) body);
+        bodies.add(body);
     }
 
-    public void remove(Body body) {
+    public void remove(DebuggableBody body) {
         bp.remove(body);
         bodies.remove(body);
     }
