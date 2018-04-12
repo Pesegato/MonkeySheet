@@ -23,8 +23,6 @@ public class SampleD4J2 extends SimpleApplication {
 
     D4JSpace2 d4j;
 
-    boolean SHOW_ERROR = true;
-
     @Override
     public void simpleInitApp() {
         d4j = new D4JSpace2();
@@ -42,10 +40,7 @@ public class SampleD4J2 extends SimpleApplication {
             getState(D4JSpaceDebugAppState.class).setGuiNode(guiNode);
             float boxSize = .5f;
             hbRect = new HBRect(1, boxSize, .5f);
-            if (SHOW_ERROR)
-                hbRect.translate(200, 278);
-            else
-                hbRect.translate(200, 277);
+            hbRect.translate(200, 300);
             hbRect.setColor(ColorRGBA.Blue);
             d4j.add(hbRect, MassType.INFINITE, 2);
 
@@ -79,13 +74,10 @@ public class SampleD4J2 extends SimpleApplication {
 
     class MyCollisionListener implements CollisionListener {
 
-
         @Override
         public void listen(long collider, long collided) {
             System.out.println(collider + " collided with " + collided);
-            //D4JSpace space = das.getPhysicsSpace(0);
-            //phy.getSpatial().removeFromParent();
-            //phy.removeFromWorld();
+            d4j.remove(hbRect);
         }
     }
 
