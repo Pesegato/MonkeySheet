@@ -86,6 +86,9 @@ public class D4JSpace2 extends BaseAppState {
         tTPF += tpf;
         if (tTPF > 1 / 60f) {
             tTPF = 0;
+            for (Body b : bodies) {
+                bp.update(b);
+            }
             //System.out.println("Collisions for "+name);
             // when ready to detect
             List<BroadphasePair<Body, BodyFixture>> pairs = bp.detect();
