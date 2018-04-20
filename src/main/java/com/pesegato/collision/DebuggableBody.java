@@ -7,7 +7,7 @@ import com.jme3.scene.Node;
 import org.dyn4j.dynamics.Body;
 
 public abstract class DebuggableBody extends Body {
-    ColorRGBA color;
+    ColorRGBA color = ColorRGBA.Cyan;
 
     public void setColor(ColorRGBA color) {
         this.color = color;
