@@ -152,8 +152,8 @@ public abstract class MSAction {
         return (spatial.getLocalTranslation().y==finalY*SPRITE_SIZE);
     }
 
-    protected Vector2f getUVector(Vector3f v, float x2, float y2){
-        return new Vector2f((x2 * SPRITE_SIZE)-v.x, (y2 * SPRITE_SIZE)-v.y).normalizeLocal();
+    protected Vector2f getUVector(Vector3f v, int x2, int y2) {
+        return new Vector2f(x2 - v.x, y2 - v.y).normalizeLocal();
     }
 
     protected void init(Spatial spatial) {
