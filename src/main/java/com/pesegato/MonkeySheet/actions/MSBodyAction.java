@@ -5,6 +5,7 @@ import org.dyn4j.geometry.Transform;
 
 import static com.pesegato.MonkeySheet.MSGlobals.SPRITE_SIZE;
 
+@Deprecated
 abstract public class MSBodyAction extends MSAction{
     protected Body body;
     public void setBody(Body body){

@@ -3,6 +3,7 @@ package com.pesegato.collision;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 
+@Deprecated
 public class Dyn4jMEAppState extends BaseAppState {
 
     D4JSpace spaces[];

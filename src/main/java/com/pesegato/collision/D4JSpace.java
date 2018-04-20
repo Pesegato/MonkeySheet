@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Deprecated
 public class D4JSpace {
     //private World world;
     private Set<Spatial> spatials = new HashSet<Spatial>();

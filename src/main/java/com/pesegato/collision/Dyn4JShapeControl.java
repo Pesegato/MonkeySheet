@@ -16,7 +16,7 @@ import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Transform;
 import org.dyn4j.geometry.Vector2;
 
-
+@Deprecated
 public class Dyn4JShapeControl extends IDyn4JControl {
     protected Body body;
     BodyFixture fixture;

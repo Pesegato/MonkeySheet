@@ -3,6 +3,7 @@ package com.pesegato.MonkeySheet.batch;
 
 import org.dyn4j.dynamics.Body;
 
+@Deprecated
 public abstract class BGeometryBodyControl extends BGeometryControl {
 
     public float offsetX;
