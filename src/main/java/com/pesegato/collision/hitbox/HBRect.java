@@ -38,6 +38,13 @@ public class HBRect extends DebuggableBody {
         addFixture(new BodyFixture(new Rectangle(new Float(w), new Float(h))));
     }
 
+    public HBRect(long id, int w, int h) {
+        this.id = id;
+        this.w = w;
+        this.h = h;
+        addFixture(new BodyFixture(new Rectangle(new Float(w), new Float(h))));
+    }
+
     @Deprecated
     public Node getNode(AssetManager assetM, ColorRGBA color) {
         Node n = new Node();
