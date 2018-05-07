@@ -10,6 +10,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 import com.pesegato.collision.DebuggableBody;
 import com.pesegato.collision.Dyn4JShapeControl;
+import org.dyn4j.collision.Filter;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.geometry.Convex;
 import org.dyn4j.geometry.MassType;
@@ -38,11 +39,13 @@ public class HBRect extends DebuggableBody {
         addFixture(new BodyFixture(new Rectangle(new Float(w), new Float(h))));
     }
 
-    public HBRect(long id, int w, int h) {
+    public HBRect(long id, Filter filter, int w, int h) {
         this.id = id;
         this.w = w;
         this.h = h;
-        addFixture(new BodyFixture(new Rectangle(new Float(w), new Float(h))));
+        BodyFixture bf=new BodyFixture(new Rectangle(new Float(w), new Float(h)));
+        bf.setFilter(filter);
+        addFixture(bf);
     }
 
     @Deprecated
