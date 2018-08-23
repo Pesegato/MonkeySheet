@@ -18,10 +18,9 @@ public class MSContainer {
     String[] sheets;
     String name;
 
-    public MSContainer(String name) {
-        Container c = MonkeySheetAppState.getContainer(name);
+    public MSContainer(Container c) {
         this.numTiles = c.size;
-        this.name = name;
+        this.name = c.id;
         this.sheets = new String[]{"Textures/MonkeySheet/" + name + (USE_COMPRESSION ? ".dds" : ".png")};
     }
 

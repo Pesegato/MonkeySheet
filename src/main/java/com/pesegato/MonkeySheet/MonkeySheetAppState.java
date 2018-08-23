@@ -57,20 +57,32 @@ public class MonkeySheetAppState extends BaseAppState {
         anis.put(name,new MTween(msCont, name, ani, hitbox, msCont.numTiles, centerX, centerY));
     }
 
-    static HashMap<String, Container> containers;
+    public MSContainer initializeContainer(String name) {
+        Container c = MonkeySheetAppState.getContainer(name);
+        MSContainer container = new MSContainer(c);
+        for (Animation anim : animationC.get(c)) {
+            loadAnim(container, anim.id);
+        }
+        return container;
+    }
 
-    static Container getContainer(String id){
+    static HashMap<String, Container> containers;
+    static HashMap<Container, Animation[]> animationC;
+
+    static Container getContainer(String id) {
         if (containers == null) {
             try {
                 containers = new HashMap<>();
                 animations = new HashMap<>();
+                animationC = new HashMap<>();
                 Container[] data = new Gson().fromJson(GM.getJSON("MonkeySheet/Containers"), Container[].class);
                 for (Container obj : data) {
                     containers.put(obj.id, obj);
-                    Animation[] aData = new Gson().fromJson(GM.getJSON("MonkeySheet/Animations/"+obj.id), Animation[].class);
+                    Animation[] aData = new Gson().fromJson(GM.getJSON("MonkeySheet/Animations/" + obj.id), Animation[].class);
                     for (Animation aniObj : aData) {
                         animations.put(aniObj.id, aniObj);
                     }
+                    animationC.put(obj, aData);
                 }
             } catch (FileNotFoundException ex) {
                 log.error(null, ex);
