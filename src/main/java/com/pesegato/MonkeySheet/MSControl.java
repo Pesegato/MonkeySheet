@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MSControl extends AbstractControl {
 
-     static Logger log = LoggerFactory.getLogger(MSControl.class);
+    static Logger log = LoggerFactory.getLogger(MSControl.class);
 
     public MTween anim;
     public String animation;
@@ -42,8 +42,8 @@ public class MSControl extends AbstractControl {
         anim = MonkeySheetAppState.getAnim(ani);
         position = 0;
         runOnce = false;
-        if (anim==null){
-            log.warn("Running uninitialized animation {}",ani);
+        if (anim == null) {
+            log.warn("Running uninitialized animation {}", ani);
         }
     }
 
@@ -52,25 +52,25 @@ public class MSControl extends AbstractControl {
         anim = MonkeySheetAppState.getAnim(ani);
         position = 0;
         runOnce = true;
-        if (anim==null){
-            log.warn("Running uninitialized animation "+ani);
+        if (anim == null) {
+            log.warn("Running uninitialized animation " + ani);
         }
     }
 
     @Override
     protected void controlUpdate(float tpf) {
         if (MonkeySheetAppState.tTPF == 0) {
-            log.trace("position: {}",position);
+            log.trace("position: {} - {}", position, anim.anim[position].position);
             position++;
             if (position > anim.anim.length - 1) {
                 position = 0;
                 if (runOnce) {
                     if (animManager != null) {
-                        log.trace("loading animManager {}",animManager);
+                        log.trace("loading animManager {}", animManager);
                         animManager.whatPlay(this);
                     }
                     if (msAction != null) {
-                        log.trace("end of MSAction {}",msAction);
+                        log.trace("end of MSAction {}", msAction);
                         msAction.terminatedAnim();
                         msAction.whatPlay(this);
                     }
