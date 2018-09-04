@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author Pesegato
  */
 public class MSControl extends AbstractControl {
@@ -28,16 +27,16 @@ public class MSControl extends AbstractControl {
     MSAnimationManager animManager;
     public MSAction msAction;
 
-    public MSControl(String anim, Timeable timeable){
-        play(anim);
-        MonkeySheetAppState.timeable=timeable;
+    public MSControl(String anim, Timeable timeable) {
+        playForever(anim);
+        MonkeySheetAppState.timeable = timeable;
     }
 
     public MSControl(MSAnimationManager animManager) {
         this.animManager = animManager;
     }
 
-    final public void play(String ani) {
+    final public void playForever(String ani) {
         log.debug("now playing animation {}", ani);
         anim = MonkeySheetAppState.getAnim(ani);
         position = 0;
