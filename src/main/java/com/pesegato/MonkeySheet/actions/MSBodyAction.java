@@ -20,7 +20,7 @@ abstract public class MSBodyAction extends MSAction{
      */
 
     @Override
-    protected void move(float x, float y) {
+    protected void moveSprite(float x, float y) {
         Transform t=body.getTransform();
         t.setTranslationX(t.getTranslationX()+(x * SPRITE_SIZE));
         t.setTranslationY(t.getTranslationY()+(y * SPRITE_SIZE));
@@ -41,7 +41,7 @@ abstract public class MSBodyAction extends MSAction{
      */
 
     @Override
-    protected boolean moveFix(float x, float y, float finalX, float finalY){
+    protected boolean moveFixSprite(float x, float y, float finalX, float finalY){
         finalX=finalX*SPRITE_SIZE;
         finalY=finalY*SPRITE_SIZE;
         Transform t=body.getTransform();
@@ -84,7 +84,7 @@ abstract public class MSBodyAction extends MSAction{
      * @return true if arrived at target position
      */
 
-    protected boolean moveFixX(float x, float finalX){
+    protected boolean moveFixXSprite(float x, float finalX){
         finalX=finalX*SPRITE_SIZE;
         Transform t=body.getTransform();
         float currentX=spatial.getLocalTranslation().x;
@@ -113,7 +113,7 @@ abstract public class MSBodyAction extends MSAction{
      * @return true if arrived at target position
      */
 
-    protected boolean moveFixY(float y, float finalY){
+    protected boolean moveFixYSprite(float y, float finalY){
         finalY=finalY*SPRITE_SIZE;
         Transform t=body.getTransform();
         float currentY= (float) t.getTranslationY();
@@ -138,7 +138,7 @@ abstract public class MSBodyAction extends MSAction{
      * @return true if current position matches finalX
      */
 
-    protected boolean hasMovedFixX(float finalX){
+    protected boolean hasMovedFixXSprite(float finalX){
         return (body.getTransform().getTranslationX()==finalX*SPRITE_SIZE);
     }
 
@@ -148,7 +148,7 @@ abstract public class MSBodyAction extends MSAction{
      * @return true if current position matches finalY
      */
 
-    protected boolean hasMovedFixY(float finalY){
+    protected boolean hasMovedFixYSprite(float finalY){
         return (body.getTransform().getTranslationY()==finalY*SPRITE_SIZE);
     }
 

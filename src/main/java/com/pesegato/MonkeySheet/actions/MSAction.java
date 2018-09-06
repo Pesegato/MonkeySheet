@@ -41,7 +41,7 @@ public abstract class MSAction {
      * @param y movement on the Y
      */
 
-    protected void move(float x, float y) {
+    protected void moveSprite(float x, float y) {
         spatial.move(SPRITE_SIZE * x, SPRITE_SIZE * y, 0);
     }
 
@@ -58,7 +58,7 @@ public abstract class MSAction {
      * @return true if arrived at target position
      */
 
-    protected boolean moveFix(float x, float y, float finalX, float finalY){
+    protected boolean moveFixSprite(float x, float y, float finalX, float finalY) {
         finalX=finalX*SPRITE_SIZE;
         finalY=finalY*SPRITE_SIZE;
         float currentX=spatial.getLocalTranslation().x;
@@ -82,6 +82,38 @@ public abstract class MSAction {
     }
 
     /**
+     * This method moves the spatial toward absolute target position finalX, finalY
+     * with speed factors x,y.
+     * For each axis, if speed is positive but target is behind then no movement is performed
+     * For each axis, if speed is negative but target is in front then no movement is performed
+     *
+     * @param x      speed on the X
+     * @param y      speed on the Y
+     * @param finalX target x coordinate
+     * @param finalY target y coordinate
+     * @return true if arrived at target position
+     */
+
+    protected boolean moveFixPixels(float x, float y, float finalX, float finalY) {
+        float currentX = spatial.getLocalTranslation().x;
+        float currentY = spatial.getLocalTranslation().y;
+        float nextX = x + currentX;
+        float nextY = y + currentY;
+        if (x > 0) {
+            nextX = Math.min(nextX, finalX);
+        } else {
+            nextX = Math.max(nextX, finalX);
+        }
+        if (y > 0) {
+            nextY = Math.min(nextY, finalY);
+        } else {
+            nextY = Math.max(nextY, finalY);
+        }
+        spatial.setLocalTranslation(nextX, nextY, 0);
+        return (nextX == finalX) && (nextY == finalY);
+    }
+
+    /**
      * This method moves the spatial toward absolute target position finalX
      * with speed factors x.
      * If speed is positive but target is behind then no movement is performed
@@ -90,6 +122,7 @@ public abstract class MSAction {
      * @param x speed on the X
      * @param finalX target x coordinate
      * @return true if arrived at target position
+     * @deprecated use Sprite or Pixels
      */
 
     protected boolean moveFixX(float x, float finalX){
@@ -108,6 +141,55 @@ public abstract class MSAction {
     }
 
     /**
+     * This method moves the spatial toward absolute target position finalX
+     * with speed factors x.
+     * If speed is positive but target is behind then no movement is performed
+     * If speed is negative but target is in front then no movement is performed
+     *
+     * @param x      speed on the X
+     * @param finalX target x coordinate
+     * @return true if arrived at target position
+     */
+
+    protected boolean moveFixXSprite(float x, float finalX) {
+        finalX = finalX * SPRITE_SIZE;
+        float currentX = spatial.getLocalTranslation().x;
+        float currentY = spatial.getLocalTranslation().y;
+        float nextX = SPRITE_SIZE * x + currentX;
+        if (x > 0) {
+            nextX = Math.min(nextX, finalX);
+        } else {
+            nextX = Math.max(nextX, finalX);
+        }
+        spatial.setLocalTranslation(nextX, currentY, 0);
+        return nextX == finalX;
+    }
+
+    /**
+     * This method moves the spatial toward absolute target position finalX
+     * with speed factors x.
+     * If speed is positive but target is behind then no movement is performed
+     * If speed is negative but target is in front then no movement is performed
+     *
+     * @param x      speed on the X
+     * @param finalX target x coordinate
+     * @return true if arrived at target position
+     */
+
+    protected boolean moveFixXPixels(float x, int finalX) {
+        int currentX = (int) spatial.getLocalTranslation().x;
+        int currentY = (int) spatial.getLocalTranslation().y;
+        float nextX = x + currentX;
+        if (x > 0) {
+            nextX = Math.min(nextX, finalX);
+        } else {
+            nextX = Math.max(nextX, finalX);
+        }
+        spatial.setLocalTranslation(nextX, currentY, 0);
+        return nextX == finalX;
+    }
+
+    /**
      * This method moves the spatial toward absolute target position finalY
      * with speed factors y.
      * If speed is positive but target is behind then no movement is performed
@@ -116,6 +198,7 @@ public abstract class MSAction {
      * @param y speed on the Y
      * @param finalY target y coordinate
      * @return true if arrived at target position
+     * @deprecated use moveFixYPixels or moveFixYSprite instead
      */
 
     protected boolean moveFixY(float y, float finalY){
@@ -134,22 +217,115 @@ public abstract class MSAction {
     }
 
     /**
+     * This method moves the spatial toward absolute target position finalY
+     * with speed factors y (multiplied by SPRITE_SIZE)
+     * If speed is positive but target is behind then no movement is performed
+     * If speed is negative but target is in front then no movement is performed
+     *
+     * @param y      speed on the Y
+     * @param finalY target y coordinate
+     * @return true if arrived at target position
+     */
+
+    protected boolean moveFixYSprite(float y, float finalY) {
+        finalY = finalY * SPRITE_SIZE;
+        float currentX = spatial.getLocalTranslation().x;
+        float currentY = spatial.getLocalTranslation().y;
+        float nextY = SPRITE_SIZE * y + currentY;
+        if (y > 0) {
+            nextY = Math.min(nextY, finalY);
+        } else {
+            nextY = Math.max(nextY, finalY);
+        }
+        spatial.setLocalTranslation(currentX, nextY, 0);
+        return nextY == finalY;
+    }
+
+    /**
+     * This method moves the spatial toward absolute target position finalY
+     * with speed factors y (specified in Pixel units).
+     * If speed is positive but target is behind then no movement is performed
+     * If speed is negative but target is in front then no movement is performed
+     *
+     * @param y      speed on the Y
+     * @param finalY target y coordinate
+     * @return true if arrived at target position
+     */
+
+    protected boolean moveFixYPixels(float y, int finalY) {
+        int currentX = (int) spatial.getLocalTranslation().x;
+        int currentY = (int) spatial.getLocalTranslation().y;
+        float nextY = y + currentY;
+        if (y > 0) {
+            nextY = Math.min(nextY, finalY);
+        } else {
+            nextY = Math.max(nextY, finalY);
+        }
+        spatial.setLocalTranslation(currentX, nextY, 0);
+        return nextY == finalY;
+    }
+
+    /**
      * This method tests if the spatial has reached the finalX position
      * @param finalX x coordinate
      * @return true if current position matches finalX
      */
 
-    protected boolean hasMovedFixX(float finalX){
+    protected boolean hasMovedFixXSprite(float finalX){
         return (spatial.getLocalTranslation().x==finalX*SPRITE_SIZE);
     }
 
     /**
-     * This method tests if the spatial has reached the finalY position
+     * This method tests if the spatial has reached the finalX position
+     *
+     * @param finalX x coordinate
+     * @return true if current position matches finalX
+     */
+
+    protected boolean hasMovedFixXPixels(float finalX) {
+        return (spatial.getLocalTranslation().x == finalX);
+    }
+
+    /**
+     * This method tests if the spatial has reached the finalX position
+     *
+     * @param finalX x coordinate
+     * @return true if current position matches finalX
+     * @deprecated use either Sprite or Pixels
+     */
+
+    protected boolean hasMovedFixX(float finalX) {
+        return (spatial.getLocalTranslation().x == finalX * SPRITE_SIZE);
+    }
+
+    /**
+     * This method tests if the spatial has reached the finalY position (multiplied by SPRITE_SIZE)
      * @param finalY x coordinate
      * @return true if current position matches finalY
      */
-    protected boolean hasMovedFixY(float finalY){
+    protected boolean hasMovedFixYSprite(float finalY) {
         return (spatial.getLocalTranslation().y==finalY*SPRITE_SIZE);
+    }
+
+    /**
+     * This method tests if the spatial has reached the finalY position (specified in Pixel units)
+     *
+     * @param finalY x coordinate
+     * @return true if current position matches finalY
+     */
+    protected boolean hasMovedFixYPixels(float finalY) {
+        return (spatial.getLocalTranslation().y == finalY);
+    }
+
+    /**
+     * This method tests if the spatial has reached the finalY position
+     *
+     * @param finalY x coordinate
+     * @return true if current position matches finalY
+     * @deprecated use hasMovedFixYSprite or hasMovedFixYPixels instead
+     */
+    protected boolean hasMovedFixY(float finalY) {
+        return (spatial.getLocalTranslation().y == finalY * SPRITE_SIZE);
     }
 
     protected Vector2f getUVector(Vector3f v, int x2, int y2) {
