@@ -13,58 +13,60 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author Pesegato
- * @deprecated use MSFiniteStateMachine instead
  */
-public abstract class MSActionMachine extends AbstractControl {
+public abstract class MSFiniteStateMachine extends AbstractControl {
 
-     static Logger log = LoggerFactory.getLogger(MSActionMachine.class);
+    static Logger log = LoggerFactory.getLogger(MSFiniteStateMachine.class);
 
     MSAction[] actions;
     MSAction currentAction;
 
-    public MSActionMachine(MSAction... actions) {
+    boolean runInit = true;
+
+    public MSFiniteStateMachine(MSAction... actions) {
         initActions(actions);
     }
 
-    public void initActions(MSAction... actions){
+    public void initActions(MSAction... actions) {
         this.actions = actions;
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (currentAction == null) {
+        tpf *= MonkeySheetAppState.timeable.getClockspeed();
+        if (runInit) {
             init();
-            nextAction();
+            runInit = false;
+        }
+        if (currentAction == null) {
+            {
+                msUpdate(tpf);
+                return;
+            }
         }
         if (MonkeySheetAppState.tTPF == 0) {
             if (currentAction.maybeEnd()) {
-                nextAction();
+                //...nothing
             }
         }
-        tpf *= MonkeySheetAppState.timeable.getClockspeed();
         msUpdate(tpf);
         currentAction.controlUpdate(tpf);
     }
 
-    protected <T extends MSAction> T startAction(Class <T> msActionClass){
-        for (MSAction act:actions){
-            if (msActionClass.isAssignableFrom(act.getClass())){
+    protected <T extends MSAction> T startAction(Class<T> msActionClass) {
+        for (MSAction act : actions) {
+            if (msActionClass.isAssignableFrom(act.getClass())) {
                 startAction(act);
-                return (T)act;
+                return (T) act;
             }
         }
         return null;
     }
 
-    private void nextAction() {
-        startAction(actions[getNextAction()]);
-    }
-
-    private void startAction(MSAction action){
-        log.trace("start action {}",action);
-        if (currentAction==action)
+    private void startAction(MSAction action) {
+        log.trace("start action {}", action);
+        if (currentAction == action)
             return;
         currentAction = action;
         currentAction.init(spatial);
@@ -73,8 +75,6 @@ public abstract class MSActionMachine extends AbstractControl {
     abstract protected void init();
 
     abstract protected void msUpdate(float tpf);
-
-    abstract protected int getNextAction();
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
