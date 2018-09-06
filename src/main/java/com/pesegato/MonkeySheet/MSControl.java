@@ -37,12 +37,12 @@ public class MSControl extends AbstractControl {
     }
 
     final public void playForever(String ani) {
-        log.debug("now playing animation {}", ani);
+        log.debug("now playing FOREVER animation {}", ani);
         anim = MonkeySheetAppState.getAnim(ani);
         position = 0;
         runOnce = false;
         if (anim == null) {
-            log.warn("Running uninitialized animation {}", ani);
+            log.warn("Running UNINITIALIZED animation {}, GOING TO CRASH VERY SOON!!!", ani);
         }
     }
 
@@ -52,7 +52,7 @@ public class MSControl extends AbstractControl {
         position = 0;
         runOnce = true;
         if (anim == null) {
-            log.warn("Running uninitialized animation " + ani);
+            log.warn("Running UNINITIALIZED animation {}, GOING TO CRASH VERY SOON!!!" + ani);
         }
     }
 
