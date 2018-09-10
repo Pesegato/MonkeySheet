@@ -20,6 +20,11 @@ public class BGeometry {
     FloatBuffer vertexData, msPosData, alphaData;
     IntBuffer idxData;
     float[] vertices, msPos, alpha;
+    float z = 0;
+
+    public void setZ(float z){
+        this.z=z;
+    }
 
     public BGeometry(int bufPosition, FloatBuffer vertexData, FloatBuffer texData, IntBuffer idxData, FloatBuffer msPosData, FloatBuffer alphaData) {
         this.bufPosition = bufPosition;
@@ -135,16 +140,16 @@ public class BGeometry {
 
         vertices[0] = ll.x;
         vertices[1] = ll.y;
-        vertices[2] = 0;
+        vertices[2] = z;
         vertices[3] = lr.x;
         vertices[4] = lr.y;
-        vertices[5] = 0;
+        vertices[5] = z;
         vertices[6] = ul.x;
         vertices[7] = ul.y;
-        vertices[8] = 0;
+        vertices[8] = z;
         vertices[9] = ur.x;
         vertices[10] = ur.y;
-        vertices[11] = 0;
+        vertices[11] = z;
         vertexData.put(vertices, 0, 12);
     }
 
