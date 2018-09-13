@@ -371,8 +371,23 @@ public abstract class MSAction {
         return ended;
     }
 
+    /**
+     * Called on start
+     */
+
     public void init() {
     }
+
+    /**
+     * Called when switching to another MSAction before this is finished normally
+     */
+
+    public void interrupted(){
+    }
+
+    /**
+     * Called when finishes normally
+     */
 
     public void finish() {
     }

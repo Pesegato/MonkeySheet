@@ -47,7 +47,7 @@ public abstract class MSFiniteStateMachine extends AbstractControl {
         }
         if (MonkeySheetAppState.tTPF == 0) {
             if (currentAction.maybeEnd()) {
-                //...nothing
+                //...nothing, but keep maybeEnd because it has side effects
             }
         }
         msUpdate(tpf);
@@ -68,6 +68,8 @@ public abstract class MSFiniteStateMachine extends AbstractControl {
         log.trace("start action {}", action);
         if (currentAction == action)
             return;
+        if (currentAction != null)
+            currentAction.interrupted();
         currentAction = action;
         currentAction.init(spatial);
     }
