@@ -36,6 +36,10 @@ public class BNodeControl extends AbstractControl {
         geometry.addControl(control);
     }
 
+    public void destroy(){
+        geometry.removeFromParent();
+    }
+
     @Override
     protected void controlUpdate(float tpf) {
         bNode.updateData();
