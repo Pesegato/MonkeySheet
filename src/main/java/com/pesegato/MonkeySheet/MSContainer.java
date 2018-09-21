@@ -5,6 +5,7 @@
  */
 package com.pesegato.MonkeySheet;
 
+import com.pesegato.goldmonkey.Animation;
 import com.pesegato.goldmonkey.Container;
 
 /**
@@ -17,11 +18,17 @@ public class MSContainer {
     public int numTiles;
     String[] sheets;
     String name;
+    Container c;
 
     public MSContainer(Container c) {
         this.numTiles = c.size;
         this.name = c.id;
         this.sheets = new String[]{"Textures/MonkeySheet/" + name + (USE_COMPRESSION ? ".dds" : ".png")};
+        this.c = c;
+    }
+
+    public Animation[] getAnimList() {
+        return MonkeySheetAppState.animationC.get(c);
     }
 
     public void setPath(String path) {
