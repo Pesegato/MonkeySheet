@@ -29,14 +29,31 @@ public class BNodeControl extends AbstractControl {
     }
 
     public BGeometry getReusableQuad(float x, float y) {
-        return bNode.quads[bNode.addReusableQuad(x, y)];
+        int idx = bNode.getNextAvailableSlot();
+        return bNode.quads[bNode.addReusableQuad(idx, x, y)];
     }
 
-    public void addControl(BGeometryControl control){
+    public void addControl(BGeometryControl control) {
         geometry.addControl(control);
     }
 
-    public void destroy(){
+    public void setZ(float z) {
+        geometry.setLocalTranslation(0, 0, z);
+    }
+
+    public Geometry getGeometry(){
+        return geometry;
+    }
+
+    public int getBufSize() {
+        return bNode.quads.length;
+    }
+
+    public int getDebugFreeSlot() {
+        return bNode.getDebugFreeSlot();
+    }
+
+    public void destroy() {
         geometry.removeFromParent();
     }
 
