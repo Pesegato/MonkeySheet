@@ -7,12 +7,10 @@ import com.jme3.scene.control.AbstractControl;
 public abstract class BGeometryControl extends AbstractControl {
 
     protected BGeometry bgeo;
-    float duration;
     boolean mustInit = true;
 
-    protected BGeometryControl(BGeometry bgeo, float duration) {
+    protected BGeometryControl(BGeometry bgeo) {
         this.bgeo = bgeo;
-        this.duration = duration;
     }
 
     abstract protected void binit();
@@ -27,8 +25,16 @@ public abstract class BGeometryControl extends AbstractControl {
         }
         bupdate(tpf);
         bgeo.applyTransform();
-        duration -= tpf;
-        if (duration < 0) {
+        //duration -= tpf;
+        //if (duration < 0) {
+        //setEnabled(false);
+        //}
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        if (!enabled) {
             bgeo.removeFromParent();
             spatial.removeControl(this);
         }
