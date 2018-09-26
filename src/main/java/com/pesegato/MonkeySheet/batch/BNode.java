@@ -10,6 +10,7 @@ import com.jme3.util.BufferUtils;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 
 import static com.jme3.scene.VertexBuffer.Type.*;
 
@@ -22,13 +23,15 @@ public class BNode {
     BGeometry[] quads;
     int[] indexes;
 
-    int slotFreeIdx = 0;
-    boolean slotBusy[];
+    ArrayList<Integer> slotBusy;
 
     public BNode(int size) {
         mesh = new Mesh();
         quads = new BGeometry[size];
-        slotBusy = new boolean[size];
+        slotBusy = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            slotBusy.add(i);
+        }
         indexes = new int[6 * size];
 
         posData = BufferUtils.createFloatBuffer(new Vector3f[4 * size]);
@@ -56,6 +59,7 @@ public class BNode {
         idxData.put(0);
         idxData.put(0);
         idxData.put(0);
+        slotBusy.add(idx);
     }
 
     public void removeAll() {
@@ -63,39 +67,70 @@ public class BNode {
         for (int i = 0; i < quads.length * 6; i++) {
             idxData.put(0);
         }
-        slotFreeIdx = 0;
+        slotBusy.clear();
+        for (int i = 0; i < quads.length; i++)
+            slotBusy.add(i);
         updateData();
     }
 
     public int addQuad(float x, float y) {
-        if (slotBusy.length <= slotFreeIdx) {
+        int idx = getNextAvailableSlot();
+        if (idx == -1) {
             System.err.println("No more free slot available for BGeometries on " + this + "!");
             System.exit(-1);
         }
-        return addReusableQuad(x, y);
+        return addReusableQuad(idx, x, y);
+    }
+
+    /**
+     * @return the index of a empty slot, or -1 if no slots are free
+     */
+
+    public int getNextAvailableSlot() {
+        //int p=slotBusy.remove(0);
+        //System.out.println("using quad "+p);
+        return slotBusy.remove(0);
+        /*
+        for (int i = 0; i < slotBusy.length; i++) {
+            if (!slotBusy[i]) {
+                return i;
+            }
+        }
+        return -1;
+        */
+    }
+
+    public int getDebugFreeSlot() {
+        return slotBusy.size();
+        /*
+        int count = 0;
+        for (int i = 0; i < slotBusy.length; i++) {
+            if (!slotBusy[i]) {
+                count++;
+            }
+        }
+        return count;
+        */
     }
 
     /*
-    Allocates the next quad in the queue. Does NOT check the availability!
+    Allocates the quad at the provided index. Does NOT check the availability!
      */
 
-    public int addReusableQuad(float x, float y) {
-        if (slotFreeIdx >= quads.length)
-            slotFreeIdx = 0;
-        slotBusy[slotFreeIdx] = true;
-        quads[slotFreeIdx] = new BGeometry(slotFreeIdx, posData, texData, idxData, msPosData, alphaData);
+    public int addReusableQuad(int slotFreeIdx, float x, float y) {
+        //slotBusy[slotFreeIdx] = true;
+        quads[slotFreeIdx] = new BGeometry(this, slotFreeIdx, posData, texData, idxData, msPosData, alphaData);
         quads[slotFreeIdx].getTransform().setPosition(x, y);
         quads[slotFreeIdx].applyTransform();
         texBuffer.updateData(texData);
         posBuffer.updateData(posData);
         alphaBuffer.updateData(alphaData);
         idxBuffer.updateData(idxData);
-        slotFreeIdx++;
-        return slotFreeIdx - 1;
+        return slotFreeIdx;
     }
 
     public void addQuad(int i, int x, int y) {
-        quads[i] = new BGeometry(i, posData, texData, idxData, msPosData, alphaData);
+        quads[i] = new BGeometry(this, i, posData, texData, idxData, msPosData, alphaData);
         quads[i].getTransform().setPosition(x, y);
         quads[i].applyTransform();
         texBuffer.updateData(texData);
