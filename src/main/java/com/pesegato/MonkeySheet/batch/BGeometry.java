@@ -7,6 +7,8 @@ import java.nio.IntBuffer;
 
 public class BGeometry {
 
+    BNode parent;
+
     public float QUAD_SIZE = 1;
     float actualSize;
     BTransform transform = new BTransform();
@@ -20,13 +22,9 @@ public class BGeometry {
     FloatBuffer vertexData, msPosData, alphaData;
     IntBuffer idxData;
     float[] vertices, msPos, alpha;
-    float z = 0;
 
-    public void setZ(float z){
-        this.z=z;
-    }
-
-    public BGeometry(int bufPosition, FloatBuffer vertexData, FloatBuffer texData, IntBuffer idxData, FloatBuffer msPosData, FloatBuffer alphaData) {
+    public BGeometry(BNode parent, int bufPosition, FloatBuffer vertexData, FloatBuffer texData, IntBuffer idxData, FloatBuffer msPosData, FloatBuffer alphaData) {
+        this.parent = parent;
         this.bufPosition = bufPosition;
         this.idxData = idxData;
         this.vertexData = vertexData;
@@ -90,6 +88,7 @@ public class BGeometry {
         idxData.put(0);
         idxData.put(0);
         idxData.put(0);
+        parent.slotBusy.add(bufPosition);
     }
 
     public BTransform getTransform() {
@@ -140,20 +139,20 @@ public class BGeometry {
 
         vertices[0] = ll.x;
         vertices[1] = ll.y;
-        vertices[2] = z;
+        //vertices[2] = z;
         vertices[3] = lr.x;
         vertices[4] = lr.y;
-        vertices[5] = z;
+        //vertices[5] = z;
         vertices[6] = ul.x;
         vertices[7] = ul.y;
-        vertices[8] = z;
+        //vertices[8] = z;
         vertices[9] = ur.x;
         vertices[10] = ur.y;
-        vertices[11] = z;
+        //vertices[11] = z;
         vertexData.put(vertices, 0, 12);
     }
 
-    private void manage(Vector2f vx){
+    private void manage(Vector2f vx) {
         vx.subtractLocal(transform.offset);
         vx.rotateAroundOrigin(transform.angle, false);
         vx.addLocal(transform.offset);
