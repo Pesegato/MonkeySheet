@@ -147,7 +147,7 @@ public class BNode {
         msPosBuffer.updateData(msPosData);
     }
 
-    public Geometry makeGeo() {
+    Geometry makeGeo() {
         idxBuffer.updateData(idxData);
         mesh.updateBound();
         return new Geometry("batchedSpatial", mesh);

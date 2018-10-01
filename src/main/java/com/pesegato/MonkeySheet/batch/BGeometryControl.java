@@ -13,6 +13,10 @@ public abstract class BGeometryControl extends AbstractControl {
         this.bgeo = bgeo;
     }
 
+    protected BGeometryControl(BNodeControl bnc, float posX, float posY) {
+        this.bgeo = bnc.getReusableQuad(posX, posY);
+    }
+
     abstract protected void binit();
 
     abstract protected void bupdate(float tpf);
