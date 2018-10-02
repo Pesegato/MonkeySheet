@@ -15,6 +15,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.texture.Texture;
 
+import static com.pesegato.MonkeySheet.MonkeySheetAppState.log;
+
 /**
  *
  * @author Pesegato
@@ -63,6 +65,9 @@ public class MSMaterialControl extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if (MonkeySheetAppState.tTPF == 0) {
+            if (msc.position >= msc.anim.anim.length) {
+                log.error("Error in animation, doing {} at position {}", msc.msAction, msc.position);
+            }
             material.setFloat("Position", msc.anim.anim[msc.position].position);
             material.setTexture("ColorMap", msc.anim.anim[msc.position].sheetX);
         }

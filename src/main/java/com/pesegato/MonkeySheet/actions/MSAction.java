@@ -26,7 +26,7 @@ public abstract class MSAction {
     protected float msTimer;
     protected MSControl msc;
     protected Spatial spatial;
-    boolean hasEnded = false;
+    public boolean hasEnded = false;
 
     public static Geometry createGeometry(String name, float scaleX, float scaleY) {
         return new Geometry(name, new Quad(SPRITE_SIZE * scaleX, SPRITE_SIZE * scaleY));
@@ -376,6 +376,15 @@ public abstract class MSAction {
      */
 
     public void init() {
+    }
+
+    /**
+     * Called when trying to interrupt the current action
+     * @return true if can be interrupted
+     */
+
+    public MSTransitionAction onInterruptAttempt(){
+        return null;
     }
 
     /**

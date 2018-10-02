@@ -61,8 +61,7 @@ public class MSControl extends AbstractControl {
         if (MonkeySheetAppState.tTPF == 0) {
             log.trace("position: {} - {}", position, anim.anim[position].position);
             position++;
-            if (position > anim.anim.length - 1) {
-                position = 0;
+            if (position >= anim.anim.length - 1) {
                 if (runOnce) {
                     if (animManager != null) {
                         log.trace("loading animManager {}", animManager);
@@ -73,6 +72,8 @@ public class MSControl extends AbstractControl {
                         msAction.terminatedAnim();
                         msAction.whatPlay(this);
                     }
+                } else {
+                    position = 0;
                 }
             }
         }
