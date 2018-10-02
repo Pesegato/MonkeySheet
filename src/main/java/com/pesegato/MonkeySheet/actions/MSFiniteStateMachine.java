@@ -21,6 +21,7 @@ public abstract class MSFiniteStateMachine extends AbstractControl {
 
     MSAction[] actions;
     MSAction currentAction;
+    MSTransitionAction transitionAction;
 
     boolean runInit = true;
 
@@ -46,6 +47,12 @@ public abstract class MSFiniteStateMachine extends AbstractControl {
             }
         }
         if (MonkeySheetAppState.tTPF == 0) {
+            if (transitionAction != null) {
+                transitionAction.maybeEnd();
+                if (transitionAction.hasEnded)
+                    transitionAction = null;
+                return;
+            }
             if (currentAction.maybeEnd()) {
                 //...nothing, but keep maybeEnd because it has side effects
             }
@@ -68,8 +75,14 @@ public abstract class MSFiniteStateMachine extends AbstractControl {
         log.trace("start action {}", action);
         if (currentAction == action)
             return;
-        if (currentAction != null)
+        if (transitionAction != null)
+            return;
+        if (currentAction != null) {
             currentAction.interrupted();
+            transitionAction = currentAction.onInterruptAttempt();
+            if (transitionAction != null)
+                return;
+        }
         currentAction = action;
         currentAction.init(spatial);
     }
