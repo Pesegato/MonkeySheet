@@ -49,7 +49,7 @@ dependencies {
 	compile "${pesegato.g}:GoldMonkey:${pesegato.v}"
 	runtime 'ch.qos.logback:logback-classic:1.1.2'
 	runtime "${jme3.g}:jme3-desktop:${jme3.v}"
-  runtime "${jme3.g}:jme3-lwjgl:${jme3.v}"
+  runtime "${jme3.g}:jme3-lwjgl3:${jme3.v}"
 
   //utils
 
