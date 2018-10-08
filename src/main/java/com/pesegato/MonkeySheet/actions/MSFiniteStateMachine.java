@@ -54,7 +54,8 @@ public abstract class MSFiniteStateMachine extends AbstractControl {
                 return;
             }
             if (currentAction.maybeEnd()) {
-                //...nothing, but keep maybeEnd because it has side effects
+                currentAction = null;
+                return;
             }
         }
         msUpdate(tpf);
