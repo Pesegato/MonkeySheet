@@ -60,21 +60,20 @@ public class MSControl extends AbstractControl {
     protected void controlUpdate(float tpf) {
         if (MonkeySheetAppState.tTPF == 0) {
             log.trace("position: {} - {}", position, anim.anim[position].position);
-            position++;
-            if (position >= anim.anim.length - 1) {
-                if (runOnce) {
-                    if (animManager != null) {
-                        log.trace("loading animManager {}", animManager);
-                        animManager.whatPlay(this);
-                    }
-                    if (msAction != null) {
-                        log.trace("end of MSAction {}", msAction);
-                        msAction.terminatedAnim();
-                        msAction.whatPlay(this);
-                    }
-                } else {
-                    position = 0;
+            if (position < anim.anim.length - 1) {
+                position++;
+            } else if (runOnce) {
+                if (animManager != null) {
+                    log.trace("loading animManager {}", animManager);
+                    animManager.whatPlay(this);
                 }
+                if (msAction != null) {
+                    log.trace("end of MSAction {}", msAction);
+                    msAction.terminatedAnim();
+                    msAction.whatPlay(this);
+                }
+            } else {
+                position = 0;
             }
         }
 
