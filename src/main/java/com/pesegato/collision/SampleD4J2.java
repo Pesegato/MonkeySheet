@@ -8,6 +8,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
+import com.pesegato.collision.hitbox.HBCircle;
 import com.pesegato.collision.hitbox.HBRect;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.MassType;
@@ -44,7 +45,7 @@ public class SampleD4J2 extends SimpleApplication {
             hbRect.setColor(ColorRGBA.Blue);
             d4j.add(hbRect, MassType.INFINITE, 2);
 
-            HBRect hbRect2 = new HBRect(3, boxSize, .1f);
+            HBCircle hbRect2 = new HBCircle(3, 15);
             hbRect2.translate(200, 200);
             hbRect2.setColor(ColorRGBA.Red);
             d4j.add(hbRect2, MassType.INFINITE, 4);
