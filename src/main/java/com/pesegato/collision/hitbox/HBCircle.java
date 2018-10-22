@@ -23,20 +23,28 @@ import static com.pesegato.MonkeySheet.MSGlobals.SPRITE_SIZE;
 
 public class HBCircle extends DebuggableBody {
     String name = "";
-    float radius;
+    int radius;
     public long id;
 
-    public HBCircle(long id, float radius) {
+    public HBCircle(long id, int radius) {
         this.id = id;
         this.radius = radius;
         addFixture(new BodyFixture(new Circle(radius)));
     }
 
-    public HBCircle(String name, long id, float radius) {
+    public HBCircle(String name, long id, int radius) {
         this.name = name;
         this.id = id;
         this.radius = radius;
         addFixture(new BodyFixture(new Circle(radius)));
+    }
+
+    public HBCircle(long id, Filter filter, int radius) {
+        this.id = id;
+        this.radius = radius;
+        BodyFixture bf=new BodyFixture(new Circle(radius));
+        bf.setFilter(filter);
+        addFixture(bf);
     }
 
     @Deprecated
