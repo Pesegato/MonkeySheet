@@ -27,6 +27,7 @@ public abstract class MSAction {
     protected MSControl msc;
     protected Spatial spatial;
     public boolean hasEnded = false;
+    public boolean uncalledFinish = true;
 
     public static Geometry createGeometry(String name, float scaleX, float scaleY) {
         return new Geometry(name, new Quad(SPRITE_SIZE * scaleX, SPRITE_SIZE * scaleY));
@@ -335,6 +336,7 @@ public abstract class MSAction {
     protected void init(Spatial spatial) {
         msTimer = 0;
         hasEnded = false;
+        uncalledFinish = true;
         this.spatial = spatial;
         if (msc != null) {
             msc.msAction = this;
@@ -366,7 +368,10 @@ public abstract class MSAction {
         boolean ended=hasEnded();
         log.trace("{} maybe end {} {}",msc, this, ended);
         if (ended){
-            finish();
+            if (uncalledFinish) {
+                finish();
+                uncalledFinish = false;
+            }
         }
         return ended;
     }
