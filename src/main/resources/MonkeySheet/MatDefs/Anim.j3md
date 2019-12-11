@@ -9,6 +9,7 @@ MaterialDef Anim {
         Float HitTime
         Color GlowColor
         Float AlphaValue
+        Float HueShift
         Color FogColor
         Float FogIntensity
         Boolean VertexSheetPos (UseVertexSheetPos)

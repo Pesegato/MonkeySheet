@@ -31,6 +31,7 @@ public class MSMaterialControl extends AbstractControl {
 
     private float alphaValue=1;
     private boolean flipped=false;
+    private float hueShift = 0;
     private ColorRGBA fogColor=ColorRGBA.Pink;
     private float fogIntensity=0;
 
@@ -56,6 +57,7 @@ public class MSMaterialControl extends AbstractControl {
             material.setFloat("AlphaValue", 1.0f);
             material.setColor("FogColor", fogColor);
             material.setFloat("FogIntensity", 0.0f);
+            material.setFloat("HueShift", hueShift);
     }
 
     public void setVertexSheetPos(boolean b){
@@ -77,6 +79,11 @@ public class MSMaterialControl extends AbstractControl {
     public void setFlipped(boolean flipped){
         this.flipped=flipped;
         material.setFloat("FlipHorizontal", flipped?1.0f:0.0f);
+    }
+
+    public void setHueShift(float hueShift) {
+        this.hueShift = hueShift;
+        material.setFloat("HueShift", hueShift);
     }
 
     public void setAlpha(float alphaValue){
