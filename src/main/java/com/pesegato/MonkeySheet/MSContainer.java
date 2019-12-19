@@ -13,8 +13,6 @@ import com.pesegato.goldmonkey.Container;
  */
 public class MSContainer {
 
-    boolean USE_COMPRESSION = false;
-
     public int numTiles;
     String[] sheets;
     String name;
@@ -23,7 +21,7 @@ public class MSContainer {
     public MSContainer(Container c) {
         this.numTiles = c.size;
         this.name = c.id;
-        this.sheets = new String[]{"Textures/MonkeySheet/" + name + (USE_COMPRESSION ? ".dds" : ".png")};
+        this.sheets = new String[]{"Textures/MonkeySheet/" + name + (MSGlobals.isCompressedTexturesEnabled() ? ".dds" : ".png")};
         this.c = c;
     }
 
@@ -32,6 +30,6 @@ public class MSContainer {
     }
 
     public void setPath(String path) {
-        this.sheets = new String[]{path + name + (USE_COMPRESSION ? ".dds" : ".png")};
+        this.sheets = new String[]{path + name + (MSGlobals.isCompressedTexturesEnabled() ? ".dds" : ".png")};
     }
 }

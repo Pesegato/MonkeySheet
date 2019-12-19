@@ -40,6 +40,16 @@ public class MSGlobals {
     public static int MS_HEIGHT;
     public static boolean SHOW_HITBOX = true;
 
+    private static boolean USE_COMPRESSION = true;
+
+    public static void setCompressedTexturesEnabled(boolean use_compression) {
+        USE_COMPRESSION = use_compression;
+    }
+
+    public static boolean isCompressedTexturesEnabled() {
+        return USE_COMPRESSION;
+    }
+
     public static void setResolution(String res) {
         switch (res) {
             case "480p":
