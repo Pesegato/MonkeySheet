@@ -13,7 +13,7 @@ import com.jme3.texture.Texture;
  */
 public class MTween {
     public String name;
-    MSFrame[] anim;
+    public MSFrame[] anim;
     MSContainer msCont;
     int[] hitbox;
     int centerX, centerY;
@@ -25,13 +25,24 @@ public class MTween {
             lastPos+=pos[i];
             anim[i]=new MSFrame(lastPos%(size*size), lastPos/(size*size));
         }
-        this.hitbox=hitbox;
-        this.centerX=centerX;
-        this.centerY=centerY;
+        this.hitbox = hitbox;
+        this.centerX = centerX;
+        this.centerY = centerY;
     }
-    public void setTextures(Texture[] sheetsX){
-        for (MSFrame frame : anim) {
-            frame.sheetX = sheetsX[frame.sheet];
+
+    public void setTextures(Texture[] sheetsX) {
+        int sheet = -1;
+        try {
+            for (MSFrame frame : anim) {
+                sheet = frame.sheet;
+                frame.sheetX = sheetsX[sheet];
+            }
+        } catch (java.lang.ArrayIndexOutOfBoundsException e) {
+            System.out.println("Missing sheet " + sheet + "!");
+            System.out.println("Unless you are using multisheet, you probably referenced frames outside of the sheet 0.");
+            System.out.println("For example, when using a Container with size 3, frames must be between 0 and 8!");
+            e.printStackTrace();
+            System.exit(-1);
         }
     }
 }
