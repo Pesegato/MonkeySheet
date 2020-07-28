@@ -165,7 +165,7 @@ public class Dyn4JShapeControl extends IDyn4JControl {
                             0f));
             lastTransform=transform;
         }
-        Double angle = body.getTransform().getRotation();
+        Double angle = body.getTransform().getRotationAngle();
         if (angle != lastAngle) {
             Quaternion roll = new Quaternion();
             roll.fromAngleAxis( new Float(angle) , Vector3f.UNIT_Z);

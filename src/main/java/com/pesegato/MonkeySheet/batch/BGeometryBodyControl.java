@@ -26,7 +26,7 @@ public abstract class BGeometryBodyControl extends BGeometryControl {
         bgeo.getTransform().setPosition(
                 (float) body.getTransform().getTranslationX() + offsetX,
                 (float) body.getTransform().getTranslationY() + offsetY);
-        bgeo.getTransform().setLocalRotation((float) body.getTransform().getRotation() + offsetAngle);
+        bgeo.getTransform().setLocalRotation((float) body.getTransform().getRotationAngle() + offsetAngle);
         bgeo.applyTransform();
         //duration -= tpf;
         //if (duration < 0) {
