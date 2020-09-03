@@ -4,6 +4,7 @@ MaterialDef Anim {
         Texture2D ColorMap
         Texture2D Threshold -LINEAR
         Float Level
+        Boolean ShowThreshold
         Float SizeX : 1
         Float SizeY : 1
         Float Position
