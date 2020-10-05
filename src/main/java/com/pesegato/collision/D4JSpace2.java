@@ -4,8 +4,8 @@ import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
+import org.dyn4j.collision.CollisionPair;
 import org.dyn4j.collision.broadphase.BroadphaseDetector;
-import org.dyn4j.collision.broadphase.BroadphasePair;
 import org.dyn4j.collision.broadphase.DynamicAABBTree;
 import org.dyn4j.collision.manifold.ClippingManifoldSolver;
 import org.dyn4j.collision.manifold.ManifoldSolver;
@@ -22,6 +22,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+
+/**
+ * TODO Evaluate the new 4.0 API https://github.com/dyn4j/dyn4j/issues/144
+ */
 
 public class D4JSpace2 extends BaseAppState {
     //private World world;
@@ -91,10 +96,10 @@ public class D4JSpace2 extends BaseAppState {
             }
             //System.out.println("Collisions for "+name);
             // when ready to detect
-            List<BroadphasePair<Body, BodyFixture>> pairs = bp.detect();
-            for (BroadphasePair<Body, BodyFixture> pair : pairs) {
-                Body body1 = pair.getCollidable1();
-                Body body2 = pair.getCollidable2();
+            List<CollisionPair<Body, BodyFixture>> pairs = bp.detect();
+            for (CollisionPair<Body, BodyFixture> pair : pairs) {
+                Body body1 = pair.getBody1();
+                Body body2 = pair.getBody2();
                 BodyFixture fixture1 = pair.getFixture1();
                 BodyFixture fixture2 = pair.getFixture2();
                 Transform transform1 = body1.getTransform();
@@ -136,11 +141,11 @@ public class D4JSpace2 extends BaseAppState {
     Another alternative
 */
     public boolean checkCollisionAll(Body a, Body b) {
-        for (BroadphasePair<Body, BodyFixture> pair : bp.detect()) {
-            if ((pair.getCollidable1() == a) && (pair.getCollidable2() == b) ||
-                    (pair.getCollidable1() == b) && (pair.getCollidable2() == a)) {
-                Body body1 = pair.getCollidable1();
-                Body body2 = pair.getCollidable2();
+        for (CollisionPair<Body, BodyFixture> pair : bp.detect()) {
+            if ((pair.getBody1() == a) && (pair.getBody2() == b) ||
+                    (pair.getBody1() == b) && (pair.getBody2() == a)) {
+                Body body1 = pair.getBody1();
+                Body body2 = pair.getBody2();
                 BodyFixture fixture1 = pair.getFixture1();
                 BodyFixture fixture2 = pair.getFixture2();
                 Transform transform1 = body1.getTransform();
