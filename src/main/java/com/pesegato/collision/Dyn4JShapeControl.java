@@ -10,7 +10,6 @@ import org.dyn4j.collision.CategoryFilter;
 import org.dyn4j.collision.broadphase.BroadphaseDetector;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
-import org.dyn4j.dynamics.World;
 import org.dyn4j.geometry.Convex;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Transform;
@@ -33,7 +32,7 @@ public class Dyn4JShapeControl extends IDyn4JControl {
         fixture = new BodyFixture(shape);
         body.addFixture(fixture);
         body.setMass(massType);
-        body.setAutoSleepingEnabled(false);
+        body.setAtRestDetectionEnabled(false);
         fixture.setUserData(hbRect.id);
     }
 
@@ -49,7 +48,7 @@ public class Dyn4JShapeControl extends IDyn4JControl {
         for (BodyFixture bf:body.getFixtures())
             bf.setUserData(id);
         body.setMass(massType);
-        body.setAutoSleepingEnabled(true);
+        body.setAtRestDetectionEnabled(true);
     }
 
     Dyn4JShapeControl(Convex shape,
@@ -65,7 +64,7 @@ public class Dyn4JShapeControl extends IDyn4JControl {
         fixture.setDensity(weight);
         body.addFixture(fixture);
         body.setMass(massType);
-        body.setAutoSleepingEnabled(true);
+        body.setAtRestDetectionEnabled(true);
     }
     public void addToWorld(BroadphaseDetector broadphase) {
         this.broadphase = broadphase;

@@ -4,9 +4,9 @@ import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
+import org.dyn4j.collision.CollisionItem;
 import org.dyn4j.collision.CollisionPair;
-import org.dyn4j.collision.broadphase.BroadphaseDetector;
-import org.dyn4j.collision.broadphase.DynamicAABBTree;
+import org.dyn4j.collision.broadphase.*;
 import org.dyn4j.collision.manifold.ClippingManifoldSolver;
 import org.dyn4j.collision.manifold.ManifoldSolver;
 import org.dyn4j.collision.narrowphase.Gjk;
@@ -25,13 +25,23 @@ import java.util.Set;
 
 
 /**
- * TODO Evaluate the new 4.0 API https://github.com/dyn4j/dyn4j/issues/144
+ * TODO Evaluate the new 4.1 API https://github.com/dyn4j/dyn4j/issues/144
  */
 
 public class D4JSpace2 extends BaseAppState {
     //private World world;
 
-    BroadphaseDetector<Body, BodyFixture> bp;
+    int initialBodyCapacity=1024;
+
+    final BroadphaseFilter<CollisionItem<Body, BodyFixture>> broadphaseFilter = new CollisionItemBroadphaseFilter<Body, BodyFixture>();
+    final AABBProducer<CollisionItem<Body, BodyFixture>> aabbProducer = new CollisionItemAABBProducer<Body, BodyFixture>();
+    final AABBExpansionMethod<CollisionItem<Body, BodyFixture>> expansionMethod = new StaticValueAABBExpansionMethod<CollisionItem<Body, BodyFixture>>(0.2);
+    final BroadphaseDetector<CollisionItem<Body, BodyFixture>> broadphase = new DynamicAABBTree<CollisionItem<Body, BodyFixture>>(
+            broadphaseFilter,
+            aabbProducer,
+            expansionMethod,
+            initialBodyCapacity);
+    final CollisionItemBroadphaseDetector<Body, BodyFixture> broadphaseDetector = new CollisionItemBroadphaseDetectorAdapter<Body, BodyFixture>(broadphase);
     NarrowphaseDetector np;
     ManifoldSolver ms;
 
@@ -49,11 +59,10 @@ public class D4JSpace2 extends BaseAppState {
 // collision detection process:
 // Broadphase -> Narrowphase -> Manifold generation
 // create detection chain
-        bp = new DynamicAABBTree<Body, BodyFixture>();
         np = new Gjk();
         //NarrowphasePostProcessor npp = LinkPostProcessor();  // Only required if you use the Link shape
         ms = new ClippingManifoldSolver();
-
+        broadphaseDetector.setUpdateTrackingEnabled(true);
     }
 
     @Override
@@ -75,13 +84,13 @@ public class D4JSpace2 extends BaseAppState {
         for (BodyFixture bf : body.getFixtures())
             bf.setUserData(id);
         body.setMass(massType);
-        body.setAutoSleepingEnabled(false);
-        bp.add(body);
+        body.setAtRestDetectionEnabled(false);
+        broadphaseDetector.add(body);
         bodies.add(body);
     }
 
     public void remove(DebuggableBody body) {
-        bp.remove(body);
+        broadphaseDetector.remove(body);
         bodies.remove(body);
     }
 
@@ -91,19 +100,17 @@ public class D4JSpace2 extends BaseAppState {
         tTPF += tpf;
         if (tTPF > 1 / 60f) {
             tTPF = 0;
-            for (Body b : bodies) {
-                bp.update(b);
-            }
+            broadphase.update();
             //System.out.println("Collisions for "+name);
             // when ready to detect
-            List<CollisionPair<Body, BodyFixture>> pairs = bp.detect();
-            for (CollisionPair<Body, BodyFixture> pair : pairs) {
-                Body body1 = pair.getBody1();
-                Body body2 = pair.getBody2();
-                BodyFixture fixture1 = pair.getFixture1();
-                BodyFixture fixture2 = pair.getFixture2();
-                Transform transform1 = body1.getTransform();
-                Transform transform2 = body2.getTransform();
+            List<CollisionPair<CollisionItem<Body, BodyFixture>>> pairs = broadphaseDetector.detect();
+            for (CollisionPair<CollisionItem<Body, BodyFixture>> pair : pairs) {
+                CollisionItem<Body, BodyFixture> first = pair.getFirst();
+                CollisionItem<Body, BodyFixture> second = pair.getSecond();
+                BodyFixture fixture1 = first.getFixture();
+                BodyFixture fixture2 = second.getFixture();
+                Transform transform1 = first.getBody().getTransform();
+                Transform transform2 = second.getBody().getTransform();
                 Convex convex2 = fixture2.getShape();
                 Convex convex1 = fixture1.getShape();
                 Penetration p = new Penetration();
@@ -141,15 +148,16 @@ public class D4JSpace2 extends BaseAppState {
     Another alternative
 */
     public boolean checkCollisionAll(Body a, Body b) {
-        for (CollisionPair<Body, BodyFixture> pair : bp.detect()) {
-            if ((pair.getBody1() == a) && (pair.getBody2() == b) ||
-                    (pair.getBody1() == b) && (pair.getBody2() == a)) {
-                Body body1 = pair.getBody1();
-                Body body2 = pair.getBody2();
-                BodyFixture fixture1 = pair.getFixture1();
-                BodyFixture fixture2 = pair.getFixture2();
-                Transform transform1 = body1.getTransform();
-                Transform transform2 = body2.getTransform();
+        List<CollisionPair<CollisionItem<Body, BodyFixture>>> pairs = broadphaseDetector.detect();
+        for (CollisionPair<CollisionItem<Body, BodyFixture>> pair : pairs) {
+            if ((pair.getFirst().getBody()==a)&&(pair.getSecond().getBody()==b)||
+                    (pair.getFirst().getBody()==b)&&(pair.getSecond().getBody()==a)) {
+                CollisionItem<Body, BodyFixture> first = pair.getFirst();
+                CollisionItem<Body, BodyFixture> second = pair.getSecond();
+                BodyFixture fixture1 = first.getFixture();
+                BodyFixture fixture2 = second.getFixture();
+                Transform transform1 = first.getBody().getTransform();
+                Transform transform2 = second.getBody().getTransform();
                 Convex convex2 = fixture2.getShape();
                 Convex convex1 = fixture1.getShape();
                 Penetration p = new Penetration();

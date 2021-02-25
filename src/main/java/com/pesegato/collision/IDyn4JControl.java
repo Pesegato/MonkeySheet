@@ -2,7 +2,6 @@ package com.pesegato.collision;
 
 import com.jme3.scene.control.AbstractControl;
 import org.dyn4j.collision.broadphase.BroadphaseDetector;
-import org.dyn4j.dynamics.World;
 
 @Deprecated
 public abstract class IDyn4JControl extends AbstractControl{
