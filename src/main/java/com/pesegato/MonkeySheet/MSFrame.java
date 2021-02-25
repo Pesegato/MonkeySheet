@@ -8,19 +8,23 @@ package com.pesegato.MonkeySheet;
 import com.jme3.texture.Texture;
 
 /**
- *
  * @author Pesegato
  */
 public class MSFrame {
     int position;
     int sheet;
     Texture sheetX;
-    public MSFrame(int position, int sheet){
-        this.position=position;
-        this.sheet=sheet;
+
+    public MSFrame(int position, int sheet) {
+        this.position = position;
+        this.sheet = sheet;
     }
-    
-    public void setTexture(Texture sheetX){
-        this.sheetX=sheetX;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setTexture(Texture sheetX) {
+        this.sheetX = sheetX;
     }
 }
