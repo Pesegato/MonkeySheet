@@ -39,8 +39,12 @@ public class MSMaterialControl extends AbstractControl {
         material = new Material(assetManager, "MonkeySheet/MatDefs/Anim.j3md");
         Texture[] sheetsX=new Texture[msCont.sheets.length];
         for (int i = 0; i < msCont.sheets.length; i++) {
+            long start = System.currentTimeMillis();
+            long end;
             System.out.println("MonkeySheet: Now loading "+msCont.sheets[i]);
             sheetsX[i]=assetManager.loadTexture(msCont.sheets[i]);
+            end = System.currentTimeMillis();
+            log.trace("loaded {}", (end - start));
         }
         material.setFloat("SizeX", msCont.numTiles);
         material.setFloat("SizeY", msCont.numTiles);
