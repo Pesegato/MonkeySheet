@@ -11,6 +11,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,6 +103,39 @@ public class MSGlobals {
         Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         geo.setMaterial(material);
         return material;
+    }
+
+    /**
+     * This method moves the spatial toward absolute target position finalX, finalY
+     * with speed factors x,y.
+     * For each axis, if speed is positive but target is behind then no movement is performed
+     * For each axis, if speed is negative but target is in front then no movement is performed
+     *
+     * @param spatial the Spatial to be moved
+     * @param x       speed on the X
+     * @param y       speed on the Y
+     * @param finalX  target x coordinate
+     * @param finalY  target y coordinate
+     * @return true if arrived at target position
+     */
+
+    public static boolean simpleMoveFixPixels(Spatial spatial, float x, float y, float finalX, float finalY) {
+        float currentX = spatial.getLocalTranslation().x;
+        float currentY = spatial.getLocalTranslation().y;
+        float nextX = x + currentX;
+        float nextY = y + currentY;
+        if (x > 0) {
+            nextX = Math.min(nextX, finalX);
+        } else {
+            nextX = Math.max(nextX, finalX);
+        }
+        if (y > 0) {
+            nextY = Math.min(nextY, finalY);
+        } else {
+            nextY = Math.max(nextY, finalY);
+        }
+        spatial.setLocalTranslation(nextX, nextY, 0);
+        return (nextX == finalX) && (nextY == finalY);
     }
 
     protected void logBuildInfo() {
