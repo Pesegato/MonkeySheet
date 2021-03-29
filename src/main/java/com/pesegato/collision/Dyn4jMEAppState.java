@@ -17,6 +17,7 @@ public class Dyn4jMEAppState extends BaseAppState {
         spaces = new D4JSpace[]{new D4JSpace(), new D4JSpace()};
         spaces[0].setName("Plane 0");
         spaces[1].setName("Plane 1");
+        spaces[2].setName("Plane 2");
     }
 
     @Override
