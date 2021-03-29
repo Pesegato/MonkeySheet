@@ -138,6 +138,39 @@ public class MSGlobals {
         return (nextX == finalX) && (nextY == finalY);
     }
 
+    /**
+     * This method scales the spatial toward target scale
+     * with speed factors x,y.
+     * For each axis, if speed is positive but target is smaller then no scale is performed
+     * For each axis, if speed is negative but target is bigger then no scale is performed
+     *
+     * @param spatial the Spatial to be moved
+     * @param x       speed on the X
+     * @param y       speed on the Y
+     * @param finalX  target x scale
+     * @param finalY  target y scale
+     * @return true if arrived at target scale
+     */
+
+    public static boolean simpleScaleFixPixels(Spatial spatial, float x, float y, float finalX, float finalY) {
+        float currentX = spatial.getLocalScale().getX();
+        float currentY = spatial.getLocalScale().getY();
+        float nextX = x + currentX;
+        float nextY = y + currentY;
+        if (x > 0) {
+            nextX = Math.min(nextX, finalX);
+        } else {
+            nextX = Math.max(nextX, finalX);
+        }
+        if (y > 0) {
+            nextY = Math.min(nextY, finalY);
+        } else {
+            nextY = Math.max(nextY, finalY);
+        }
+        spatial.setLocalScale(nextX, nextY, 0);
+        return (nextX == finalX) && (nextY == finalY);
+    }
+
     protected void logBuildInfo() {
         try {
             java.net.URL u = Resources.getResource("monkeysheet.build.date");
