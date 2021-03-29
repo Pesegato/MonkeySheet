@@ -37,29 +37,31 @@ public class MSControl extends AbstractControl {
     }
 
     final public void playForever(String ani) {
-        log.debug("now playing FOREVER animation {}", ani);
         anim = MonkeySheetAppState.getAnim(ani);
         position = 0;
         runOnce = false;
         if (anim == null) {
             log.warn("Running UNINITIALIZED animation {}, GOING TO CRASH VERY SOON!!!", ani);
         }
+        animation = ani;
+        log.debug("now playing FOREVER animation {}/{}", anim.msCont.name, ani);
     }
 
     public void playOnce(String ani) {
-        log.debug("now playing ONCE animation {}", ani);
         anim = MonkeySheetAppState.getAnim(ani);
         position = 0;
         runOnce = true;
         if (anim == null) {
             log.warn("Running UNINITIALIZED animation {}, GOING TO CRASH VERY SOON!!!" + ani);
         }
+        animation = ani;
+        log.debug("now playing ONCE animation {}/{}", anim.msCont.name, ani);
     }
 
     @Override
     protected void controlUpdate(float tpf) {
         if (MonkeySheetAppState.tTPF == 0) {
-            log.trace("position: {} - {}", position, anim.anim[position].position);
+            log.trace("position: {}/{} {} - {}", anim.msCont.name, animation, position, anim.anim[position].position);
             if (position < anim.anim.length - 1) {
                 position++;
             } else if (runOnce) {
