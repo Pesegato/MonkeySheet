@@ -33,7 +33,7 @@ repositories {
 }
 
 
-def jme3 = ["v" : '[3.1,)', "g": "org.jmonkeyengine"]
+def jme3 = ["v" : '3.2.1-stable', "g": "org.jmonkeyengine"]
 def pesegato = ["g" :"com.pesegato" ,"v":"latest.integration"]
 if (isCiServer){
 	pesegato.g="com.github.Pesegato"
