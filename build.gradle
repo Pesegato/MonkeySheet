@@ -1,6 +1,6 @@
 plugins {
 	id "java"
-	id "maven"
+	id "maven-publish"
 //  id "eclipse"
 //  id "idea"
 	id 'pl.allegro.tech.build.axion-release' version '1.4.0'
@@ -42,14 +42,14 @@ if (isCiServer){
 
 dependencies {
   // jme
-  compile "${jme3.g}:jme3-core:${jme3.v}"
-	compile 'org.dyn4j:dyn4j:[3.2,)'
-	compile 'org.slf4j:slf4j-api:1.7.13'
-	compile 'com.google.guava:guava:19.0'
-	compile "${pesegato.g}:GoldMonkey:${pesegato.v}"
-	runtime 'ch.qos.logback:logback-classic:1.1.2'
-	runtime "${jme3.g}:jme3-desktop:${jme3.v}"
-  runtime "${jme3.g}:jme3-lwjgl3:${jme3.v}"
+		implementation "${jme3.g}:jme3-core:${jme3.v}"
+		implementation 'org.dyn4j:dyn4j:[3.2,)'
+		implementation 'org.slf4j:slf4j-api:1.7.13'
+		implementation 'com.google.guava:guava:19.0'
+    implementation "${pesegato.g}:GoldMonkey:${pesegato.v}"
+		runtimeOnly  'ch.qos.logback:logback-classic:1.1.2'
+		runtimeOnly  "${jme3.g}:jme3-desktop:${jme3.v}"
+		runtimeOnly  "${jme3.g}:jme3-lwjgl3:${jme3.v}"
 
   //utils
 
