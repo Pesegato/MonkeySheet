@@ -27,6 +27,9 @@ public class MSControl extends AbstractControl {
     MSAnimationManager animManager;
     public MSAction msAction;
 
+    public MSControl() {
+    }
+
     public MSControl(String anim, Timeable timeable) {
         playForever(anim);
         MonkeySheetAppState.timeable = timeable;
