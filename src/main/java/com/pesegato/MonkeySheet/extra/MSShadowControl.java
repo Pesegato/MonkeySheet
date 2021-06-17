@@ -10,24 +10,20 @@ import com.pesegato.MonkeySheet.MonkeySheetAppState;
  * A shadow effect for MSControl
  */
 
-public class MSShadowControl extends MSControl {
+public class MSShadowControl extends MSControl implements Tickable {
 
     MSControl targetControl;
     MSMaterialControl fxControl;
     Spatial targetSpatial;
     float currentAlpha = 1.0f;
-    float delay;
     float alphaDecay;
-    float totTPF;
     float offsetX;
     float offsetY;
 
-    public MSShadowControl(MSControl targetControl, float startDelay, float delay, float offsetX, float offsetY) {
+    public MSShadowControl(MSControl targetControl, float delay, float offsetX, float offsetY) {
         this.targetControl = targetControl;
         this.targetSpatial = targetControl.getSpatial();
-        this.delay = delay;
         this.alphaDecay = 1f / delay;
-        totTPF = delay + startDelay;
         this.position = targetControl.position;
         this.anim = targetControl.anim;
         this.offsetX = offsetX;
@@ -39,17 +35,17 @@ public class MSShadowControl extends MSControl {
     }
 
     public void update(float tpf) {
-        totTPF -= tpf;
         currentAlpha -= (alphaDecay * tpf);
-        if (totTPF <= 0) {
-            System.out.println("update " + targetControl.animation + " " + targetControl.position);
-            Vector3f trans = targetSpatial.getParent().getParent().getLocalTranslation();
-            spatial.setLocalTranslation(trans.x + offsetX, trans.y + offsetY, trans.z);
-            anim = MonkeySheetAppState.getAnim(targetControl.animation);
-            this.position = targetControl.position;
-            totTPF = delay;
-            currentAlpha = 1.0f;
-        }
         fxControl.setAlpha(currentAlpha);
+    }
+
+    @Override
+    public void tick() {
+        log.debug("update {} {}", targetControl.animation, targetControl.position);
+        Vector3f trans = targetSpatial.getParent().getParent().getLocalTranslation();
+        spatial.setLocalTranslation(trans.x + offsetX, trans.y + offsetY, trans.z);
+        anim = MonkeySheetAppState.getAnim(targetControl.animation);
+        this.position = targetControl.position;
+        currentAlpha = 1.0f;
     }
 }
