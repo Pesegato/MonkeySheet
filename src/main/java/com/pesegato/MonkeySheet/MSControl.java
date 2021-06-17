@@ -7,22 +7,14 @@ package com.pesegato.MonkeySheet;
 
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.control.AbstractControl;
 import com.pesegato.MonkeySheet.actions.MSAction;
 import com.pesegato.timing.Timeable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Pesegato
  */
-public class MSControl extends AbstractControl {
+public class MSControl extends MSSpriteControl {
 
-    static Logger log = LoggerFactory.getLogger(MSControl.class);
-
-    public MTween anim;
-    public String animation;
-    public int position;
     boolean runOnce = false;
     MSAnimationManager animManager;
     public MSAction msAction;
