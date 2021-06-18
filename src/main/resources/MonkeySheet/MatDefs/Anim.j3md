@@ -6,6 +6,7 @@ MaterialDef Anim {
         Float SizeY : 1
         Float Position
         Float FlipHorizontal
+        Boolean GrayScale
         Float HitTime
         Color GlowColor
         Float AlphaValue

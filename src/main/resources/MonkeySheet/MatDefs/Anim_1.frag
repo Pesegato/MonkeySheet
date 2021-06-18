@@ -6,6 +6,7 @@ uniform vec4 m_GlowColor;
 uniform vec4 m_FogColor;
 uniform float m_FogIntensity;
 uniform float m_HueShift;
+uniform bool m_GrayScale;
 vec4 color;
 varying vec2 texCoord;
 varying float vAlpha;
@@ -53,6 +54,10 @@ color = texture2D(m_ColorMap, texCoord);
 //gl_FragColor.g = m_Pulse;
 //gl_FragColor.g = m_Pulse;
 //gl_FragColor =  m_GlowColor;
+    if (m_GrayScale) {
+        float gray = dot(gl_FragColor.rgb, vec3(0.299, 0.587, 0.114));
+        gl_FragColor = vec4(vec3(gray), 1.0);
+    }
 float t = m_AlphaValue;
     #ifdef HAS_VERTEXSHEETPOS
         t = vAlpha;

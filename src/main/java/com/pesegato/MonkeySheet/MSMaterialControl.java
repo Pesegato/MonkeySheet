@@ -30,6 +30,7 @@ public class MSMaterialControl extends AbstractControl {
 
     private float alphaValue = 1;
     private boolean flipped = false;
+    private boolean grayScale = false;
     private float hueShift = 0;
     private ColorRGBA fogColor = ColorRGBA.Pink;
     private float fogIntensity = 0;
@@ -103,6 +104,11 @@ public class MSMaterialControl extends AbstractControl {
     public void setFogIntensity(float fogIntensity) {
         this.fogIntensity = fogIntensity;
         material.setFloat("FogIntensity", fogIntensity);
+    }
+
+    public void setGrayScale(boolean grayScale) {
+        this.grayScale = grayScale;
+        material.setBoolean("GrayScale", grayScale);
     }
 
     @Override
