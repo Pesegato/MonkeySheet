@@ -2,6 +2,7 @@
 tmp
 *.off
 *.orig
+local.properties
 
 # gradle
 build
