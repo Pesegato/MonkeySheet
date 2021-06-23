@@ -2,19 +2,13 @@ plugins {
 		id "java"
 		id "maven-publish"
 //  id "eclipse"
-//  id "idea"
-		id 'pl.allegro.tech.build.axion-release' version '1.4.0'
+		id "idea"
+		id 'com.palantir.git-version' version '0.12.3'
 }
 
-scmVersion {
-		tag {
-				prefix = 'MonkeySheet'
-		}
-}
+project.version gitVersion()
 
-project.version = scmVersion.version
-def fullversion = "git describe --always --dirty".execute().text.trim()
-println("version : '${project.version}/${fullversion}'")
+println("version : '${version}'")
 
 ext {
 		jvm = org.gradle.internal.jvm.Jvm.current()
@@ -27,13 +21,12 @@ ext {
 group = "com.pesegato"
 
 repositories {
-		mavenLocal()
-		jcenter()
+		mavenCentral()
 		maven { url "https://jitpack.io" }
 }
 
 
-def jme3 = ["v": '3.2.1-stable', "g": "org.jmonkeyengine"]
+def jme3 = ["v": '3.4.0-stable', "g": "org.jmonkeyengine"]
 def pesegato = ["g": "com.pesegato", "v": "latest.integration"]
 if (isCiServer) {
 		pesegato.g = "com.github.Pesegato"
@@ -46,7 +39,8 @@ dependencies {
 		implementation 'org.dyn4j:dyn4j:4.2.0'
 		implementation 'org.slf4j:slf4j-api:1.7.13'
 		implementation 'com.google.guava:guava:19.0'
-		implementation "${pesegato.g}:GoldMonkey:${pesegato.v}"
+		implementation 'com.google.code.gson:gson:2.7'
+		implementation "com.github.pesegato:GoldMonkey:[0.7,)"
 		runtimeOnly 'ch.qos.logback:logback-classic:1.1.2'
 		runtimeOnly "${jme3.g}:jme3-lwjgl3:${jme3.v}"
 
@@ -63,9 +57,9 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 compileJava.doLast {
 		def buildDate = new Date().format('yyyy-MM-dd HHmm')
-		println "Writing ${scmVersion.tag.prefix}.build.date: " + buildDate
-		new File(destinationDir, "${scmVersion.tag.prefix}.build.date").text = buildDate
-		new File(destinationDir, "${scmVersion.tag.prefix}.build.version").text = "${fullversion}"
+		println "Writing ${rootProject.name}.build.date: " + buildDate
+		new File(destinationDir, "${rootProject.name}.build.date").text = buildDate
+		new File(destinationDir, "${rootProject.name}.build.version").text = "${version}"
 }
 
 publishing {
