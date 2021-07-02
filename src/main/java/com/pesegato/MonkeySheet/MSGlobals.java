@@ -23,6 +23,14 @@ public class MSGlobals {
 
     static Logger log = LoggerFactory.getLogger(MSGlobals.class);
 
+    public enum COMPRESSION_TYPE {
+        NONE,
+        BC7,
+        DXT5,
+        ASTC,
+        ETC2
+    }
+
     public static final int SPRITE_SIZE = 256;
 
     public static final int MS_WIDTH_480P = 720;
@@ -41,14 +49,45 @@ public class MSGlobals {
     public static int MS_HEIGHT;
     public static boolean SHOW_HITBOX = true;
 
-    private static boolean USE_COMPRESSION = true;
+    private static COMPRESSION_TYPE USE_COMPRESSION = COMPRESSION_TYPE.NONE;
 
-    public static void setCompressedTexturesEnabled(boolean use_compression) {
-        USE_COMPRESSION = use_compression;
+    public static void setCompressedTexturesEnabled(COMPRESSION_TYPE compression) {
+        USE_COMPRESSION = compression;
     }
 
-    public static boolean isCompressedTexturesEnabled() {
+    public static COMPRESSION_TYPE getCompression() {
         return USE_COMPRESSION;
+    }
+
+    public static String getExtension() {
+        switch (USE_COMPRESSION) {
+            case NONE:
+                return ".png";
+            case BC7:
+            case DXT5:
+                return ".dds";
+            case ASTC:
+                return ".astc";
+            case ETC2:
+                return ".etc";
+        }
+        return null;
+    }
+
+    public static String getComment(COMPRESSION_TYPE type){
+        switch (type){
+            case NONE:
+                return "Memory hungry";//&slow
+            case BC7:
+                return "Needs DirectX11";
+            case DXT5:
+                return "Looks bad";
+            case ASTC:
+                return "Unavailable";
+            case ETC2:
+                return "Unavailable";//Raspberry Pi?
+        }
+        return null;
     }
 
     public static void setResolution(String res) {

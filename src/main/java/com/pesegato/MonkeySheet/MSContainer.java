@@ -21,7 +21,7 @@ public class MSContainer {
     public MSContainer(Container c) {
         this.numTiles = c.size;
         this.name = c.id;
-        this.sheets = new String[]{"Textures/MonkeySheet/" + name + (MSGlobals.isCompressedTexturesEnabled() ? ".dds" : ".png")};
+        setPath("Textures/MonkeySheet/");
         this.c = c;
     }
 
@@ -29,7 +29,8 @@ public class MSContainer {
         return MonkeySheetAppState.animationC.get(c);
     }
 
-    public void setPath(String path) {
-        this.sheets = new String[]{path + name + (MSGlobals.isCompressedTexturesEnabled() ? ".dds" : ".png")};
+    public MSContainer setPath(String path) {
+        this.sheets = new String[]{path + MSGlobals.getCompression() + "/" + name + (MSGlobals.getExtension())};
+        return this;
     }
 }
