@@ -7,8 +7,8 @@ MaterialDef Anim {
         Float Position
         Float FlipHorizontal
         Float HitTime
-        Color GlowColor
         Float AlphaValue : 1
+        Boolean GrayScale
         Float HueShift
         Color FogColor
         Float FogIntensity
@@ -22,27 +22,5 @@ MaterialDef Anim {
             WorldViewProjectionMatrix
         }
 
-        Defines {
-            HAS_GLOWCOLOR : GlowColor
-        }
-    }
-    Technique Glow {
-
-        VertexShader GLSL100:   Common/MatDefs/Misc/Unshaded.vert
-        FragmentShader GLSL100: Common/MatDefs/Light/Glow.frag
-
-        WorldParameters {
-            WorldViewProjectionMatrix
-            ViewProjectionMatrix
-            ViewMatrix
-        }
-
-        Defines {
-            NEED_TEXCOORD1
-            HAS_GLOWMAP : GlowMap
-            HAS_GLOWCOLOR : GlowColor
-            NUM_BONES : NumberOfBones
-	    INSTANCING : UseInstancing
-        }
     }
 }

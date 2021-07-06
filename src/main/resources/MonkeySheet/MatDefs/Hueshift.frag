@@ -2,10 +2,10 @@ uniform sampler2D m_ColorMap;
 uniform float g_Time;
 uniform float m_HitTime;
 uniform float m_AlphaValue;
-uniform vec4 m_GlowColor;
 uniform vec4 m_FogColor;
 uniform float m_FogIntensity;
 uniform float m_HueShift;
+uniform bool m_GrayScale;
 vec4 color;
 varying vec2 texCoord;
 
@@ -27,7 +27,7 @@ vec3 hsv2rgb(vec3 c)
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-void main(){  
+void main(){
 /*
 color = texture2D(m_ColorMap, texCoord);
 
@@ -46,5 +46,9 @@ color = texture2D(m_ColorMap, texCoord);
     //fragHSV.xyz = mod(fragHSV.xyz, 1.0);
     fragRGB = hsv2rgb(fragHSV);
     gl_FragColor = vec4(fragRGB, textureColor.w);
+    if (m_GrayScale) {
+        float gray = dot(gl_FragColor.rgb, vec3(0.299, 0.587, 0.114));
+        gl_FragColor = vec4(vec3(gray), gl_FragColor.a);
+    }
 }
 
