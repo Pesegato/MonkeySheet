@@ -15,6 +15,7 @@ public class BNodeControl extends AbstractControl {
     BNode bNode;
     BGeometry bGeometry[];
     Geometry geometry;
+    MSMaterialControl msmc;
 
     public BNodeControl(Node parent, int bufSize, String sheetName, Timeable timeable, MSContainer msContainer, AssetManager assetM) {
         bNode = new BNode(bufSize);
@@ -22,7 +23,7 @@ public class BNodeControl extends AbstractControl {
         geometry = bNode.makeGeo();
         MSControl mscsb = new MSControl(sheetName, timeable);
         geometry.addControl(mscsb);
-        MSMaterialControl msmc = new MSMaterialControl(assetM, geometry, msContainer, mscsb);
+        msmc = new MSMaterialControl(assetM, geometry, msContainer, mscsb);
         msmc.setVertexSheetPos(true);
         parent.attachChild(geometry);
         geometry.addControl(this);
@@ -43,6 +44,10 @@ public class BNodeControl extends AbstractControl {
 
     public Geometry getGeometry(){
         return geometry;
+    }
+
+    public MSMaterialControl getMaterial(){
+        return msmc;
     }
 
     public int getBufSize() {
