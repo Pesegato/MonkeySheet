@@ -26,7 +26,7 @@ public class Prism extends Mesh {
         x = FastMath.sin(angle);
         z = FastMath.cos(angle) + 1;
         float normVal = 1f / FastMath.sqrt(x * x + z * z);
-        for (int i = 0; i < sides - 1; i++, c += 6) {
+        for (int i = 0; i < sides - 1; i++, c += (short) 6) {
             x = center.x + radius * lastX;
             z = center.z + radius * lastZ;
             for (int j = 0; j < 3; j++) {
@@ -77,8 +77,8 @@ public class Prism extends Mesh {
         idx.put((short) 1).put((short) 0).put((short) (c + 1));
 
         c = 10; //index for caps
-        for (int i = 0; i < sides - 2; i++, c += 6) {
-            idx.put((short) 4).put((short) (c)).put((short) (c + 6));
+        for (int i = 0; i < sides - 2; i++, c += (short) 6) {
+            idx.put((short) 4).put(c).put((short) (c + 6));
             idx.put((short) 5).put((short) (c + 7)).put((short) (c + 1));
         }
         normal.rewind();
