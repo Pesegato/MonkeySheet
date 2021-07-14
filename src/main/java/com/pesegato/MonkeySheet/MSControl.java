@@ -37,6 +37,7 @@ public class MSControl extends MSSpriteControl {
         runOnce = false;
         if (anim == null) {
             log.warn("Running UNINITIALIZED animation {}, GOING TO CRASH VERY SOON!!!", ani);
+            return;
         }
         animation = ani;
         log.debug("now playing FOREVER animation {}/{}", anim.msCont.name, ani);
@@ -48,6 +49,7 @@ public class MSControl extends MSSpriteControl {
         runOnce = true;
         if (anim == null) {
             log.warn("Running UNINITIALIZED animation {}, GOING TO CRASH VERY SOON!!!" + ani);
+            return;
         }
         animation = ani;
         log.debug("now playing ONCE animation {}/{}", anim.msCont.name, ani);
