@@ -21,6 +21,11 @@ public class MSSpriteControl extends AbstractControl {
     MSSpriteControl() {
     }
 
+    public MSSpriteControl(String anim) {
+        this.anim = MonkeySheetAppState.getAnim(anim);
+        this.position = 0;
+    }
+
     public MSSpriteControl(MTween anim, int position) {
         this.anim = anim;
         this.position = position;

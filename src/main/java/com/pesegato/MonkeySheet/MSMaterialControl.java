@@ -26,7 +26,7 @@ public class MSMaterialControl extends AbstractControl {
 
     public String animation;
     public int position;
-    MSControl msc;
+    MSSpriteControl msc;
 
     private float alphaValue = 1;
     private boolean flipped = false;
@@ -63,6 +63,40 @@ public class MSMaterialControl extends AbstractControl {
         material.setColor("FogColor", fogColor);
         material.setFloat("FogIntensity", 0.0f);
         material.setFloat("HueShift", hueShift);
+    }
+
+    public MSMaterialControl(AssetManager assetManager, Geometry geo, MSContainer msCont) {
+        material = new Material(assetManager, "MonkeySheet/MatDefs/Anim.j3md");
+        Texture[] sheetsX = new Texture[msCont.sheets.length];
+        for (int i = 0; i < msCont.sheets.length; i++) {
+            long start = System.currentTimeMillis();
+            long end;
+            System.out.println("MonkeySheet: Now loading " + msCont.sheets[i]);
+            sheetsX[i] = assetManager.loadTexture(msCont.sheets[i]);
+            end = System.currentTimeMillis();
+            log.trace("loaded {}", (end - start));
+        }
+        material.setFloat("SizeX", msCont.numTiles);
+        material.setFloat("SizeY", msCont.numTiles);
+        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        for (MTween mt : MonkeySheetAppState.anis.values()) {
+            if (mt.msCont == msCont)
+                mt.setTextures(sheetsX);
+        }
+        geo.setMaterial(material);
+        geo.addControl(this);
+        material.setFloat("FlipHorizontal", 0.0f);
+        material.setFloat("AlphaValue", 1.0f);
+        material.setColor("FogColor", fogColor);
+        material.setFloat("FogIntensity", 0.0f);
+        material.setFloat("HueShift", hueShift);
+    }
+
+    public MSMaterialControl setSprite(String sprite) {
+        this.msc = new MSSpriteControl(sprite);
+        material.setFloat("Position", msc.anim.anim[msc.position].position);
+        material.setTexture("ColorMap", msc.anim.anim[msc.position].sheetX);
+        return this;
     }
 
     public MSMaterialControl(AssetManager assetManager, MSContainer msCont, MSControl msc) {
@@ -110,7 +144,8 @@ public class MSMaterialControl extends AbstractControl {
     protected void controlUpdate(float tpf) {
         if (MonkeySheetAppState.tTPF == 0) {
             if (msc.position >= msc.anim.anim.length) {
-                log.error("Error in animation, doing {} at position {}", msc.msAction, msc.position);
+                MSControl actionMsc = (MSControl) msc;
+                log.error("Error in animation, doing {} at position {}", actionMsc.msAction, msc.position);
             }
             material.setFloat("Position", msc.anim.anim[msc.position].position);
             material.setTexture("ColorMap", msc.anim.anim[msc.position].sheetX);

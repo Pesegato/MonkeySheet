@@ -74,8 +74,8 @@ public class MSGlobals {
         return null;
     }
 
-    public static String getComment(COMPRESSION_TYPE type){
-        switch (type){
+    public static String getComment(COMPRESSION_TYPE type) {
+        switch (type) {
             case NONE:
                 return "Memory hungry";//&slow
             case BC7:
@@ -142,6 +142,10 @@ public class MSGlobals {
         Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         geo.setMaterial(material);
         return material;
+    }
+
+    public static MSMaterialControl makeSprite(AssetManager assetManager, Geometry geo, MSContainer container, String sprite) {
+        return new MSMaterialControl(assetManager, geo, container).setSprite(sprite);
     }
 
     /**
