@@ -41,7 +41,7 @@ public class MSMaterialControl extends AbstractControl {
         for (int i = 0; i < msCont.sheets.length; i++) {
             long start = System.currentTimeMillis();
             long end;
-            System.out.println("MonkeySheet: Now loading " + msCont.sheets[i]);
+            log.trace("MonkeySheet: Now loading {}", msCont.sheets[i]);
             sheetsX[i] = assetManager.loadTexture(msCont.sheets[i]);
             end = System.currentTimeMillis();
             log.trace("loaded {}", (end - start));
@@ -71,7 +71,7 @@ public class MSMaterialControl extends AbstractControl {
         for (int i = 0; i < msCont.sheets.length; i++) {
             long start = System.currentTimeMillis();
             long end;
-            System.out.println("MonkeySheet: Now loading " + msCont.sheets[i]);
+            log.trace("MonkeySheet: Now loading {}", msCont.sheets[i]);
             sheetsX[i] = assetManager.loadTexture(msCont.sheets[i]);
             end = System.currentTimeMillis();
             log.trace("loaded {}", (end - start));
@@ -105,7 +105,7 @@ public class MSMaterialControl extends AbstractControl {
         for (int i = 0; i < msCont.sheets.length; i++) {
             long start = System.currentTimeMillis();
             long end;
-            System.out.println("MonkeySheet: Now loading " + msCont.sheets[i]);
+            log.trace("MonkeySheet: Now loading {}", msCont.sheets[i]);
             sheetsX[i] = assetManager.loadTexture(msCont.sheets[i]);
             end = System.currentTimeMillis();
             log.trace("loaded {}", (end - start));
