@@ -6,6 +6,7 @@
 package com.pesegato.MonkeySheet;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.TextureKey;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
@@ -42,7 +43,7 @@ public class MSMaterialControl extends AbstractControl {
             long start = System.currentTimeMillis();
             long end;
             log.trace("MonkeySheet: Now loading {}", msCont.sheets[i]);
-            sheetsX[i] = assetManager.loadTexture(msCont.sheets[i]);
+            sheetsX[i] = assetManager.loadTexture(new TextureKey(msCont.sheets[i],false));
             end = System.currentTimeMillis();
             log.trace("loaded {}", (end - start));
         }
@@ -72,7 +73,7 @@ public class MSMaterialControl extends AbstractControl {
             long start = System.currentTimeMillis();
             long end;
             log.trace("MonkeySheet: Now loading {}", msCont.sheets[i]);
-            sheetsX[i] = assetManager.loadTexture(msCont.sheets[i]);
+            sheetsX[i] = assetManager.loadTexture(new TextureKey(msCont.sheets[i],false));
             end = System.currentTimeMillis();
             log.trace("loaded {}", (end - start));
         }
@@ -106,7 +107,7 @@ public class MSMaterialControl extends AbstractControl {
             long start = System.currentTimeMillis();
             long end;
             log.trace("MonkeySheet: Now loading {}", msCont.sheets[i]);
-            sheetsX[i] = assetManager.loadTexture(msCont.sheets[i]);
+            sheetsX[i] = assetManager.loadTexture(new TextureKey(msCont.sheets[i],false));
             end = System.currentTimeMillis();
             log.trace("loaded {}", (end - start));
         }
