@@ -41,7 +41,7 @@ dependencies {
 		implementation 'com.google.guava:guava:19.0'
 		implementation 'com.google.code.gson:gson:2.7'
 		implementation "com.github.pesegato:GoldMonkey:[0.7,)"
-		runtimeOnly 'ch.qos.logback:logback-classic:1.1.2'
+		runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
 		runtimeOnly "${jme3.g}:jme3-lwjgl3:${jme3.v}"
 
 		//utils
