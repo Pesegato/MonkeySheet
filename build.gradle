@@ -1,12 +1,13 @@
 plugins {
-		id "java"
-		id "maven-publish"
-//  id "eclipse"
-		id "idea"
-		id 'com.palantir.git-version' version '0.12.3'
+	id 'java-library'
+	id 'maven-publish'
+	id "idea"
+	id 'signing'
+	id 'com.palantir.git-version' version '3.0.0'
 }
 
-project.version gitVersion()
+group 'io.github.pesegato'
+version gitVersion()
 
 println("version : '${version}'")
 
@@ -17,12 +18,8 @@ ext {
 		isWindows = org.gradle.internal.os.OperatingSystem.current().windows
 }
 
-//name = the directory name
-group = "com.pesegato"
-
 repositories {
 		mavenCentral()
-		maven { url "https://jitpack.io" }
 }
 
 
@@ -40,7 +37,7 @@ dependencies {
 		implementation 'org.slf4j:slf4j-api:1.7.13'
 		implementation 'com.google.guava:guava:19.0'
 		implementation 'com.google.code.gson:gson:2.7'
-		implementation "com.github.pesegato:GoldMonkey:[0.7,)"
+		implementation 'io.github.pesegato:GoldMonkey:0.7.4'
 		runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
 		runtimeOnly "${jme3.g}:jme3-lwjgl3:${jme3.v}"
 
@@ -51,36 +48,64 @@ dependencies {
 		//test
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+signing {
+	sign publishing.publications
+}
+
+publishing {
+	publications {
+		mavenJava(org.gradle.api.publish.maven.MavenPublication) {
+			from components.java
+			pom {
+				name = 'MonkeySheet'
+				description = 'Spritesheet library for jMonkeyEngine'
+				url = 'https://github.com/Pesegato/MonkeySheet/'
+				inceptionYear = '2016'
+				licenses {
+					license {
+						name = 'BSD 3-Clause License'
+						url = 'https://github.com/Pesegato/MonkeySheet/blob/main/LICENSE'
+					}
+				}
+				developers {
+					developer {
+						id = 'pesegato'
+						name = 'Pesegato Ameiurus Melas'
+						email = 'pesegato@outlook.com'
+					}
+				}
+				scm {
+					connection = 'scm:git:git://github.com/pesegato/monkeysheet.git'
+					developerConnection = 'scm:git:ssh://git@github.com/pesegato/monkeysheet.git'
+					url = 'https://github.com/Pesegato/MonkeySheet/'
+				}
+			}
+		}
+	}
+	repositories {
+		maven {
+			url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+			credentials {
+				username = ossrhUsername
+				password = ossrhPassword
+			}
+		}
+	}
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(11)
+	}
+	withJavadocJar()
+	withSourcesJar()
+}
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 compileJava.doLast {
 		def buildDate = new Date().format('yyyy-MM-dd HHmm')
 		println "Writing ${rootProject.name}.build.date: " + buildDate
-		new File(destinationDir, "${rootProject.name}.build.date").text = buildDate
-		new File(destinationDir, "${rootProject.name}.build.version").text = "${version}"
-}
-
-publishing {
-		publications {
-				mavenJava(MavenPublication) {
-						from components.java
-				}
-		}
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-		archiveClassifier.set("sources")
-		from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-		archiveClassifier.set("javadoc")
-		from javadoc.destinationDir
-}
-
-artifacts {
-		archives sourcesJar
-		archives javadocJar
+		destinationDirectory.file("${rootProject.name}.build.date").get().asFile.text = buildDate
+		destinationDirectory.file("${rootProject.name}.build.version").get().asFile.text = "${version}"
 }
