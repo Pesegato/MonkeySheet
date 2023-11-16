@@ -1,5 +1,13 @@
-# MonkeySheet [![Build Status](https://travis-ci.org/Pesegato/MonkeySheet.svg?branch=master)](https://travis-ci.org/Pesegato/MonkeySheet) [![](https://jitpack.io/v/Pesegato/MonkeySheet.svg)](https://jitpack.io/#Pesegato/MonkeySheet) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/Pesegato/MonkeySheet.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Pesegato/MonkeySheet/context:java)
-Spritesheet library for jMonkeyEngine
+<div align="center"><img alt="Static Badge" src="https://img.shields.io/badge/Monkey-Sheet-yellow?style=for-the-badge&logo=github"  height="100" align="center">
+
+ # Spritesheet library for jMonkeyEngine
+
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.pesegato/MonkeySheet?style=for-the-badge)](https://central.sonatype.com/artifact/io.github.pesegato/MonkeySheet) 
+[![javadoc](https://javadoc.io/badge2/io.github.pesegato/MonkeySheet/javadoc.svg?style=for-the-badge)](https://javadoc.io/doc/io.github.pesegato/MonkeySheet) 
+
+</div>
+
+## Instructions
 
 How to use: https://pesegato.gitbook.io/monkeysheet-workflow/
 
