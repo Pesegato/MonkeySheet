@@ -1,9 +1,0 @@
-language: java
-
-jdk:
-  - openjdk8
-
-env:
-- CI=true
-
-script: ./gradlew build
