@@ -118,7 +118,7 @@ public class Dyn4JShapeControl extends IDyn4JControl {
     @Override
     public void setSpatial(Spatial spatial) {
         this.spatial = spatial;
-        body.translate(new Double(spatial.getLocalTranslation().x), new Double(spatial.getLocalTranslation().y));
+        body.translate(Double.valueOf(spatial.getLocalTranslation().x), Double.valueOf(spatial.getLocalTranslation().y));
 
         //TODO: set initial rotation of the dyn4j-Body
 
@@ -150,8 +150,8 @@ public class Dyn4JShapeControl extends IDyn4JControl {
     void updateDraw(float tpf) {
         Vector2 vector2 = body.getTransform().getTranslation();
         this.spatial.setLocalTranslation(
-                new Float(vector2.x),
-                new Float(vector2.y), 0f);
+                Float.valueOf((float)vector2.x),
+                Float.valueOf((float)vector2.y), 0f);
 
 
         Transform transform = body.getTransform();
@@ -159,15 +159,15 @@ public class Dyn4JShapeControl extends IDyn4JControl {
                 transform.getTranslation().y == lastTransform.getTranslation().y) {
             this.spatial.setLocalTranslation(
                     new Vector3f(
-                            new Float(transform.getTranslation().x),
-                            new Float(transform.getTranslation().y),
+                            Float.valueOf((float)transform.getTranslation().x),
+                            Float.valueOf((float)transform.getTranslation().y),
                             0f));
             lastTransform=transform;
         }
         double angle = body.getTransform().getRotationAngle();
         if (angle != lastAngle) {
             Quaternion roll = new Quaternion();
-            roll.fromAngleAxis( new Float(angle) , Vector3f.UNIT_Z);
+            roll.fromAngleAxis( Float.valueOf((float)angle) , Vector3f.UNIT_Z);
             this.spatial.setLocalRotation(roll);
             lastAngle = angle;
         }

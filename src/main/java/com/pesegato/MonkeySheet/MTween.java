@@ -42,7 +42,7 @@ public class MTween {
             System.out.println("Unless you are using multisheet, you probably referenced frames outside of the sheet 0.");
             System.out.println("For example, when using a Container with size 3, frames must be between 0 and 8!");
             e.printStackTrace();
-            System.exit(-1);
+            throw new IllegalStateException();
         }
     }
 }

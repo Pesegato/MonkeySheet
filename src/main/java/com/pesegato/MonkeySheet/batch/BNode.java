@@ -77,7 +77,7 @@ public class BNode {
         int idx = getNextAvailableSlot();
         if (idx == -1) {
             System.err.println("No more free slot available for BGeometries on " + this + "!");
-            System.exit(-1);
+            throw new IllegalStateException();
         }
         return addReusableQuad(idx, x, y);
     }

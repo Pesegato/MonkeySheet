@@ -41,7 +41,7 @@ public abstract class MSActionControl extends AbstractControl {
         //nextAnim = MonkeySheetAppState.getAnim(ani);
         runOnce = true;
         if (anim == null) {
-            log.warn("Running UNINITIALIZED animation {}, GOING TO CRASH VERY SOON!!!" + ani);
+            log.warn("Running UNINITIALIZED animation {}, GOING TO CRASH VERY SOON!!!", ani);
         }
     }
 
