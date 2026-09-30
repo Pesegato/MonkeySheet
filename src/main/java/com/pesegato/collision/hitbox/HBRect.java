@@ -28,7 +28,7 @@ public class HBRect extends DebuggableBody {
         this.id = id;
         this.w = wP * SPRITE_SIZE;
         this.h = hP * SPRITE_SIZE;
-        addFixture(new BodyFixture(new Rectangle(new Float(w), new Float(h))));
+        addFixture(new BodyFixture(new Rectangle(Float.valueOf(w), Float.valueOf(h))));
     }
 
     public HBRect(String name, long id, float wP, float hP) {
@@ -36,14 +36,14 @@ public class HBRect extends DebuggableBody {
         this.id = id;
         this.w = wP * SPRITE_SIZE;
         this.h = hP * SPRITE_SIZE;
-        addFixture(new BodyFixture(new Rectangle(new Float(w), new Float(h))));
+        addFixture(new BodyFixture(new Rectangle(Float.valueOf(w), Float.valueOf(h))));
     }
 
     public HBRect(long id, Filter filter, int w, int h) {
         this.id = id;
         this.w = w;
         this.h = h;
-        BodyFixture bf=new BodyFixture(new Rectangle(new Float(w), new Float(h)));
+        BodyFixture bf=new BodyFixture(new Rectangle(Float.valueOf(w), Float.valueOf(h)));
         bf.setFilter(filter);
         addFixture(bf);
     }
@@ -58,7 +58,7 @@ public class HBRect extends DebuggableBody {
     }
 
     public Convex getConvex() {
-        return new Rectangle(new Float(w), new Float(h));
+        return new Rectangle(Float.valueOf(w), Float.valueOf(h));
     }
 
     @Deprecated

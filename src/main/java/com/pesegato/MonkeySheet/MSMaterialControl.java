@@ -35,6 +35,7 @@ public class MSMaterialControl extends AbstractControl {
     private float hueShift = 0;
     private ColorRGBA fogColor = ColorRGBA.Pink;
     private float fogIntensity = 0;
+    private MSFrame lastFrame;
 
     public MSMaterialControl(AssetManager assetManager, Geometry geo, MSContainer msCont, MSControl msc) {
         material = new Material(assetManager, "MonkeySheet/MatDefs/Anim.j3md");
@@ -57,8 +58,10 @@ public class MSMaterialControl extends AbstractControl {
         geo.setMaterial(material);
         geo.addControl(this);
         this.msc = msc;
-        material.setFloat("Position", msc.anim.anim[msc.position].position);
-        material.setTexture("ColorMap", msc.anim.anim[msc.position].sheetX);
+
+        lastFrame = msc.anim.anim[msc.position];
+        material.setFloat("Position", lastFrame.position);
+        material.setTexture("ColorMap", lastFrame.sheetX);
         material.setFloat("FlipHorizontal", 0.0f);
         material.setFloat("AlphaValue", 1.0f);
         material.setColor("FogColor", fogColor);
@@ -95,8 +98,10 @@ public class MSMaterialControl extends AbstractControl {
 
     public MSMaterialControl setSprite(String sprite) {
         this.msc = new MSSpriteControl(sprite);
-        material.setFloat("Position", msc.anim.anim[msc.position].position);
-        material.setTexture("ColorMap", msc.anim.anim[msc.position].sheetX);
+
+        lastFrame = msc.anim.anim[msc.position];
+        material.setFloat("Position", lastFrame.position);
+        material.setTexture("ColorMap", lastFrame.sheetX);
         return this;
     }
 
@@ -119,8 +124,10 @@ public class MSMaterialControl extends AbstractControl {
                 mt.setTextures(sheetsX);
         }
         this.msc = msc;
-        material.setFloat("Position", msc.anim.anim[msc.position].position);
-        material.setTexture("ColorMap", msc.anim.anim[msc.position].sheetX);
+
+        lastFrame = msc.anim.anim[msc.position];
+        material.setFloat("Position", lastFrame.position);
+        material.setTexture("ColorMap", lastFrame.sheetX);
         material.setFloat("FlipHorizontal", 0.0f);
         material.setFloat("AlphaValue", 1.0f);
         material.setColor("FogColor", fogColor);
@@ -144,12 +151,20 @@ public class MSMaterialControl extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         if (MonkeySheetAppState.tTPF == 0) {
+            if (msc == null || msc.anim == null) {
+                return;
+            }
             if (msc.position >= msc.anim.anim.length) {
                 MSControl actionMsc = (MSControl) msc;
                 log.error("Error in animation, doing {} at position {}", actionMsc.msAction, msc.position);
+                return;
             }
-            material.setFloat("Position", msc.anim.anim[msc.position].position);
-            material.setTexture("ColorMap", msc.anim.anim[msc.position].sheetX);
+            MSFrame currentFrame = msc.anim.anim[msc.position];
+            if (currentFrame != lastFrame) {
+                material.setFloat("Position", currentFrame.position);
+                material.setTexture("ColorMap", currentFrame.sheetX);
+                lastFrame = currentFrame;
+            }
         }
 
     }
