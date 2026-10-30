@@ -1,0 +1,62 @@
+name: Publish to GitHub Packages
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - '*'
+      - '!*-SNAPSHOT'
+  workflow_dispatch:
+
+concurrency:
+  group: github-packages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Resolve version
+        id: ver
+        run: |
+          VERSION=$(./gradlew properties -q | awk '/^version:/ { print $2 }')
+          echo "version=$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if [[ "$VERSION" == *-SNAPSHOT ]]; then
+            echo "is_snapshot=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_snapshot=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to GitHub Packages
+        run: ./gradlew publishAllPublicationsToGitHubPackagesRepository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+
+      - name: Delete SNAPSHOT versions from GitHub Packages
+        if: steps.ver.outputs.is_snapshot == 'false'
+        uses: actions/delete-package-versions@v5
+        with:
+          owner: ${{ github.repository_owner }}
+          package-name: io.github.pesegato.monkeysheet
+          package-type: maven
+          min-versions-to-keep: 0
+          ignore-versions: '^(?!.*-SNAPSHOT$).+$'
