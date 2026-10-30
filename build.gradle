@@ -1,45 +1,123 @@
 plugins {
 	id 'java-library'
 	id 'maven-publish'
-	id "idea"
-	id 'signing'
-	id 'com.palantir.git-version' version '3.0.0'
+	id 'com.vanniktech.maven.publish' version '0.37.0'
+	id 'com.palantir.git-version' version '5.1.0'
 }
+
+def gitDetails = versionDetails()
+
+// Github wants v1.0.0, Maven Central wants 1.0.0
+def rawTag = gitDetails.lastTag
+def cleanTag = (rawTag != null && rawTag.startsWith("v")) ? rawTag.substring(1) : rawTag
+def isSnapshot = !gitDetails.isCleanTag
 
 group 'io.github.pesegato'
-version gitVersion()
+version = isSnapshot
+		? "${cleanTag}-SNAPSHOT"
+		: cleanTag
 
-println("version : '${version}'")
-
-ext {
-		jvm = org.gradle.internal.jvm.Jvm.current()
-		javaVersion = JavaVersion.current()
-		isCiServer = System.getenv("TRAVIS") || System.getenv().containsKey("TEAMCITY_VERSION") || hasProperty('CI') || System.getenv("JITPACK")
-		isWindows = org.gradle.internal.os.OperatingSystem.current().windows
-}
+println("version : '${version}'  (snapshot: ${isSnapshot})")
 
 repositories {
-		mavenCentral()
+	maven {
+		url = uri("https://maven.pkg.github.com/pesegato/goldmonkey")
+		credentials {
+			username = project.findProperty("gh_user") ?: System.getenv("GITHUB_ACTOR")
+			password = project.findProperty("gh_token") ?: System.getenv("GITHUB_TOKEN")
+		}
+	}
+	mavenCentral()
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+// =====================================================
+// GitHub Packages
+// =====================================================
+publishing {
+	repositories {
+		maven {
+			name = "GitHubPackages"
+			url = uri("https://maven.pkg.github.com/pesegato/monkeysheet")
+			credentials {
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
+	}
+}
+
+// =====================================================
+// Maven Central (solo per le release stabili)
+// =====================================================
+mavenPublishing {
+	publishToMavenCentral(true)
+
+	if (file("/tmp/secring.gpg").exists()) {
+		signAllPublications()
+	}
+
+	coordinates(group.toString(), 'monkeysheet', version.toString())
+
+	pom {
+		name = 'MonkeySheet'
+		description = 'Spritesheet library for jMonkeyEngine'
+		url = 'https://github.com/Pesegato/MonkeySheet/'
+		inceptionYear = '2016'
+
+		licenses {
+			license {
+				name = 'BSD 3-Clause License'
+				url = 'https://github.com/pesegato/monkeysheet/blob/main/LICENSE'
+				distribution = 'repo'
+			}
+		}
+
+		developers {
+			developer {
+				id = 'pesegato'
+				name = 'Pesegato Ameiurus Melas'
+				email = 'pesegato@outlook.com'
+			}
+		}
+
+		scm {
+			connection = 'scm:git:git://github.com/pesegato/monkeysheet.git'
+			developerConnection = 'scm:git:ssh://git@github.com/pesegato/monkeysheet.git'
+			url = 'https://github.com/pesegato/monkeysheet/'
+		}
+	}
+}
+
+ext {
+	javaVersion = JavaVersion.current()
+	jmeVersion = "3.6.1-stable"
 }
 
 
+/*
 def jme3 = ["v": '3.4.0-stable', "g": "org.jmonkeyengine"]
 def pesegato = ["g": "com.pesegato", "v": "latest.integration"]
 if (isCiServer) {
 		pesegato.g = "com.github.Pesegato"
 		pesegato.v = "-SNAPSHOT"
 }
+*/
 
 dependencies {
 		// jme
-		implementation "${jme3.g}:jme3-core:${jme3.v}"
-		implementation 'org.dyn4j:dyn4j:4.2.0'
+		implementation "org.jmonkeyengine:jme3-core:$jmeVersion"
+		implementation 'org.dyn4j:dyn4j:6.0.0'
 		implementation 'org.slf4j:slf4j-api:2.0.9'
 		implementation 'com.google.guava:guava:32.1.3-jre'
 		implementation 'com.google.code.gson:gson:2.10.1'
-		implementation 'io.github.pesegato:GoldMonkey:0.7.5'
-		runtimeOnly 'ch.qos.logback:logback-classic:1.3.13'
-		runtimeOnly "${jme3.g}:jme3-lwjgl3:${jme3.v}"
+		implementation 'io.github.pesegato:goldmonkey:0.7.7'
+		runtimeOnly 'ch.qos.logback:logback-classic:1.6.3'
+		runtimeOnly "org.jmonkeyengine:jme3-lwjgl3:$jmeVersion"
 
 		//utils
 
@@ -48,64 +126,60 @@ dependencies {
 		//test
 }
 
-signing {
-	sign publishing.publications
+// =====================================================
+// Generazione di BuildInfo.java
+// =====================================================
+
+def buildInfoPackage = "io.github.pesegato." + rootProject.name.toLowerCase()
+def buildInfoClass = "${rootProject.name}BuildInfo"
+
+tasks.register('generateBuildInfo') {
+	def outputDir = layout.buildDirectory.dir("generated/sources/build-info/java")
+
+	// Input: la versione del progetto
+	inputs.property("version", provider { version.toString() })
+
+	// Output: la directory dove viene generata la classe
+	outputs.dir(outputDir)
+
+	doLast {
+		def packagePath = buildInfoPackage.replace('.', '/')
+		def dir = outputDir.get().asFile
+		def packageDir = new File(dir, packagePath)
+		packageDir.mkdirs()
+
+		def buildDate = new Date().format("yyyy-MM-dd HH:mm")
+		def versionValue = version.toString()
+
+		def file = new File(packageDir, "${buildInfoClass}.java")
+		file.text = """\
+package ${buildInfoPackage};
+
+/**
+ * Informazioni di build generate automaticamente da Gradle.
+ * Non modificare questo file a mano.
+ */
+public final class ${buildInfoClass} {
+
+    public static final String VERSION = "${versionValue}";
+    public static final String BUILD_DATE = "${buildDate}";
+
+    private ${buildInfoClass}() {
+        // utility class
+    }
+}
+"""
+		println "Generated ${buildInfoClass}.java → version=${versionValue}, date=${buildDate}"
+	}
 }
 
-publishing {
-	publications {
-		mavenJava(org.gradle.api.publish.maven.MavenPublication) {
-			from components.java
-			pom {
-				name = 'MonkeySheet'
-				description = 'Spritesheet library for jMonkeyEngine'
-				url = 'https://github.com/Pesegato/MonkeySheet/'
-				inceptionYear = '2016'
-				licenses {
-					license {
-						name = 'BSD 3-Clause License'
-						url = 'https://github.com/Pesegato/MonkeySheet/blob/main/LICENSE'
-					}
-				}
-				developers {
-					developer {
-						id = 'pesegato'
-						name = 'Pesegato Ameiurus Melas'
-						email = 'pesegato@outlook.com'
-					}
-				}
-				scm {
-					connection = 'scm:git:git://github.com/pesegato/monkeysheet.git'
-					developerConnection = 'scm:git:ssh://git@github.com/pesegato/monkeysheet.git'
-					url = 'https://github.com/Pesegato/MonkeySheet/'
-				}
-			}
-		}
-	}
-	repositories {
-		maven {
-			url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-			credentials {
-				username = ossrhUsername
-				password = ossrhPassword
-			}
-		}
+sourceSets {
+	main {
+		java.srcDir(generateBuildInfo.outputs)
 	}
 }
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
-	withJavadocJar()
-	withSourcesJar()
-}
-
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-compileJava.doLast {
-		def buildDate = new Date().format('yyyy-MM-dd HHmm')
-		println "Writing ${rootProject.name}.build.date: " + buildDate
-		destinationDirectory.file("${rootProject.name}.build.date").get().asFile.text = buildDate
-		destinationDirectory.file("${rootProject.name}.build.version").get().asFile.text = "${version}"
+// Assicurati che la generazione avvenga prima della compilazione
+tasks.named('compileJava') {
+	dependsOn('generateBuildInfo')
 }
