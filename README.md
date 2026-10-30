@@ -2,9 +2,14 @@
 
  # Spritesheet library for jMonkeyEngine
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.pesegato/MonkeySheet?style=for-the-badge)](https://central.sonatype.com/artifact/io.github.pesegato/MonkeySheet) 
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.pesegato/MonkeySheet?style=for-the-badge)](https://central.sonatype.com/artifact/io.github.pesegato/MonkeySheet)
+[![GitHub Packages](https://img.shields.io/github/v/tag/Pesegato/MonkeySheet?label=GitHub%20Packages&style=for-the-badge)](https://github.com/Pesegato/MonkeySheet/packages/3342750)
 [![javadoc](https://javadoc.io/badge2/io.github.pesegato/MonkeySheet/javadoc.svg?style=for-the-badge)](https://javadoc.io/doc/io.github.pesegato/MonkeySheet) 
 
+</div>
+
+<div align="center">
+<img src="monkeysheet-logo.png" alt="MonkeySheet logo" style="width:400px;"/>
 </div>
 
 ## Instructions
